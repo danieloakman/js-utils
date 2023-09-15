@@ -131,6 +131,6 @@ dist
 
 *IGNORE*
 .vscode/**/*.ts
-**/*.js
-**/*.d.ts
-**/*.map
+# **/*.js
+# **/*.d.ts
+# **/*.map
