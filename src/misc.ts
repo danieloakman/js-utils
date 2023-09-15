@@ -21,7 +21,7 @@ import { Fn } from './types';
 // }
 // export const main = main;
 
-export const RUNTIME = Bun.env.RUNTIME;
+export const RUNTIME = Bun.env.RUNTIME ?? 'bun';
 
 export const IS_IN_NODE_COMPATIBLE_RUNTIME = RUNTIME === 'node' || RUNTIME === 'bun';
 
