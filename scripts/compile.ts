@@ -16,12 +16,12 @@ const esmToCjs = iife(
 );
 
 if (Bun.main === import.meta.path) {
-  const args: { target: 'node' | 'browser'; format: 'esm' | 'cjs' } = parseArgs(
+  const args: { target: 'node' | 'browser' | 'bun'; format: 'esm' | 'cjs' } = parseArgs(
     { description: 'Bundle using Bun and create declaration files with `tsc`.' },
     [
       'target',
       {
-        choices: ['node', 'browser'],
+        choices: ['node', 'browser', 'bun'],
       },
     ],
     [
@@ -52,7 +52,7 @@ if (Bun.main === import.meta.path) {
     format: 'esm',
     target: args.target,
     define: {
-      'Bun.env.COMPILE_TARGET': `'${args.target}'`,
+      'Bun.env.RUNTIME': `'${args.target}'`,
     },
   });
 

@@ -21,14 +21,16 @@ import { Fn } from './types';
 // }
 // export const main = main;
 
-export const COMPILE_TARGET = Bun.env.COMPILE_TARGET;
+export const RUNTIME = Bun.env.RUNTIME;
+
+export const IS_IN_NODE_COMPATIBLE_RUNTIME = RUNTIME === 'node' || RUNTIME === 'bun';
 
 /**
- * If Bun.env.COMPILE_TARGET is 'node', then `fn` is returned as is, otherwise a function that raises an exception is
+ * If Bun.env.RUNTIME is node compatible, then `fn` is returned as is, otherwise a function that raises an exception is
  * returned.
  */
 export function nodeOnly<T extends Fn>(fn: T): T {
-  if (typeof Bun.env.COMPILE_TARGET === 'string' && Bun.env.COMPILE_TARGET !== 'node')
+  if (!IS_IN_NODE_COMPATIBLE_RUNTIME)
     return ((..._: any[]) => raise('This function is only available in Node.')) as any;
   return fn;
 }
