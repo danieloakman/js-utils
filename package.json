@@ -6,8 +6,8 @@
   "types": "index.d.ts",
   "scripts": {
     "test": "bun test",
-    "build": "bun run scripts/build.ts",
-    "build:clean": "bun run scripts/build-clean.ts",
+    "compile": "bun run scripts/build.ts",
+    "clean": "bun run scripts/build-clean.ts",
     "check": "tsc",
     "lint": "eslint --ignore-path .eslintignore ./src --ext .ts",
     "format": "prettier --write **.ts"
