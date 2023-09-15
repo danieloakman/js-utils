@@ -8,9 +8,9 @@
     "test": "bun test",
     "compile": "bun run scripts/compile.ts",
     "clean": "bun run scripts/clean.ts",
-    "check": "tsc",
-    "lint": "eslint --ignore-path .eslintignore ./src --ext .ts",
-    "format": "prettier --write **.ts"
+    "check": "bunx tsc",
+    "lint": "bunx eslint --ignore-path .eslintignore ./src --ext .ts",
+    "format": "bunx prettier --write **.ts"
   },
   "author": "Daniel Oakman",
   "license": "MIT",
