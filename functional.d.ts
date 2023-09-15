@@ -29,3 +29,4 @@ export declare function isNullish(value: unknown): value is null | undefined;
 export declare function ok<T>(value: T): Ok<T>;
 export declare function raise(message: string): never;
 export declare function raise(error: Error): never;
+export declare function multiComparator<T>(...comparators: ((a: T, b: T) => number)[]): (a: T, b: T) => number;
