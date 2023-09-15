@@ -1,8 +1,9 @@
 #! bun
 
 import { join } from 'path';
-import { iife, ok, parseArgs, sh } from '../src';
+import { iife, ok, parseArgs, pipe, sh } from '../src';
 import { readdirDeep } from 'more-node-fs';
+import { minify } from 'uglify-js';
 
 const esmToCjs = iife(
   ({ transformSync } = require('@babel/core')) =>
@@ -15,7 +16,7 @@ const esmToCjs = iife(
 );
 
 if (Bun.main === import.meta.path) {
-  const args: { target: 'node' | 'browser' } = parseArgs(
+  const args: { target: 'node' | 'browser'; format: 'esm' | 'cjs' } = parseArgs(
     { description: 'Bundle using Bun and create declaration files with `tsc`.' },
     [
       'target',
@@ -55,8 +56,18 @@ if (Bun.main === import.meta.path) {
     },
   });
 
-  for (const output of outputs) {
-    const transpiled = esmToCjs(await output.text()).replaceAll('import.meta.require', 'require');
-    await Bun.write(output.path, transpiled);
+  if (args.format === 'cjs') {
+    // Transpile to cjs:
+    for (const output of outputs) {
+      const transpiled = pipe(
+        await output.text(),
+        esmToCjs,
+        str => str.replaceAll('import.meta.require', 'require'),
+        minify,
+        ok,
+        v => v.code,
+      );
+      await Bun.write(output.path, transpiled);
+    }
   }
 }
