@@ -18,21 +18,21 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
+      # - uses: pnpm/action-setup@v2
+      #   with:
+      #     version: 8
       - uses: oven-sh/setup-bun@v1
         with:
           bun-version: latest
-      - name: Use Node.js 18
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: 'pnpm'
+      # - name: Use Node.js 18
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: 18
+      #     cache: 'pnpm'
 
       - name: Install Dependencies 🛠️
         run: |
-          pnpm install
+          bun install
 
       # Merge and compile Bun:
       - name: Merge main -> bun
