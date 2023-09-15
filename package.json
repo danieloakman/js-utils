@@ -9,12 +9,14 @@
     "build:cjs": "tsc -p tsconfig.json",
     "build:esm": "tsc -p tsconfig.es.json",
     "build:clean": "bun run scripts/build-clean.ts",
+    "check": "tsc",
     "lint": "eslint --ignore-path .eslintignore ./src --ext .ts",
     "format": "prettier --write **.ts"
   },
   "author": "Daniel Oakman",
   "license": "MIT",
   "devDependencies": {
+    "@types/argparse": "^2.0.10",
     "@types/node": "18",
     "@typescript-eslint/eslint-plugin": "^5.59.8",
     "@typescript-eslint/parser": "^5.59.8",
@@ -33,5 +35,8 @@
     "*.ts": [
       "eslint --cache --fix"
     ]
+  },
+  "dependencies": {
+    "argparse": "^2.0.1"
   }
 }
