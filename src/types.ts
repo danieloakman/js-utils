@@ -1,9 +1,9 @@
 export interface Fn<Args extends any[] = any[], Return = any> {
-	(...args: Args): Return;
+  (...args: Args): Return;
 }
 
 export interface MonoFn<A, B = A> {
-	(a: A): B;
+  (a: A): B;
 }
 
 export type Result<T> = T | Error;
