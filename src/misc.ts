@@ -8,4 +8,13 @@
 //   if (require?.main !== module) return;
 //   return mainFunction();
 // }
+
+// let main: (module: any, mainFunction: () => Promise<void>) => Promise<void>;
+// if (process.env.BUILD_TARGET === 'node') {
+//   main = async (module: any, mainFunction: () => Promise<void>) => {
+//     if (require?.main !== module) return;
+//     return mainFunction();
+//   };
+// }
+// export const main = main;
 export const a = '';
