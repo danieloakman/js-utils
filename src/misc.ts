@@ -33,8 +33,9 @@ export const importSync = (name: string) => require(name);
 /**
  * Declares and runs a main function if the entry point to the program is `module`. This is esstentially the same as
  * python's `if __name__ == '__main__'` block.
- * @param module The NodeModule where this main function is running from.
- * @param mainFunction The main function to run.
+ * @param module If on node, then this will be passed in as `module`. If on `bun` or `browser` then pass in
+ * `import.meta.path`, i.e. the program's entry poing as an absolute path.
+ * @param mainFn The main function to run.
  */
 export const main: (module: any, mainFn: () => Promise<void>) => Promise<void> =
   RUNTIME === 'node'
@@ -47,7 +48,8 @@ export const main: (module: any, mainFn: () => Promise<void>) => Promise<void> =
         // TODO: fix this for bun
         if (module === Bun.main) mainFn();
       }
-    : (..._: any[]) => raise('Cannot have a main function in this runtime environment.');
+    : // TODO: browser may be able to work with bun's way of doing things, so perhaps this can be removed.
+      (..._: any[]) => raise('Cannot have a main function in this runtime environment.');
 
 export type ShellCommandOptions = Omit<Parameters<typeof import('child_process')['spawn']>[2], 'shell' | 'stdio'> & {
   /**
