@@ -17,12 +17,18 @@ if (Bun.main === import.meta.path) {
 
   const srcFiles = (await readdirDeep(join(import.meta.dir, '../src'))).files;
 
+  // Bun.env.COMPILE_TARGET = args.target;
+
   const output = await Bun.build({
     minify: true,
     entrypoints: srcFiles,
     outdir: '.',
     splitting: true,
     target: args.target,
+    define: {
+      'Bun.env.COMPILE_TARGET': `'${args.target}'`,
+    },
+    sourcemap: 'inline',
   });
   console.log(output);
 }
