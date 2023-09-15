@@ -146,3 +146,14 @@ export function raise(error: Error): never;
 export function raise(exception: string | Error): never {
   throw typeof exception === 'string' ? new Error(exception) : exception;
 }
+
+// TODO: fill jsdoc
+export function multiComparator<T>(...comparators: ((a: T, b: T) => number)[]): (a: T, b: T) => number {
+  return (a: T, b: T) => {
+    for (const comparator of comparators) {
+      const result = comparator(a, b);
+      if (result !== 0) return result;
+    }
+    return 0;
+  };
+}
