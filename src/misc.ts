@@ -36,18 +36,16 @@ export const importSync = (name: string) => require(name);
  * @param module The NodeModule where this main function is running from.
  * @param mainFunction The main function to run.
  */
-export const main: (module: any, mainFn: () => Promise<void | number>) => Promise<number> =
+export const main: (module: any, mainFn: () => Promise<void>) => Promise<void> =
   RUNTIME === 'node'
     ? async (module, mainFn) => {
-        if (require?.main !== module) return 0;
-        const exitCode = await mainFn();
-        process.exit(exitCode ?? 0);
+        // @ts-ignore
+        if (require?.main === module) mainFn();
       }
     : RUNTIME === 'bun'
     ? async (module, mainFn) => {
-        if (module !== Bun.main) return 0;
-        const exitCode = await mainFn();
-        process.exit(exitCode ?? 0);
+        // TODO: fix this for bun
+        if (module === Bun.main) mainFn();
       }
     : (..._: any[]) => raise('Cannot have a main function in this runtime environment.');
 
