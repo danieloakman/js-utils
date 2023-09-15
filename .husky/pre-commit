@@ -2,6 +2,6 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 # Run prettier on staged files:
-npx pretty-quick --staged
+bunx pretty-quick --staged
 # Then lint staged files:
-npx lint-staged
+bunx lint-staged
