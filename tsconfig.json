@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": false,
+    "target": "es6",
+    "moduleResolution": "node",
+    "incremental": true,
+    "sourceMap": true,
+    "outDir": "./",
+    "declaration": true,
+    "alwaysStrict": true,
+    "checkJs": false,
+    "allowJs": false,
+    "declarationMap": true,
+    "lib": ["ES2015"],
+    "strict": true,
+    "noImplicitAny": true,
+    "noUncheckedIndexedAccess": true,
+    "types": [
+      "bun-types"
+    ]
+  },
+  "include": ["./src"],
+  "exclude": ["node_modules", "test", "dist", "benchmark"]
+}

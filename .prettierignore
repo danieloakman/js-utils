@@ -1,0 +1,7 @@
+node_modules
+dist
+**.d.ts
+**.js
+.nyc_output
+src/**/*Async*.ts
+src/**/*async*.ts
