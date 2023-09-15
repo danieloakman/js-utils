@@ -1,14 +1,3 @@
-// /**
-//  * Declares and runs a main function if the entry point to the program is `module`. This is esstentially the same as
-//  * python's `if __name__ == '__main__'` block.
-//  * @param module The NodeModule where this main function is running from.
-//  * @param mainFunction The main function to run.
-//  */
-// export function main(module: any, mainFunction: () => Promise<void>) {
-//   if (require?.main !== module) return;
-//   return mainFunction();
-// }
-
 import { iife, raise } from './functional';
 import { Fn } from './types';
 
@@ -21,7 +10,7 @@ import { Fn } from './types';
 // }
 // export const main = main;
 
-export const RUNTIME = Bun.env.RUNTIME ?? 'bun';
+export const RUNTIME: 'browser' | 'bun' | 'node' = Bun.env.RUNTIME ?? ('bun' as any);
 
 export const IS_IN_NODE_COMPATIBLE_RUNTIME = RUNTIME === 'node' || RUNTIME === 'bun';
 
@@ -40,6 +29,27 @@ export function nodeOnly<T extends Fn>(fn: T): T {
  * node compatible.
  */
 export const importSync = (name: string) => require(name);
+
+/**
+ * Declares and runs a main function if the entry point to the program is `module`. This is esstentially the same as
+ * python's `if __name__ == '__main__'` block.
+ * @param module The NodeModule where this main function is running from.
+ * @param mainFunction The main function to run.
+ */
+export const main: (module: any, mainFn: () => Promise<void | number>) => Promise<number> =
+  RUNTIME === 'node'
+    ? async (module, mainFn) => {
+        if (require?.main !== module) return 0;
+        const exitCode = await mainFn();
+        process.exit(exitCode ?? 0);
+      }
+    : RUNTIME === 'bun'
+    ? async (module, mainFn) => {
+        if (module !== Bun.main) return 0;
+        const exitCode = await mainFn();
+        process.exit(exitCode ?? 0);
+      }
+    : (..._: any[]) => raise('Cannot have a main function in this runtime environment.');
 
 export type ShellCommandOptions = Omit<Parameters<typeof import('child_process')['spawn']>[2], 'shell' | 'stdio'> & {
   /**

@@ -1,7 +1,7 @@
 #! bun
 
 import { join } from 'path';
-import { iife, ok, parseArgs, pipe, sh } from '../src';
+import { iife, ok, parseArgs, pipe, sh, main } from '../src';
 import { readdirDeep } from 'more-node-fs';
 import { minify } from 'uglify-js';
 
@@ -15,7 +15,7 @@ const esmToCjs = iife(
       )?.code,
 );
 
-if (Bun.main === import.meta.path) {
+main(import.meta.path, async () => {
   const args: { target: 'node' | 'browser' | 'bun'; format: 'esm' | 'cjs' } = parseArgs(
     { description: 'Bundle using Bun and create declaration files with `tsc`.' },
     [
@@ -70,4 +70,4 @@ if (Bun.main === import.meta.path) {
       await Bun.write(output.path, transpiled);
     }
   }
-}
+});
