@@ -1,9 +1,9 @@
 #! bun
-
 import { join } from 'path';
-import { iife, ok, parseArgs, pipe, sh, main } from '../src';
+import { iife, ok, parseArgs, pipe, sh } from '../src';
 import { readdirDeep } from 'more-node-fs';
 import { minify } from 'uglify-js';
+import { clean } from './clean';
 
 const esmToCjs = iife(
   ({ transformSync } = require('@babel/core')) =>
@@ -15,7 +15,7 @@ const esmToCjs = iife(
       )?.code,
 );
 
-main(import.meta.path, async () => {
+if (Bun.main === import.meta.path) {
   const args: { target: 'node' | 'browser' | 'bun'; format: 'esm' | 'cjs' } = parseArgs(
     { description: 'Bundle using Bun and create declaration files with `tsc`.' },
     [
@@ -34,15 +34,16 @@ main(import.meta.path, async () => {
     ],
   );
 
-  const [srcFiles] = await Promise.all([
-    (await readdirDeep(join(import.meta.dir, '../src'))).files,
-    await sh('bun clean').then(ok),
-  ]);
+  const [srcFiles] = await Promise.all([readdirDeep(join(import.meta.dir, '../src')).then(v => v.files), clean()]);
 
   // Build types only:
+  // console.log('Building types...');
   ok(await sh('tsc -p tsconfig.types.json'));
 
+  // console.log({ srcFiles });
+
   // Build
+  // console.log('Building JS with Bun...');
   const { outputs } = await Bun.build({
     minify: true,
     entrypoints: srcFiles,
@@ -55,6 +56,7 @@ main(import.meta.path, async () => {
       'Bun.env.RUNTIME': `'${args.target}'`,
     },
   });
+  // console.log(`Built ${outputs.length} files.`);
 
   if (args.format === 'cjs') {
     // Transpile to cjs:
@@ -70,4 +72,4 @@ main(import.meta.path, async () => {
       await Bun.write(output.path, transpiled);
     }
   }
-});
+}

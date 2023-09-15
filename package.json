@@ -8,7 +8,7 @@
     "test": "bun test",
     "compile": "bun run scripts/compile.ts",
     "clean": "bun run scripts/clean.ts",
-    "check": "bunx tsc",
+    "check": "bunx tsc -p tsconfig.types.json",
     "lint": "bunx eslint --ignore-path .eslintignore ./src --ext .ts",
     "format": "bunx prettier --write **.ts"
   },
