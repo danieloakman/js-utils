@@ -1,0 +1,2 @@
+import{i as k,j as q} from"./misc.js";import{s as j} from"./functional.js";import{B as A} from"./chunk-eff4b90b4e0e686a.js";import{C as z} from"./chunk-56f104c8db647418.js";var B=z(A(),1);function E(b,h){if(!b)if(typeof h==="string")throw new Error(h);else throw h??new Error("Assertion failed")}var F=(b)=>b,G=k((b,h,r)=>j((w=q("assert"))=>w.deepStrictEqual(b,h,r)));var export_throws=B.throws;export{export_throws as throws,F as expectType,G as equal,E as assert};
+export{E as c,F as d,G as e,B as f};
