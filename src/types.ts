@@ -16,3 +16,17 @@ export type NullishResult<T> = Result<Nullish<T>>;
 
 /** Unwraps/extracts the wrapped value `T` from a union with undefined, null or error. */
 export type Ok<T> = Exclude<T, Error | null | undefined>;
+
+export interface Queue<T> {
+  length: number;
+  push: Array<T>['push'];
+  shift: Array<T>['shift'];
+  [Symbol.iterator]: Array<T>['values'];
+}
+
+export interface Stack<T> {
+  length: number;
+  push: Array<T>['push'];
+  pop: Array<T>['pop'];
+  [Symbol.iterator]: Array<T>['values'];
+}
