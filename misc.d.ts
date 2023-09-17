@@ -1,6 +1,4 @@
 import { Fn } from './types';
-export declare const RUNTIME: 'browser' | 'bun' | 'node';
-export declare const IS_IN_NODE_COMPATIBLE_RUNTIME: boolean;
 /**
  * If Bun.env.RUNTIME is node compatible, then `fn` is returned as is, otherwise a function that raises an exception is
  * returned.
