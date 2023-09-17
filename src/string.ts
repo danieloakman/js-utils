@@ -1,4 +1,5 @@
 import toIterator from 'iteragain/toIterator';
+import { Nullish } from './types';
 
 /**
  * @see https://stackoverflow.com/a/52171480 For source.
@@ -30,4 +31,43 @@ export function fastHash(str: string, seed = 0): number {
 export function matches(regex: RegExp, string: string): IterableIterator<RegExpExecArray> {
   if (!regex.flags.includes('g')) regex = new RegExp(regex.source, regex.flags + 'g');
   return toIterator(() => regex.exec(string), null);
+}
+
+/**
+ * A convenient type for using the most commonly used result of `RegExp.exec` or `String.match`
+ * (when not using the "g" flag). For example `'abc'.match(/a/)[0]` returns the first complete capture group string of
+ * the match. This type is just that string itself, as well as having the `start`, `end` and `input` properties.
+ */
+export type CompleteRegExpMatch = string & {
+  /** The start index of this match in `input`. */
+  start: number;
+  /** The end index of this match in `input`. */
+  end: number;
+  /** The input string that was searched. */
+  input: string;
+};
+
+/**
+ * @param value Result from `RegExp.exec` or `String.match`.
+ * @returns The first match from the result of `RegExp.exec` or `String.match`. I.e. result[0], result.index and
+ * result.input.
+ */
+export function toMatch(value: Nullish<RegExpExecArray | RegExpMatchArray>): Nullish<CompleteRegExpMatch> {
+  if (!value || typeof value.index !== 'number' || typeof value.input !== 'string') return null;
+  const str = value[0];
+  return Object.assign(str, { start: value.index, end: value.index + str.length, input: value.input });
+}
+
+/**
+ * Implementation of Array.splice but with strings. It's quicker than doing
+ * str.split('').map(func).join('') or similar as it just uses two slice methods.
+ * @param str The string to be spliced.
+ * @param index The index to start the splice.
+ * @param count Optional, number of characters in str to remove (default: 1).
+ * @param add Optional, the string to append at index.
+ */
+export function stringSplice(str: string, index: number, count = 1, add = '') {
+  if (index < 0 || count < 0) throw new Error('index and count parameters cannot be less than zero');
+
+  return str.slice(0, index) + add + str.slice(index + count);
 }
