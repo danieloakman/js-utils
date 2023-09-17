@@ -10,17 +10,14 @@ import { Fn } from './types';
 // }
 // export const main = main;
 
-export const RUNTIME: 'browser' | 'bun' | 'node' = Bun.env.RUNTIME ?? ('bun' as any);
-
-export const IS_IN_NODE_COMPATIBLE_RUNTIME = RUNTIME === 'node' || RUNTIME === 'bun';
-
 /**
  * If Bun.env.RUNTIME is node compatible, then `fn` is returned as is, otherwise a function that raises an exception is
  * returned.
  */
 export function nodeOnly<T extends Fn>(fn: T): T {
-  if (!IS_IN_NODE_COMPATIBLE_RUNTIME)
-    return ((..._: any[]) => raise('This function is only available in Node.')) as any;
+  if (!(Bun.env.RUNTIME === 'node' || Bun.env.RUNTIME === 'bun'))
+    return ((..._: any[]) =>
+      raise('This function is only available in Node compatible run times (e.g. Node, Bun).')) as any;
   return fn;
 }
 
@@ -38,12 +35,12 @@ export const importSync = (name: string) => require(name);
  * @param mainFn The main function to run.
  */
 export const main: (module: any, mainFn: () => Promise<void>) => Promise<void> =
-  RUNTIME === 'node'
+  Bun.env.RUNTIME === 'node'
     ? async (module, mainFn) => {
         // @ts-ignore
         if (require?.main === module) mainFn();
       }
-    : RUNTIME === 'bun'
+    : Bun.env.RUNTIME === 'bun'
     ? async (module, mainFn) => {
         // TODO: fix this for bun
         if (module === Bun.main) mainFn();
