@@ -52,6 +52,7 @@ if (Bun.main === import.meta.path) {
     // TODO: once bun supports cjs as a format, then put args.format here. For now babel is being used to transpile to cjs.
     format: 'esm',
     target: args.target,
+    root: './src',
     define: {
       'Bun.env.RUNTIME': `'${args.target}'`,
     },
