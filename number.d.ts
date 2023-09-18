@@ -15,3 +15,5 @@ export declare function toRadians(degrees: number): number;
  */
 export declare function toDegrees(radians: number): number;
 export declare function manhattanDistance(a: number[], b: number[]): number;
+/** Perform linear interpolation between `a` and `b` with `t`. */
+export declare function lerp(a: number, b: number, t: number): number;
