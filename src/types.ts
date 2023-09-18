@@ -30,3 +30,13 @@ export interface Stack<T> {
   pop: Array<T>['pop'];
   [Symbol.iterator]: Array<T>['values'];
 }
+
+/** For implmenting asynchronous maps/caches. */
+export interface DataCache<T> {
+  get<U = T>(key: string): Promise<Nullish<U>>;
+  delete(key: string): Promise<boolean>;
+  set(key: string, value: string | T): Promise<boolean>;
+  has(key: string): Promise<boolean>;
+  clear(): Promise<boolean>;
+  keys(): AsyncIterableIterator<string>;
+}
