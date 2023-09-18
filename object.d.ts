@@ -5,3 +5,4 @@ export type KeyItentifier<T> = string | ((item: T) => string);
  */
 export declare function groupBy<T>(arr: T[], key: KeyItentifier<T>): Record<string, T[]>;
 export declare function groupBy<T>(arr: T[], ...keys: KeyItentifier<T>[]): Record<string, T[]>[];
+export declare function safeJSONParse<T = unknown>(...args: Parameters<typeof JSON.parse>): T;
