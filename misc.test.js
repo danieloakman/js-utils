@@ -1,2 +1,0 @@
-// @bun
-import"./types.js";import"./string.js";import"./args.js";import"./index.js";import"./InMemoryCache.js";import{s as l} from"./functional.js";import{w as v} from"./assert.js";import{D as n} from"./misc.js";import"./number.js";import"./object.js";import"./chunk-cf5dc1543f4dddd4.js";import"./chunk-5cded60fc90fa3b9.js";var{describe:c,it:f}=globalThis.Bun.jest(import.meta.path);c("misc",()=>{f("sh",async()=>{v(l(await n('echo "hello world"',{log:!1})).includes("world")),v(/\d+\.\d+\.\d+/.test(l(await n("bun -v"))))})});
