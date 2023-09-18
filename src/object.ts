@@ -1,5 +1,3 @@
-import map from 'iteragain/map';
-import toArray from 'iteragain/toArray';
 import { safeCall } from './functional';
 
 export type KeyItentifier<T> = string | ((item: T) => string);
@@ -11,7 +9,7 @@ export type KeyItentifier<T> = string | ((item: T) => string);
 export function groupBy<T>(arr: T[], key: KeyItentifier<T>): Record<string, T[]>;
 export function groupBy<T>(arr: T[], ...keys: KeyItentifier<T>[]): Record<string, T[]>[];
 export function groupBy<T>(arr: T[], ...keys: KeyItentifier<T>[]) {
-  const results = toArray(map(keys, key => [key, {} as Record<string, T[]>] as const));
+  const results = keys.map(key => [key, {} as Record<string, T[]>] as const);
   for (const value of arr) {
     for (const [key, map] of results) {
       const k = typeof key === 'string' ? (value as any)?.[key] : key(value);
