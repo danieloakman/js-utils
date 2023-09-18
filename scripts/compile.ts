@@ -37,17 +37,20 @@ if (Bun.main === import.meta.path) {
   // Copy .env.example to .env if it doesn't exist:
   if (!(await Bun.file(join(import.meta.dir, '../.env')).exists())) await sh('cp .env.example .env');
 
-  const [srcFiles] = await Promise.all([readdirDeep(join(import.meta.dir, '../src')).then(v => v.files), clean()]);
+  const [srcFiles] = await Promise.all([
+    readdirDeep(join(import.meta.dir, '../src') /* { ignore: /\.test\.ts$/ } */).then(v => v.files),
+    clean(),
+  ]);
 
   // Build types only:
   // console.log('Building types...');
-  ok(await sh('tsc -p tsconfig.types.json'));
+  ok(await sh('bunx tsc -p tsconfig.types.json'));
 
   // console.log({ srcFiles });
 
   // Build
   // console.log('Building JS with Bun...');
-  const { outputs } = await Bun.build({
+  const buildResult = await Bun.build({
     minify: true,
     entrypoints: srcFiles,
     outdir: '.',
@@ -60,11 +63,15 @@ if (Bun.main === import.meta.path) {
       'Bun.env.RUNTIME': `'${args.target}'`,
     },
   });
-  // console.log(`Built ${outputs.length} files.`);
+
+  if (!buildResult.success) {
+    console.error(buildResult.logs);
+    process.exit(1);
+  }
 
   if (args.format === 'cjs') {
     // Transpile to cjs:
-    for (const output of outputs) {
+    for (const output of buildResult.outputs) {
       const transpiled = pipe(
         await output.text(),
         esmToCjs,
