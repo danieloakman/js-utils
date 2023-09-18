@@ -21,6 +21,7 @@ export function groupBy<T>(arr: T[], ...keys: KeyItentifier<T>[]) {
   return results.length < 2 ? results[0][1] : results.map(([_, map]) => map);
 }
 
-export function safeJSONParse<T = unknown>(...args: Parameters<typeof JSON.parse>): T {
+/** Safely parses a JSON string. If an error occurs, then null is returned. */
+export function safeJSONParse<T = unknown>(...args: Parameters<typeof JSON.parse>): T | null {
   return safeCall(JSON.parse, ...args);
 }
