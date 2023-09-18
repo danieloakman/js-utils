@@ -18,6 +18,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
+      - name: Copy .env.example to .env
+        run: cp .env.example .env
+
       # - uses: pnpm/action-setup@v2
       #   with:
       #     version: 8
@@ -33,9 +37,6 @@ jobs:
       # - name: Install Dependencies 🛠️
       #   run: |
       #     bun install
-
-      - name: Copy .env.example to .env
-        run: cp .env.example .env
 
       # Merge and compile Bun:
       - name: Merge main -> bun
