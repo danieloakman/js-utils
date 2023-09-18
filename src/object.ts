@@ -1,5 +1,6 @@
 import map from 'iteragain/map';
 import toArray from 'iteragain/toArray';
+import { safeCall } from './functional';
 
 export type KeyItentifier<T> = string | ((item: T) => string);
 
@@ -18,4 +19,8 @@ export function groupBy<T>(arr: T[], ...keys: KeyItentifier<T>[]) {
     }
   }
   return results.length < 2 ? results[0][1] : results.map(([_, map]) => map);
+}
+
+export function safeJSONParse<T = unknown>(...args: Parameters<typeof JSON.parse>): T {
+  return safeCall(JSON.parse, ...args);
 }
