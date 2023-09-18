@@ -14,7 +14,6 @@
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/no-var-requires": "off",
-    "no-console": "warn",
     "no-constant-condition": ["warn", { "checkLoops": false }],
     "no-undef": "error",
     "no-unused-vars": "off",
