@@ -140,6 +140,12 @@ export function ok<T>(value: T): Ok<T> {
   return value as Ok<T>;
 }
 
+export const okOr = <T, U>(value: T, defaultValue: U): Ok<T> | U => {
+  if (value instanceof Error) return defaultValue;
+  if (isNullish(value)) return defaultValue;
+  return value as Ok<T>;
+};
+
 // TODO: fill jsdoc
 export function raise(message: string): never;
 export function raise(error: Error): never;
