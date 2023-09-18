@@ -1,19 +1,8 @@
 {
   "name": "js-utils",
   "version": "0.1.0",
-  "description": "A collection of useful JavaScript utilities that I can't be stuffed copying across repos anymore.",
-  "main": "index.js",
-  "types": "index.d.ts",
-  "scripts": {
-    "test": "bun test",
-    "compile": "bun run scripts/compile.ts",
-    "clean": "bun run scripts/clean.ts",
-    "check": "bunx tsc -p tsconfig.types.json",
-    "lint": "bunx eslint --ignore-path .eslintignore ./src --ext .ts",
-    "format": "bunx prettier --write **.ts"
-  },
   "author": "Daniel Oakman",
-  "license": "MIT",
+  "main": "index.js",
   "devDependencies": {
     "@babel/core": "^7.22.19",
     "@babel/plugin-transform-modules-commonjs": "^7.22.15",
@@ -27,6 +16,7 @@
     "eslint": "^8.41.0",
     "eslint-config-prettier": "^8.8.0",
     "husky": "^8.0.3",
+    "iteragain-es": "^3.17.4",
     "lint-staged": "^14.0.1",
     "more-node-fs": "^2.0.2",
     "prettier": "^2.8.8",
@@ -35,12 +25,20 @@
     "typescript": "^5.2.2",
     "uglify-js": "^3.17.4"
   },
+  "description": "A collection of useful JavaScript utilities that I can't be stuffed copying across repos anymore.",
+  "license": "MIT",
   "lint-staged": {
     "*.ts": [
       "eslint --cache --fix"
     ]
   },
-  "dependencies": {
-    "iteragain": "^3.17.4"
-  }
+  "scripts": {
+    "test": "bun test",
+    "compile": "bun run scripts/compile.ts",
+    "clean": "bun run scripts/clean.ts",
+    "check": "bunx tsc --noEmit",
+    "lint": "bunx eslint --ignore-path .eslintignore ./src --ext .ts",
+    "format": "bunx prettier --write **.ts"
+  },
+  "types": "index.d.ts"
 }
