@@ -1,5 +1,5 @@
 #! bun
-import { join } from 'path';
+import { join, relative } from 'path';
 import { iife, ok, parseArgs, pipe, sh } from '../src';
 import { readdirDeep } from 'more-node-fs';
 import { minify } from 'uglify-js';
@@ -34,9 +34,6 @@ if (Bun.main === import.meta.path) {
     ],
   );
 
-  // Copy .env.example to .env if it doesn't exist:
-  if (!(await Bun.file(join(import.meta.dir, '../.env')).exists())) await sh('cp .env.example .env');
-
   const [srcFiles] = await Promise.all([
     readdirDeep(join(import.meta.dir, '../src'), { ignore: /\.test\.ts$/ }).then(v => v.files),
     clean(),
@@ -70,6 +67,11 @@ if (Bun.main === import.meta.path) {
   if (buildResult.logs.length) console.log(buildResult.logs);
 
   if (!buildResult.success) process.exit(1);
+  else
+    console.log(
+      'Compiled:',
+      buildResult.outputs.map(v => relative(process.cwd(), v.path)),
+    );
 
   if (args.format === 'cjs') {
     // Transpile to cjs:
