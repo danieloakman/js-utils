@@ -25,3 +25,8 @@ export function toDegrees(radians: number) {
 export function manhattanDistance(a: number[], b: number[]): number {
   return a.reduce((sum, v, i) => sum + Math.abs(v - b[i]), 0);
 }
+
+/** Perform linear interpolation between `a` and `b` with `t`. */
+export function lerp(a: number, b: number, t: number) {
+  return a + (b - a) * t;
+}
