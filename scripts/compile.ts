@@ -34,6 +34,9 @@ if (Bun.main === import.meta.path) {
     ],
   );
 
+  // Copy .env.example to .env if it doesn't exist:
+  if (!(await Bun.file(join(import.meta.dir, '../.env')).exists())) await sh('cp .env.example .env');
+
   const [srcFiles] = await Promise.all([readdirDeep(join(import.meta.dir, '../src')).then(v => v.files), clean()]);
 
   // Build types only:
