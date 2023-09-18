@@ -1,4 +1,3 @@
-import toIterator from 'iteragain/toIterator';
 import { Nullish } from './types';
 
 /**
@@ -30,7 +29,17 @@ export function fastHash(str: string, seed = 0): number {
  */
 export function matches(regex: RegExp, string: string): IterableIterator<RegExpExecArray> {
   if (!regex.flags.includes('g')) regex = new RegExp(regex.source, regex.flags + 'g');
-  return toIterator(() => regex.exec(string), null);
+
+  return {
+    [Symbol.iterator]() {
+      return this;
+    },
+    next: () => {
+      const result = regex.exec(string);
+      if (!result) return { done: true, value: undefined };
+      return { done: false, value: result };
+    },
+  };
 }
 
 /**

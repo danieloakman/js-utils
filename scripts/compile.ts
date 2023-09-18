@@ -1,5 +1,5 @@
 #! bun
-import { join } from 'path';
+import { join, relative } from 'path';
 import { iife, ok, parseArgs, pipe, sh } from '../src';
 import { readdirDeep } from 'more-node-fs';
 import { minify } from 'uglify-js';
@@ -34,40 +34,46 @@ if (Bun.main === import.meta.path) {
     ],
   );
 
-  // Copy .env.example to .env if it doesn't exist:
-  if (!(await Bun.file(join(import.meta.dir, '../.env')).exists())) await sh('cp .env.example .env');
-
   const [srcFiles] = await Promise.all([
-    readdirDeep(join(import.meta.dir, '../src'), { ignore: /\.test\.ts$/ }).then(v => v.files),
+    readdirDeep(join(import.meta.dir, '../src'), { ignore: /\.test\.ts$/ }).then(({ files }) => files),
     clean(),
   ]);
 
   // Build types only:
-  // console.log('Building types...');
-  ok(await sh('bunx tsc -p tsconfig.types.json'));
+  // ok(await sh('bunx tsc -p tsconfig.types-only.json'));
 
-  // console.log({ srcFiles });
+  // Build types and JS with typescript first.
+  // This is mainly to create the type declaration files, but also to fill in for any js files that bun doesn't include.
+  ok(await sh(`bunx tsc -p tsconfig.${args.format}.json`));
 
   // Build
-  // console.log('Building JS with Bun...');
   const buildResult = await Bun.build({
     minify: true,
-    entrypoints: srcFiles,
+    entrypoints: srcFiles as string[],
     outdir: '.',
     splitting: true,
+    external: ['arg-parse'],
     // TODO: once bun supports cjs as a format, then put args.format here. For now babel is being used to transpile to cjs.
     format: 'esm',
     target: args.target,
     root: './src',
     define: {
       'Bun.env.RUNTIME': `'${args.target}'`,
+      'parseArgs': '() => { throw new Error("Can\'t parse args in browser.") }',
     },
   });
 
-  if (!buildResult.success) {
-    console.error(buildResult.logs);
-    process.exit(1);
-  }
+  if (buildResult.logs.length) console.log(buildResult.logs);
+
+  if (!buildResult.success) process.exit(1);
+  else
+    console.log(
+      'Compiled:',
+      await readdirDeep(process.cwd(), { ignore: /node_modules/ }).then(({ files }) =>
+        files.filter(v => v.endsWith('.js')).map(v => relative(process.cwd(), v)),
+      ),
+      // buildResult.outputs.map(v => relative(process.cwd(), v.path)),
+    );
 
   if (args.format === 'cjs') {
     // Transpile to cjs:
