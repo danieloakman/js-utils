@@ -34,6 +34,9 @@ jobs:
       #   run: |
       #     bun install
 
+      - name: Copy .env.example to .env
+        run: cp .env.example .env
+
       # Merge and compile Bun:
       - name: Merge main -> bun
         uses: devmasx/merge-branch@master
