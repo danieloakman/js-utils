@@ -40,7 +40,6 @@
     ]
   },
   "dependencies": {
-    "argparse": "^2.0.1",
     "iteragain": "^3.17.4"
   }
 }

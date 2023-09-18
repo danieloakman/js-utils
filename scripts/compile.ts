@@ -55,6 +55,7 @@ if (Bun.main === import.meta.path) {
     entrypoints: srcFiles,
     outdir: '.',
     splitting: true,
+    external: ['arg-parse'],
     // TODO: once bun supports cjs as a format, then put args.format here. For now babel is being used to transpile to cjs.
     format: 'esm',
     target: args.target,
@@ -64,10 +65,11 @@ if (Bun.main === import.meta.path) {
     },
   });
 
-  if (!buildResult.success) {
-    console.error(buildResult.logs);
-    process.exit(1);
-  }
+  console.log(buildResult);
+
+  if (buildResult.logs.length) console.log(buildResult.logs);
+
+  if (!buildResult.success) process.exit(1);
 
   if (args.format === 'cjs') {
     // Transpile to cjs:
