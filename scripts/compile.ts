@@ -65,7 +65,7 @@ if (Bun.main === import.meta.path) {
     },
   });
 
-  console.log(buildResult);
+  // console.log(buildResult);
 
   if (buildResult.logs.length) console.log(buildResult.logs);
 
