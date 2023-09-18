@@ -1,6 +1,7 @@
 export * from './args';
 export * from './assert';
 export * from './functional';
+export * from './InMemoryCache';
 export * from './misc';
 export * from './number';
 export * from './object';
