@@ -1,3 +1,2 @@
-// @bun
-import{s as j} from"./functional.js";import{G as k,H as q} from"./misc.js";import"./chunk-5cded60fc90fa3b9.js";import{throws as G} from"assert";function B(b,h){if(!b)if(typeof h==="string")throw new Error(h);else throw h??new Error("Assertion failed")}var C=(b)=>b,D=k((b,h,r)=>j((w=q("assert"))=>w.deepStrictEqual(b,h,r)));export{G as throws,C as expectType,D as equal,B as assert};
-export{B as C,C as D,D as E,G as F};
+import{o as k,p as q} from"./misc.js";import{C as j} from"./functional.js";import{M as A} from"./chunk-9159ce6648f01d3e.js";import{N as z} from"./chunk-3163360939910cde.js";var B=z(A(),1);function E(b,h){if(!b)if(typeof h==="string")throw new Error(h);else throw h??new Error("Assertion failed")}var F=(b)=>b,G=k((b,h,r)=>j((w=q("assert"))=>w.deepStrictEqual(b,h,r)));var export_throws=B.throws;export{export_throws as throws,F as expectType,G as equal,E as assert};
+export{E as a,F as b,G as c,B as d};
