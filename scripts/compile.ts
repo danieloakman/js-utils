@@ -38,7 +38,7 @@ if (Bun.main === import.meta.path) {
   if (!(await Bun.file(join(import.meta.dir, '../.env')).exists())) await sh('cp .env.example .env');
 
   const [srcFiles] = await Promise.all([
-    readdirDeep(join(import.meta.dir, '../src') /* { ignore: /\.test\.ts$/ } */).then(v => v.files),
+    readdirDeep(join(import.meta.dir, '../src'), { ignore: /\.test\.ts$/ }).then(v => v.files),
     clean(),
   ]);
 
