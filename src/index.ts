@@ -1,5 +1,5 @@
 export * from './args';
-export * from './assert';
+export * from './assertions';
 export * from './functional';
 export * from './InMemoryCache';
 export * from './misc';
