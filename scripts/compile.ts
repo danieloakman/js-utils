@@ -5,7 +5,7 @@ import { readdirDeep } from 'more-node-fs';
 import { minify } from 'uglify-js';
 import { clean } from './clean';
 
-const esmToCjs = iife(
+export const esmToCjs = iife(
   ({ transformSync } = require('@babel/core')) =>
     (code: string): string =>
       ok(
@@ -15,25 +15,12 @@ const esmToCjs = iife(
       )?.code,
 );
 
-if (Bun.main === import.meta.path) {
-  const args: { target: 'node' | 'browser' | 'bun'; format: 'esm' | 'cjs' } = parseArgs(
-    { description: 'Bundle using Bun and create declaration files with `tsc`.' },
-    [
-      'target',
-      {
-        choices: ['node', 'browser', 'bun'],
-      },
-    ],
-    [
-      '--format',
-      '-f',
-      {
-        choices: ['cjs', 'esm'],
-        default: 'esm',
-      },
-    ],
-  );
+export interface CompileArgs {
+  target: 'node' | 'browser' | 'bun';
+  format: 'esm' | 'cjs';
+}
 
+export async function compile(args: CompileArgs): Promise<Error | boolean> {
   const [srcFiles] = await Promise.all([
     readdirDeep(join(import.meta.dir, '../src'), { ignore: /\.test\.ts$/ }).then(({ files }) => files),
     clean(),
@@ -65,15 +52,14 @@ if (Bun.main === import.meta.path) {
 
   if (buildResult.logs.length) console.log(buildResult.logs);
 
-  if (!buildResult.success) process.exit(1);
-  else
-    console.log(
-      'Compiled:',
-      await readdirDeep(process.cwd(), { ignore: /node_modules/ }).then(({ files }) =>
-        files.filter(v => v.endsWith('.js')).map(v => relative(process.cwd(), v)),
-      ),
-      // buildResult.outputs.map(v => relative(process.cwd(), v.path)),
-    );
+  if (!buildResult.success) return new Error('Build failed.');
+  console.log(
+    'Compiled:',
+    await readdirDeep(process.cwd(), { ignore: /node_modules/ }).then(({ files }) =>
+      files.filter(v => v.endsWith('.js')).map(v => relative(process.cwd(), v)),
+    ),
+    // buildResult.outputs.map(v => relative(process.cwd(), v.path)),
+  );
 
   if (args.format === 'cjs') {
     // Transpile to cjs:
@@ -89,4 +75,27 @@ if (Bun.main === import.meta.path) {
       await Bun.write(output.path, transpiled);
     }
   }
+
+  return true;
+}
+
+if (Bun.main === import.meta.path) {
+  const args: { target: 'node' | 'browser' | 'bun'; format: 'esm' | 'cjs' } = parseArgs(
+    { description: 'Bundle using Bun and create declaration files with `tsc`.' },
+    [
+      'target',
+      {
+        choices: ['node', 'browser', 'bun'],
+      },
+    ],
+    [
+      '--format',
+      '-f',
+      {
+        choices: ['cjs', 'esm'],
+        default: 'esm',
+      },
+    ],
+  );
+  ok(await compile(args));
 }
