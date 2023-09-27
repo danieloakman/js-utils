@@ -36,6 +36,7 @@
     "test": "bun test",
     "compile": "bun run scripts/compile.ts",
     "clean": "bun run scripts/clean.ts",
+    "merge": "bun run scripts/merge.ts",
     "check": "bunx tsc --noEmit",
     "lint": "bunx eslint --ignore-path .eslintignore ./src --ext .ts",
     "format": "bunx prettier --write **.ts"

@@ -113,7 +113,7 @@ export const question = async function (
   return new Promise<string>(resolve => {
     // if (isInDebug()) resolve(defaultAnswer || '');
     // else {
-    const r1 = require('readline').createInterface({
+    const r1 = importSync('readline').createInterface({
       input: process.stdin,
       output: process.stdout,
     });
