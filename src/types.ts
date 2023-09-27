@@ -31,7 +31,7 @@ export interface Stack<T> {
   [Symbol.iterator]: Array<T>['values'];
 }
 
-/** For implmenting asynchronous maps/caches. */
+/** For implementing asynchronous maps/caches. */
 export interface DataCache<T> {
   get<U = T>(key: string): Promise<Nullish<U>>;
   delete(key: string): Promise<boolean>;
