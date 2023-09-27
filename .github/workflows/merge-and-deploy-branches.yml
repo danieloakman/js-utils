@@ -1,10 +1,11 @@
 name: Merge main and compile branches
 
 on:
-  push:
-    branches: [master, main]
-    paths:
-      - src/**/*
+  # Disabled on push as this gh action doesn't work fully. Just going to make a script to push to relavent branches instead.
+  # push:
+  #   branches: [master, main]
+  #   paths:
+  #     - src/**/*
   workflow_dispatch:
 
 jobs:
