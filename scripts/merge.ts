@@ -12,6 +12,7 @@ async function main() {
   ];
   try {
     for (const args of argsList) {
+      console.debug('🚀 --- Compiling for', args.target, args.format);
       if (!ok(await exec('git status')).includes('nothing to commit'))
         throw new Error('Did not have a clean working directory.');
       ok(await sh(`git checkout ${args.target} && git merge origin/main && git push `));
