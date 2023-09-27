@@ -17,12 +17,14 @@ export declare const importSync: (name: string) => any;
  * @param mainFn The main function to run.
  */
 export declare const main: (module: any, mainFn: () => Promise<void>) => Promise<void>;
-export type ShellCommandOptions = Omit<Parameters<typeof import('child_process')['spawn']>[2], 'shell' | 'stdio'> & {
-    /**
-     * @description If true then will pipe stdout and stderr of the spawned shell to console.
-     * @default true
-     */
-    log?: boolean;
-};
-/** Runs a shell command and returns the output. If the command fails, then an error is returned. */
-export declare const sh: (command: string, options?: ShellCommandOptions) => Promise<Error | string>;
+/**
+ * Runs a shell command with stdio set to inherit. This means all stdio is shared with the current process.
+ * If the command fails, then an error is returned, otherwise true is returned.
+ */
+export declare const sh: (command: string) => Promise<Error | boolean>;
+/**
+ * Executes a shell command and returns the stdout and stderr as a string. If the command fails, then an error is
+ * returned.
+ */
+export declare const exec: (command: string) => Promise<Error | string>;
+export declare const question: (questionStr: string, defaultAnswer?: string | null | undefined) => Promise<string>;
