@@ -1,4 +1,4 @@
-import { iife, raise } from './functional';
+import { attempt, iife, raise } from './functional';
 import { Fn } from './types';
 
 // let main: (module: any, mainFunction: () => Promise<void>) => Promise<void>;
@@ -48,37 +48,79 @@ export const main: (module: any, mainFn: () => Promise<void>) => Promise<void> =
     : // TODO: browser may be able to work with bun's way of doing things, so perhaps this can be removed.
       (..._: any[]) => raise('Cannot have a main function in this runtime environment.');
 
-export type ShellCommandOptions = Omit<Parameters<typeof import('child_process')['spawn']>[2], 'shell' | 'stdio'> & {
-  /**
-   * @description If true then will pipe stdout and stderr of the spawned shell to console.
-   * @default true
-   */
-  log?: boolean;
-};
+// export type ShellCommandOptions = Omit<Parameters<typeof import('child_process')['spawn']>[2], 'shell' | 'stdio'> & {
+//   /**
+//    * @description If true then will pipe stdout and stderr of the spawned shell to console.
+//    * @default true
+//    */
+//   log?: boolean;
+// };
 
-/** Runs a shell command and returns the output. If the command fails, then an error is returned. */
-export const sh = nodeOnly(
-  (command: string, options: ShellCommandOptions = {}): Promise<Error | string> =>
-    iife(({ spawn }: typeof import('child_process') = importSync('child_process')) => {
-      options.log = options.log ?? true;
+/**
+ * Runs a shell command with stdio set to inherit. This means all stdio is shared with the current process.
+ * If the command fails, then an error is returned, otherwise true is returned.
+ */
+export const sh: (command: string) => Promise<Error | boolean> =
+  Bun.env.RUNTIME === 'browser'
+    ? () => raise('Cannot run shell commands in browser.')
+    : (command: string) =>
+        iife(({ spawn }: typeof import('child_process') = importSync('child_process')) => {
+          // options.log = options.log ?? true;
 
-      return new Promise(resolve => {
-        const s = spawn(command, Object.assign({ shell: true }, options));
-        let data = '';
-        const handleData = (chunk: Buffer) => {
-          const str = chunk.toString();
-          data += str + '\n';
-          // eslint-disable-next-line no-console
-          if (options.log) console.log(str);
-        };
+          return new Promise(resolve => {
+            const s = attempt(() => spawn(command, { shell: true, stdio: 'inherit' }));
+            if (s instanceof Error) return resolve(s);
 
-        s.on('close', code => {
-          if (code) resolve(new Error(`Command "${command}" exited with code ${code}`));
-          else resolve(data);
+            s.on('close', code => {
+              if (code) resolve(new Error(`Command "${command}" exited with code ${code}`));
+              else resolve(true);
+            });
+            s.on('error', err => resolve(err));
+          });
         });
-        s.on('error', resolve);
-        s.stdout?.on('data', handleData);
-        s.stderr?.on('data', handleData);
-      });
-    }),
-);
+
+/**
+ * Executes a shell command and returns the stdout and stderr as a string. If the command fails, then an error is
+ * returned.
+ */
+export const exec: (command: string) => Promise<Error | string> =
+  Bun.env.RUNTIME === 'browser'
+    ? () => raise('Cannot run shell commands in browser.')
+    : (command: string) =>
+        iife(({ spawn }: typeof import('child_process') = importSync('child_process')) => {
+          return new Promise(resolve => {
+            const s = attempt(() => spawn(command, { shell: true }));
+            if (s instanceof Error) return resolve(s);
+            let data = '';
+            const handleData = (chunk: Buffer) => {
+              const str = chunk.toString();
+              data += str + '\n';
+            };
+            s.stdout?.on('data', handleData);
+            s.stderr?.on('data', handleData);
+            s.on('close', code => {
+              if (code) resolve(new Error(`Command "${command}" exited with code ${code}`));
+              else resolve(data);
+            });
+            s.on('error', err => resolve(err));
+          });
+        });
+
+export const question = async function (
+  questionStr: string,
+  defaultAnswer: string | null | undefined = undefined,
+): Promise<string> {
+  return new Promise<string>(resolve => {
+    // if (isInDebug()) resolve(defaultAnswer || '');
+    // else {
+    const r1 = require('readline').createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+    r1.question(questionStr, (answer: string) => {
+      r1.close();
+      resolve(answer || defaultAnswer || '');
+    });
+    // }
+  });
+};
