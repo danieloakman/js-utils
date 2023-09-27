@@ -27,4 +27,3 @@ export declare const sh: (command: string) => Promise<Error | boolean>;
  * returned.
  */
 export declare const exec: (command: string) => Promise<Error | string>;
-export declare const question: (questionStr: string, defaultAnswer?: string | null | undefined) => Promise<string>;
