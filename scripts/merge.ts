@@ -14,12 +14,9 @@ async function main() {
     for (const args of argsList) {
       if (!ok(await exec('git status')).includes('nothing to commit'))
         throw new Error('Did not have a clean working directory.');
-      await Promise.all([compile(args).then(ok), Bun.sleep(1000)]);
-      ok(
-        await sh(
-          `git checkout ${args.target} && git add . && git commit -m "chore: compiled for ${args.target} ${args.format}" && git push`,
-        ),
-      );
+      ok(await sh(`git checkout ${args.target} && git merge origin/main && git push `));
+      ok(await compile(args));
+      ok(await sh(`git add . && git commit -m "chore: compiled for ${args.target} ${args.format}" && git push`));
     }
   } finally {
     await sh('git checkout main');
