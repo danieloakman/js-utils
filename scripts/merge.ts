@@ -1,4 +1,5 @@
 import { exec, ok, sh } from '../src';
+import { clean } from './clean';
 import { CompileArgs, compile } from './compile';
 
 async function main() {
@@ -9,15 +10,20 @@ async function main() {
     { target: 'browser', format: 'esm' },
     { target: 'bun', format: 'esm' },
   ];
-  for (const args of argsList) {
-    if (!ok(await exec('git status')).includes('nothing to commit'))
-      throw new Error('Did not have a clean working directory.');
-    ok(await compile(args));
-    ok(
-      await sh(
-        `git checkout ${args.target} && git add . && git commit -m "chore: compiled for ${args.target} ${args.format}" && git push`,
-      ),
-    );
+  try {
+    for (const args of argsList) {
+      if (!ok(await exec('git status')).includes('nothing to commit'))
+        throw new Error('Did not have a clean working directory.');
+      ok(await compile(args));
+      ok(
+        await sh(
+          `git checkout ${args.target} && git add . && git commit -m "chore: compiled for ${args.target} ${args.format}" && git push`,
+        ),
+      );
+    }
+  } finally {
+    await sh('git checkout main');
+    await clean();
   }
 }
 
