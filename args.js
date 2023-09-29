@@ -1,1 +1,1 @@
-import"./number.js";import"./types.js";import"./assertions.js";import"./InMemoryCache.js";import"./object.js";import"./misc.js";import"./string.js";import{c as d} from"./functional.js";var E=()=>d("Can't parse args in browser.");export{E as parseArgs};
+import"./number.js";import"./types.js";import"./assertions.js";import"./InMemoryCache.js";import"./object.js";import"./misc.js";import"./string.js";import{c as r} from"./functional.js";var B=()=>r("Can't parse args in browser.");export{B as parseArgs};
