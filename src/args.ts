@@ -4,8 +4,7 @@ import { raise } from '.';
 export type AddArgumentParams =
   | [arg: string, options?: ArgumentOptions]
   | [arg1: string, arg2: string, options?: ArgumentOptions]
-  | [arg1: string]
-  | string;
+  | [arg1: string];
 
 export const parseArgs: <T = unknown>(
   constructorParams: ConstructorParameters<typeof ArgumentParser>[0],
