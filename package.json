@@ -10,8 +10,7 @@
     "merge": "bun run scripts/merge.ts",
     "check": "bunx tsc --noEmit",
     "lint": "bunx eslint --ignore-path .eslintignore ./src --ext .ts",
-    "format": "bunx prettier --write **.ts",
-    "preinstall": "bunx only-allow bun"
+    "format": "bunx prettier --write **.ts"
   },
   "devDependencies": {
     "@babel/core": "^7.22.19",
