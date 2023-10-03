@@ -11,7 +11,7 @@
     "check": "bunx tsc --noEmit",
     "lint": "bunx eslint --ignore-path .eslintignore ./src --ext .ts",
     "format": "bunx prettier --write **.ts",
-    "preinstall": "bun run scripts/only-allow-bun.ts"
+    "preinstall": "bunx only-allow bun"
   },
   "devDependencies": {
     "@babel/core": "^7.22.19",
