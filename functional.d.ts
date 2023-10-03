@@ -1,4 +1,4 @@
-import { Fn, MonoFn, Ok } from './types';
+import { Comparator, Fn, MonoFn, Ok } from './types';
 export declare function pipe<A, B>(a: A, aFn: MonoFn<A, B>): B;
 export declare function pipe<A, B, C>(a: A, aFn: MonoFn<A, B>, bFn: MonoFn<B, C>): C;
 export declare function pipe<A, B, C, D>(a: A, aFn: MonoFn<A, B>, bFn: MonoFn<B, C>, cFn: MonoFn<C, D>): D;
@@ -30,4 +30,4 @@ export declare function ok<T>(value: T): Ok<T>;
 export declare const okOr: <T, U>(value: T, defaultValue: U) => U | Ok<T>;
 export declare function raise(message: string): never;
 export declare function raise(error: Error): never;
-export declare function multiComparator<T>(...comparators: ((a: T, b: T) => number)[]): (a: T, b: T) => number;
+export declare function multiComparator<T>(...comparators: Comparator<T>[]): Comparator<T>;
