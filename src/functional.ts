@@ -1,4 +1,4 @@
-import { Fn, MonoFn, Ok } from './types';
+import { Comparator, Fn, MonoFn, Ok } from './types';
 
 export function pipe<A, B>(a: A, aFn: MonoFn<A, B>): B;
 export function pipe<A, B, C>(a: A, aFn: MonoFn<A, B>, bFn: MonoFn<B, C>): C;
@@ -155,7 +155,7 @@ export function raise(exception: string | Error): never {
 }
 
 // TODO: fill jsdoc
-export function multiComparator<T>(...comparators: ((a: T, b: T) => number)[]): (a: T, b: T) => number {
+export function multiComparator<T>(...comparators: Comparator<T>[]): Comparator<T> {
   return (a: T, b: T) => {
     for (const comparator of comparators) {
       const result = comparator(a, b);
