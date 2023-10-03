@@ -1,2 +1,1 @@
-function j(t){return t*f}function k(t){return t*h}function l(t,c){return t.reduce((o,p,r)=>o+Math.abs(p-c[r]),0)}function q(t,c,o){return t+(c-t)*o}var f=Math.PI/180,h=180/Math.PI;export{j as toRadians,k as toDegrees,l as manhattanDistance,q as lerp,f as RADIANS_MULT,h as DEGREES_MULT};
-export{f as n,h as o,j as p,k as q,l as r,q as s};
+function k(c){return c*h}function l(c){return c*j}function q(c,o){return c.reduce((p,t,f)=>p+Math.abs(t-o[f]),0)}function w(c,o,p){return c+(o-c)*p}function y(c,o){return Math.floor(Math.random()*(o-c+1))+c}function z(c,o){return Math.random()*(o-c)+c}var h=Math.PI/180,j=180/Math.PI;export{k as toRadians,l as toDegrees,y as randInteger,z as randFloat,q as manhattanDistance,w as lerp,h as RADIANS_MULT,j as DEGREES_MULT};
