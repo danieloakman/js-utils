@@ -3,6 +3,16 @@
   "version": "0.1.0",
   "author": "Daniel Oakman",
   "main": "index.js",
+  "scripts": {
+    "test": "bun test",
+    "compile": "bun run scripts/compile.ts",
+    "clean": "bun run scripts/clean.ts",
+    "merge": "bun run scripts/merge.ts",
+    "check": "bunx tsc --noEmit",
+    "lint": "bunx eslint --ignore-path .eslintignore ./src --ext .ts",
+    "format": "bunx prettier --write **.ts",
+    "preinstall": "bun run scripts/only-allow-bun.ts"
+  },
   "devDependencies": {
     "@babel/core": "^7.22.19",
     "@babel/plugin-transform-modules-commonjs": "^7.22.15",
@@ -31,15 +41,6 @@
     "*.ts": [
       "eslint --cache --fix"
     ]
-  },
-  "scripts": {
-    "test": "bun test",
-    "compile": "bun run scripts/compile.ts",
-    "clean": "bun run scripts/clean.ts",
-    "merge": "bun run scripts/merge.ts",
-    "check": "bunx tsc --noEmit",
-    "lint": "bunx eslint --ignore-path .eslintignore ./src --ext .ts",
-    "format": "bunx prettier --write **.ts"
   },
   "types": "index.d.ts"
 }
