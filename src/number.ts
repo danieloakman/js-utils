@@ -30,3 +30,11 @@ export function manhattanDistance(a: number[], b: number[]): number {
 export function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t;
 }
+
+export function randInteger(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+export function randFloat(min: number, max: number) {
+  return Math.random() * (max - min) + min;
+}
