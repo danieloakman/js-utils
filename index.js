@@ -16,6 +16,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./args"), exports);
 __exportStar(require("./assertions"), exports);
+__exportStar(require("./BinarySearch"), exports);
 __exportStar(require("./functional"), exports);
 __exportStar(require("./InMemoryCache"), exports);
 __exportStar(require("./misc"), exports);
