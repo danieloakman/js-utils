@@ -1,5 +1,6 @@
 export * from './args';
 export * from './assertions';
+export * from './BinarySearch';
 export * from './functional';
 export * from './InMemoryCache';
 export * from './misc';
