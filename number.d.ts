@@ -17,3 +17,5 @@ export declare function toDegrees(radians: number): number;
 export declare function manhattanDistance(a: number[], b: number[]): number;
 /** Perform linear interpolation between `a` and `b` with `t`. */
 export declare function lerp(a: number, b: number, t: number): number;
+export declare function randInteger(min: number, max: number): number;
+export declare function randFloat(min: number, max: number): number;
