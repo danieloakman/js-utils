@@ -1,7 +1,7 @@
 import { Comparator } from './types';
 
 export class BinarySearch<T> {
-  private array: T[];
+  protected array: T[];
 
   /**
    * Binary search through an array of numbers, or with a custom comparator and any type.
@@ -25,40 +25,27 @@ export class BinarySearch<T> {
 
   /**
    * @param element The element to search for.
-   * @param options Optional parameters:
-   *  - closest: If true and when the element isn't found, the most similar element's
-   * index will be returned instead of -1 (default: false)
    * @returns The index of the element in the input array. If unfound, will return -1.
    */
-  indexOf(element: T, options: { closest?: boolean } = {}): number {
-    const { closest } = options;
+  indexOf(element: T): number {
+    const { found, index } = this.search(element);
+    return found ? index : -1;
+  }
 
-    // Binary search through this.array to find element's index:
-    let left = 0;
-    let right = this.array.length - 1;
-    let index: number;
-    do {
-      index = Math.floor((left + right) / 2);
-      const diff = this.comparator(element, this.array[index]);
-      if (diff > 0) {
-        left = index + 1;
-      } else if (diff < 0) {
-        right = index - 1;
-      } else {
-        // Found element:
-        return index;
-      }
-    } while (left <= right);
-
-    // Could not find element:
-    if (!closest) return -1;
+  /**
+   * Similar to `indexOf`, except when the exact element isn't found, it will find the closest element nearby. This will
+   * never return -1;
+   */
+  closestIndexOf(element: T): number {
+    const { found, index } = this.search(element);
+    if (found) return index;
 
     // Find and return closest index from around the current index:
-    let closestIndex = -1;
+    let closestIndex = 0;
     let closestDiff: number | null = null;
     for (let i = index - 1; i <= index + 1; i++) {
       if (i < 0 || i >= this.array.length) continue;
-      const diff = this.comparator(element, this.array[i]);
+      const diff = Math.abs(this.comparator(element, this.array[i]));
       if (!closestDiff || diff < closestDiff) {
         closestDiff = diff;
         closestIndex = i;
@@ -75,7 +62,29 @@ export class BinarySearch<T> {
     return this.array[index];
   }
 
-  private comparator: (a: T, b: T) => number = (a, b) => (a as number) - (b as number);
+  protected comparator: (a: T, b: T) => number = (a, b) => (a as number) - (b as number);
+
+  /** Applies the binary search algorithm and returns the index  */
+  private search(element: T) {
+    let left = 0;
+    let right = this.array.length - 1;
+    let index: number;
+    do {
+      index = Math.floor((left + right) / 2);
+      const diff = this.comparator(element, this.array[index]);
+      if (diff > 0) {
+        left = index + 1;
+      } else if (diff < 0) {
+        right = index - 1;
+      } else {
+        // Found element:
+        return { found: true, index };
+      }
+    } while (left <= right);
+
+    // Didn't find exact element, so just return what it landed on at the end.
+    return { found: false, index };
+  }
 }
 
 export default BinarySearch;
