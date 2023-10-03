@@ -1,23 +1,4 @@
-// function determineOrder<T>(array: T[]) {
-//   for (let i = 1; i < array.length; i++) {
-//     if (array[i - 1] < array[i]) return 'asc';
-//     else if (array[i - 1] > array[i]) return 'desc';
-//   }
-
-//   throw new Error(
-//     `Could not determine order of array input into BinarySearchService: ${JSON.stringify(array, null, 2)}`,
-//   );
-// }
-
-// function getDifference<T>(a: T, b: T) {
-//   if (typeof a === 'string' && typeof b === 'string') return Levenshtein.dist(a, b).steps;
-//   else if (typeof a === 'number' && typeof b === 'number') return Math.abs(a - b);
-// }
-
-export interface Comparator<T> {
-  (a: T, b: T): number;
-  // (a: string, b: string): number;
-}
+import { Comparator } from './types';
 
 export class BinarySearch<T> {
   private array: T[];
