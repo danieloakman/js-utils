@@ -40,3 +40,7 @@ export interface DataCache<T> {
   clear(): Promise<boolean>;
   keys(): AsyncIterableIterator<string>;
 }
+
+export interface Comparator<T> {
+  (a: T, b: T): number;
+}
