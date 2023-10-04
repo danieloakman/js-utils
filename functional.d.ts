@@ -10,6 +10,7 @@ export declare function pipe<A, B, C, D, E, F, G, H, I>(a: A, aFn: MonoFn<A, B>,
 export declare function pipe<A, B, C, D, E, F, G, H, I, J>(a: A, aFn: MonoFn<A, B>, bFn: MonoFn<B, C>, cFn: MonoFn<C, D>, dFn: MonoFn<D, E>, eFn: MonoFn<E, F>, fFn: MonoFn<F, G>, gFn: MonoFn<G, H>, hFn: MonoFn<H, I>, iFn: MonoFn<I, J>): J;
 export declare function limitConcurrentCalls<T extends (...args: any[]) => Promise<any>>(func: T, limit: number): T;
 export declare function isObjectLike(value: unknown): value is Record<PropertyKey, unknown>;
+export declare function attempt<T extends Fn<any[], Promise<any>>>(fn: T, ...args: Parameters<T>): Promise<Awaited<ReturnType<T>> | Error>;
 export declare function attempt<T extends Fn>(fn: T, ...args: Parameters<T>): ReturnType<T> | Error;
 export declare function safeCall<T extends Fn>(fn: T, ...args: Parameters<T>): ReturnType<T> | null;
 export declare function sleep(ms: number): Promise<number>;
