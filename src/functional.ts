@@ -83,7 +83,12 @@ export function isObjectLike(value: unknown): value is Record<PropertyKey, unkno
   return typeof value === 'object' && value !== null;
 }
 
-export function attempt<T extends Fn>(fn: T, ...args: Parameters<T>): ReturnType<T> | Error {
+export function attempt<T extends Fn<any[], Promise<any>>>(
+  fn: T,
+  ...args: Parameters<T>
+): Promise<Awaited<ReturnType<T>> | Error>;
+export function attempt<T extends Fn>(fn: T, ...args: Parameters<T>): ReturnType<T> | Error;
+export function attempt<T extends Fn>(fn: T, ...args: Parameters<T>): any {
   try {
     const result = fn(...args);
     return isObjectLike(result) && typeof result.catch === 'function' ? result.catch((e: Error) => e) : result;
