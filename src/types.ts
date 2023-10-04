@@ -44,3 +44,6 @@ export interface DataCache<T> {
 export interface Comparator<T> {
   (a: T, b: T): number;
 }
+
+/** Unwraps a Promise<T> **once**, becoming just T. */
+export type AwaitedOnce<T> = T extends Promise<infer U> ? U : T;
