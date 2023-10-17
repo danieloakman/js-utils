@@ -169,3 +169,14 @@ export function multiComparator<T>(...comparators: Comparator<T>[]): Comparator<
     return 0;
   };
 }
+
+/** Wraps `fn` so that all calls to `fn` will return the same **FIRST** result. */
+export const once = <T extends Fn>(fn: T): T => {
+  let called = false;
+  let result: ReturnType<T>;
+  return ((...args: any[]) => {
+    if (called) return result;
+    called = true;
+    return (result = fn(...args));
+  }) as T;
+};
