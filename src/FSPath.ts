@@ -1,15 +1,48 @@
-import { sep } from 'path';
+import { existsSync, statSync } from 'fs';
+import { sep, join } from 'path';
+import { once, safeCall } from './functional';
 
-// TODO:
 export class FSPath {
-  constructor(public readonly path: string[]) { }
+  readonly stats = once(() => safeCall(() => statSync(this.full())));
+  readonly full = once(() => join(...this.path));
+  readonly exists = once(() => existsSync(this.full()));
 
-  get full() {
-    return this.path.join(sep);
+  constructor(private readonly path: string[]) {}
+
+  [Symbol.iterator]() {
+    return this.path[Symbol.iterator]();
+  }
+
+  toString() {
+    return this.full();
+  }
+
+  pop(): FSPath {
+    return new FSPath(this.path.slice(0, -1));
+  }
+
+  push(...paths: string[]): FSPath {
+    return new FSPath([...this.path, ...paths]);
+  }
+
+  shift(): FSPath {
+    return new FSPath(this.path.slice(1));
+  }
+
+  unshift(): FSPath {
+    return new FSPath(this.path.slice(0, 1));
+  }
+
+  slice(start: number, end?: number): FSPath {
+    return new FSPath(this.path.slice(start, end));
+  }
+
+  splice(start: number, deleteCount?: number, ...items: string[]): FSPath {
+    return new FSPath(this.path.splice(start, deleteCount as number, ...items));
   }
 }
 
-export function fspath(path: string | string[]): FSPath {
-  if (typeof path === 'string') return new FSPath(path.split(sep));
-  return new FSPath(path);
+export function fspath(...args: string[]): FSPath {
+  if (args.length === 1) return new FSPath(args[0].split(sep).filter(Boolean));
+  return new FSPath(args);
 }
