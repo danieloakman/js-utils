@@ -47,3 +47,17 @@ export interface Comparator<T> {
 
 /** Unwraps a Promise<T> **once**, becoming just T. */
 export type AwaitedOnce<T> = T extends Promise<infer U> ? U : T;
+
+export type Split<S extends string, Sep extends string> = string extends S
+  ? string[]
+  : S extends ''
+  ? []
+  : S extends `${infer T}${Sep}${infer U}`
+  ? [T, ...Split<U, Sep>]
+  : [S];
+
+export type ObjectWithValueAtPath<Path extends string[], Value> = Path extends [infer First, ...infer Rest]
+  ? First extends PropertyKey
+    ? Record<First, ObjectWithValueAtPath<Rest extends string[] ? Rest : never, Value>>
+    : never
+  : Value;
