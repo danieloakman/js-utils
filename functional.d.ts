@@ -22,6 +22,7 @@ export declare const noop: () => void;
 /** Perform a side effect but still return `v` unchanged. */
 export declare const effect: <T>(fn: (v: T) => any) => (v: T) => T;
 export declare function isNullish(value: unknown): value is null | undefined;
+export declare function isOk<T>(value: T): value is Ok<T>;
 /**
  * @description Checks if `value` is not nullish or an error and returns it. This is analogous to the `unwrap` method in
  * Rust or any other Result implementation. Its use is for when you don't need or care to handle a non-ok value.
