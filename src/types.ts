@@ -2,6 +2,10 @@ export interface Fn<Args extends any[] = any[], Return = any> {
   (...args: Args): Return;
 }
 
+export interface AsyncFn<Args extends any[] = any[], Return = any> {
+  (...args: Args): Promise<Return>;
+}
+
 export interface MonoFn<A, B = A> {
   (a: A): B;
 }
