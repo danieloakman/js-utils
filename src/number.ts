@@ -38,3 +38,8 @@ export function randInteger(min: number, max: number) {
 export function randFloat(min: number, max: number) {
   return Math.random() * (max - min) + min;
 }
+
+export function roundTo(n: number, places: number) {
+  const mult = Math.pow(10, places);
+  return Math.round(n * mult) / mult;
+}
