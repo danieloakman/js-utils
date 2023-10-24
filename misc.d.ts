@@ -21,9 +21,9 @@ export declare const main: (module: any, mainFn: () => Promise<void>) => Promise
  * Runs a shell command with stdio set to inherit. This means all stdio is shared with the current process.
  * If the command fails, then an error is returned, otherwise true is returned.
  */
-export declare const sh: (command: string) => Promise<Error | boolean>;
+export declare const sh: (...commands: string[]) => Promise<Error | boolean>;
 /**
  * Executes a shell command and returns the stdout and stderr as a string. If the command fails, then an error is
  * returned.
  */
-export declare const exec: (command: string) => Promise<Error | string>;
+export declare const exec: (...commands: string[]) => Promise<Error | string>;
