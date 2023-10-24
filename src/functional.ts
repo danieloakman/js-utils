@@ -134,6 +134,10 @@ export function isNullish(value: unknown): value is null | undefined {
   return value == null || value == undefined;
 }
 
+export function isOk<T>(value: T): value is Ok<T> {
+  return !isNullish(value) && !(value instanceof Error);
+}
+
 /**
  * @description Checks if `value` is not nullish or an error and returns it. This is analogous to the `unwrap` method in
  * Rust or any other Result implementation. Its use is for when you don't need or care to handle a non-ok value.
