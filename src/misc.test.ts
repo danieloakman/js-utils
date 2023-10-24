@@ -16,5 +16,6 @@ describe('misc', () => {
     ok(await sh(`echo "hello world" > ${tmpfile}`));
     assert((await readFile(tmpfile, 'utf-8')).includes('world'));
     ok(await sh(`rm ${tmpfile}`));
+    ok(await sh('echo hi', 'echo there', 'echo world!'));
   });
 });
