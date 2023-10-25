@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'bun:test';
-import { range } from 'iteragain-es';
-import { fastHash } from './string';
+import { iter, range } from 'iteragain-es';
+import { fastHash, hashWithLength } from './string';
+import { randInteger } from '.';
 
 describe('string', () => {
   it('fastHash', () => {
@@ -13,5 +14,19 @@ describe('string', () => {
       length = str.length;
       // console.log(str, str.length, n);
     }
+  });
+
+  it('hashWithLength', () => {
+    const test = (str: string, length: number) => {
+      const h = hashWithLength(str, length);
+      expect(h).toHaveLength(length);
+    };
+    const randStr = (length: number) =>
+      iter(range(length))
+        .map(() => String.fromCharCode(randInteger(32, 126)))
+        .join('') ?? '';
+    iter(range(0, 1000))
+      .map(n => [n, randStr(n)] as const)
+      .forEach(([n, str]) => test(str, n));
   });
 });
