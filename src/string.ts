@@ -21,6 +21,28 @@ export function fastHash(str: string, seed = 0): number {
 }
 
 /**
+ * @description Attempts to call `hashed.toString(length)` until the result is exactly `length`. If `input` is a string
+ * then it will be hashed first with `fastHash`, otherwise it's used as is.
+ * @throws Throws an Error if `length` is less than zero.
+ */
+export function hashWithLength(input: string | number, length: number): string {
+  if (length < 0) throw new Error('`length` cannot be less than zero');
+  const h = typeof input === 'number' ? input : fastHash(input);
+  const approxBaseFromLength = Math.max(Math.min(Math.pow(2, Math.ceil(Math.log2(length))), 36), 2);
+  let result = h.toString(approxBaseFromLength);
+  if (result.length === length) return result;
+  for (let i = 1; i < length * 2; i++) {
+    if (approxBaseFromLength + i > 36) continue;
+    result = h.toString(approxBaseFromLength + i);
+    if (result.length === length) return result;
+    if (approxBaseFromLength - i < 2) continue;
+    result = h.toString(approxBaseFromLength - i);
+    if (result.length === length) return result;
+  }
+  return h.toString().padEnd(length, '0').slice(0, length);
+}
+
+/**
  * Calls regex.exec(string) continually until there are no more matches. Differs from
  * string.match(regex) as that only returns a string array.
  * @param regex The regular expression to use on string. Must have the global flag set.
