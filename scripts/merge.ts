@@ -15,7 +15,7 @@ async function main() {
       console.log('🚀 Compiling for', args.target, args.format);
       if (!ok(await exec('git status')).includes('nothing to commit'))
         throw new Error('Did not have a clean working directory.');
-      ok(await sh(`git checkout ${args.target} && git pull && git merge origin/main && git push `));
+      ok(await sh(`git checkout ${args.target} && git pull && git merge origin/main -X theirs && git push `));
       ok(await compile(args));
       if (ok(await exec('git status')).includes('nothing to commit')) {
         console.log(`No changes to commit for ${args.target}, skipping...`);
