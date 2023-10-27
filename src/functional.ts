@@ -157,8 +157,6 @@ export const okOr = <T, U>(value: T, defaultValue: U): Ok<T> | U => {
 };
 
 // TODO: fill jsdoc
-export function raise(message: string): never;
-export function raise(error: Error): never;
 export function raise(exception: string | Error): never {
   throw typeof exception === 'string' ? new Error(exception) : exception;
 }
