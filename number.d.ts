@@ -20,3 +20,5 @@ export declare function lerp(a: number, b: number, t: number): number;
 export declare function randInteger(min: number, max: number): number;
 export declare function randFloat(min: number, max: number): number;
 export declare function roundTo(n: number, places: number): number;
+export declare function safeParseInt(str: string): number | null;
+export declare function safeParseFloat(str: string): number | null;
