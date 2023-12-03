@@ -43,3 +43,13 @@ export function roundTo(n: number, places: number) {
   const mult = Math.pow(10, places);
   return Math.round(n * mult) / mult;
 }
+
+export function safeParseInt(str: string): number | null {
+  const n = parseInt(str);
+  return isNaN(n) ? null : n;
+}
+
+export function safeParseFloat(str: string): number | null {
+  const n = parseFloat(str);
+  return isNaN(n) ? null : n;
+}
