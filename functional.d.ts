@@ -30,8 +30,7 @@ export declare function isOk<T>(value: T): value is Ok<T>;
  */
 export declare function ok<T>(value: T): Ok<T>;
 export declare const okOr: <T, U>(value: T, defaultValue: U) => U | Ok<T>;
-export declare function raise(message: string): never;
-export declare function raise(error: Error): never;
+export declare function raise(exception: string | Error): never;
 export declare function multiComparator<T>(...comparators: Comparator<T>[]): Comparator<T>;
 /** Wraps `fn` so that all calls to `fn` will return the same **FIRST** result. */
 export declare const once: <T extends Fn<any[], any>>(fn: T) => T;
