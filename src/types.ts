@@ -45,8 +45,8 @@ export interface DataCache<T> {
   keys(): AsyncIterableIterator<string>;
 }
 
-export interface Comparator<T> {
-  (a: T, b: T): number;
+export interface Comparator<T, R extends number | boolean> {
+  (a: T, b: T): R;
 }
 
 /** Unwraps a Promise<T> **once**, becoming just T. */

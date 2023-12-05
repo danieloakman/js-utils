@@ -124,7 +124,7 @@ export function propIs<T, Key extends string>(
 
 export function sortByKeys<T extends Record<string, unknown>>(
   obj: T,
-  comparator: Comparator<string> = (a, b) => a.localeCompare(b),
+  comparator: Comparator<string, number> = (a, b) => a.localeCompare(b),
 ): T {
   return Object.keys(obj)
     .sort(comparator)

@@ -8,7 +8,7 @@ export class BinarySearch<T> {
    */
   // constructor(array: number[], options?: { comparator?: Comparator<number> }); // For T numbers it's optional, otherwise required.
   // constructor(array: T[], options: { comparator: Comparator<T> });
-  constructor(array: T[], options: { comparator?: Comparator<T> } = {}) {
+  constructor(array: T[], options: { comparator?: Comparator<T, number> } = {}) {
     if (array.length < 2) throw new Error('Array must be of at least length 2.');
 
     this.array = array;
