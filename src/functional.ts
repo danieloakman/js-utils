@@ -162,13 +162,15 @@ export function raise(exception: string | Error): never {
 }
 
 // TODO: fill jsdoc
-export function multiComparator<T>(...comparators: Comparator<T>[]): Comparator<T> {
+export function multiComparator<T, R extends number | boolean>(...comparators: Comparator<T, R>[]): Comparator<T, R> {
   return (a: T, b: T) => {
+    let isBool = false;
     for (const comparator of comparators) {
       const result = comparator(a, b);
-      if (result !== 0) return result;
+      isBool = typeof result === 'boolean';
+      if (result) return result;
     }
-    return 0;
+    return (isBool ? false : 0) as R;
   };
 }
 
