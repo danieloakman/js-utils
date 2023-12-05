@@ -65,3 +65,13 @@ export type ObjectWithValueAtPath<Path extends string[], Value> = Path extends [
     ? Record<First, ObjectWithValueAtPath<Rest extends string[] ? Rest : never, Value>>
     : never
   : Value;
+
+/**
+ * @example
+ * type A = { a: string }
+ * type B = { b: number }
+ * type C = UnionToIntersection<A | B>
+ *      ^? { a: string } & { b: number }
+ */
+export type UnionToIntersection<U> = 
+  (U extends any ? (x: U) => void : never) extends ((x: infer I) => void) ? I : never
