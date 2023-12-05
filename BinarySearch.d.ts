@@ -5,7 +5,7 @@ export declare class BinarySearch<T> {
      * Binary search through an array of numbers, or with a custom comparator and any type.
      */
     constructor(array: T[], options?: {
-        comparator?: Comparator<T>;
+        comparator?: Comparator<T, number>;
     });
     /**
      * @param element The element to search for.
