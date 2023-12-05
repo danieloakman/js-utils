@@ -1,4 +1,4 @@
-import { ObjectWithValueAtPath, Split } from './types';
+import { ObjectWithValueAtPath, Split, Comparator } from './types';
 export type KeyItentifier<T> = string | ((item: T) => string);
 /**
  * Groups elements together from a `T[]`, use the `key` function to determine how to group. Similar to lodash's groupBy
@@ -21,3 +21,4 @@ export declare function propIs<T, Key extends string>(obj: T, key: Key, type: 'n
 export declare function propIs<T, Key extends string>(obj: T, key: Key, type: 'record'): obj is T & ObjectWithValueAtPath<Split<Key, '.'>, Record<PropertyKey, unknown>>;
 export declare function propIs<T, Key extends string>(obj: T, key: Key, type: 'array'): obj is T & ObjectWithValueAtPath<Split<Key, '.'>, unknown[]>;
 export declare function propIs<T, Key extends string>(obj: T, key: Key, type: 'string[]'): obj is T & ObjectWithValueAtPath<Split<Key, '.'>, string[]>;
+export declare function sortByKeys<T extends Record<string, unknown>>(obj: T, comparator?: Comparator<string>): T;
