@@ -1,5 +1,5 @@
 import { isObjectLike, safeCall } from './functional';
-import { ObjectWithValueAtPath, Split } from './types';
+import { ObjectWithValueAtPath, Split, Comparator } from './types';
 
 export type KeyItentifier<T> = string | ((item: T) => string);
 
@@ -120,4 +120,18 @@ export function propIs<T, Key extends string>(
   if (type === 'array') return Array.isArray(currentObj);
   if (type === 'string[]') return Array.isArray(currentObj) && currentObj.every(v => typeof v === 'string');
   return typeof currentObj === type;
+}
+
+export function sortByKeys<T extends Record<string, unknown>>(
+  obj: T,
+  comparator: Comparator<string> = (a, b) => a.localeCompare(b),
+): T {
+  return Object.keys(obj)
+    .sort(comparator)
+    .reduce((acc, key) => {
+      const value = obj[key];
+      if (!Array.isArray(value) && isObjectLike(value)) (acc as any)[key] = sortByKeys(value, comparator);
+      else (acc as any)[key] = value;
+      return acc;
+    }, {} as T);
 }
