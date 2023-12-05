@@ -1,1 +1,11 @@
-import"./number.js";import"./types.js";import"./assertions.js";import"./InMemoryCache.js";import"./object.js";import"./misc.js";import"./BinarySearch.js";import{d as g} from"./functional.js";import"./string.js";var F=()=>g("Can't parse args in browser.");export{F as parseArgs};
+import { raise } from '.';
+export const parseArgs = Bun.env.RUNTIME === 'node' || Bun.env.RUNTIME === 'bun'
+    ? (constructorParams, ...args) => {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const parser = new (require('argparse').ArgumentParser)(constructorParams);
+        // @ts-ignore
+        for (const arg of args)
+            parser.add_argument(...arg);
+        return parser.parse_args();
+    }
+    : () => raise("Can't parse args in browser.");
