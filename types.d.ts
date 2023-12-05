@@ -35,8 +35,8 @@ export interface DataCache<T> {
     clear(): Promise<boolean>;
     keys(): AsyncIterableIterator<string>;
 }
-export interface Comparator<T> {
-    (a: T, b: T): number;
+export interface Comparator<T, R extends number | boolean> {
+    (a: T, b: T): R;
 }
 /** Unwraps a Promise<T> **once**, becoming just T. */
 export type AwaitedOnce<T> = T extends Promise<infer U> ? U : T;
@@ -49,4 +49,4 @@ export type ObjectWithValueAtPath<Path extends string[], Value> = Path extends [
  * type C = UnionToIntersection<A | B>
  *      ^? { a: string } & { b: number }
  */
-export type UnionToIntersection<U> = (U extends any ? (x: U) => void : never) extends ((x: infer I) => void) ? I : never;
+export type UnionToIntersection<U> = (U extends any ? (x: U) => void : never) extends (x: infer I) => void ? I : never;
