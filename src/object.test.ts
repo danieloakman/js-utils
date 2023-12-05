@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'bun:test';
-import { expectType, propIs } from '.';
+import { expectType, propIs, sortByKeys } from '.';
 
 describe('object', () => {
   it('propIs', async () => {
@@ -19,5 +19,15 @@ describe('object', () => {
     if (propIs(unknown, 'a.b.c.d.e.f.g.h.i.j.k', 'string')) expectType<string>(unknown.a.b.c.d.e.f.g.h.i.j.k);
     const obj = { a: { b: [{ c: 'hi' }] } };
     expect(propIs(obj, 'a.b.0.c', 'string')).toBeTrue();
+  });
+
+  it('sortKeys', () => {
+    const test = <T extends Record<string, unknown>>(actual: T, expected: T) =>
+      expect(sortByKeys(actual)).toStrictEqual(expected);
+    test({}, {});
+    test({ a: 1 }, { a: 1 });
+    test({ b: 1, a: 2 }, { a: 2, b: 1 });
+    test({ b: 1, a: 2, c: 3 }, { a: 2, b: 1, c: 3 });
+    test({ a: { b: 2, a: 1 } }, { a: { a: 1, b: 2 } });
   });
 });
