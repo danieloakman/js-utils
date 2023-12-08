@@ -16,6 +16,7 @@
     "@babel/core": "^7.22.19",
     "@babel/plugin-transform-modules-commonjs": "^7.22.15",
     "@types/argparse": "^2.0.10",
+    "@types/lodash-es": "^4.17.12",
     "@types/node": "^20",
     "@types/uglify-js": "^3.17.2",
     "@typescript-eslint/eslint-plugin": "^5.59.8",
@@ -41,5 +42,8 @@
       "eslint --cache --fix"
     ]
   },
-  "types": "index.d.ts"
+  "types": "index.d.ts",
+  "dependencies": {
+    "lodash-es": "^4.17.21"
+  }
 }

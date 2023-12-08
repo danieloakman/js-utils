@@ -1,3 +1,4 @@
+import { enumerate } from 'iteragain-es';
 import { isObjectLike, safeCall } from './functional';
 import { ObjectWithValueAtPath, Split, Comparator } from './types';
 
@@ -134,4 +135,54 @@ export function sortByKeys<T extends Record<string, unknown>>(
       else (acc as any)[key] = value;
       return acc;
     }, {} as T);
+}
+
+/** Returns true if all of `obj`'s properties can be found and are equal to those in `other`. */
+export function isPartiallyLike<T extends Record<PropertyKey, unknown> | unknown[]>(
+  obj: unknown,
+  other: T,
+): obj is Partial<T> {
+  if (!isObjectLike(obj) || !isObjectLike(other)) return false;
+  if (!Object.keys(obj).length) return !Object.keys(other).length;
+
+  if (Array.isArray(obj) && Array.isArray(other)) {
+    if (obj.length !== other.length) return false;
+    for (const [idx, value] of enumerate(obj)) {
+      if (isObjectLike(value) && isObjectLike(other[idx])) {
+        if (!isPartiallyLike(value, other[idx] as any)) return false;
+      } else if (other[idx] !== value) return false;
+    }
+    return true;
+  }
+
+  let hasAtleastOne = false;
+  for (const [key, value] of Object.entries(obj)) {
+    if (!(key in other)) continue;
+    if (isObjectLike(value) && isObjectLike(other[key])) {
+      if (!isPartiallyLike(value, other[key] as any)) return false;
+      hasAtleastOne = true;
+    } else if (other[key] === value) hasAtleastOne = true;
+    else return false;
+  }
+  return hasAtleastOne;
+}
+
+export function findItemsFrom<T extends Record<string, unknown>>(
+  needles: Partial<T>[],
+  haystack: T[],
+): [found: T[], notFound: T[]] {
+  needles = needles.slice();
+  const found: number[] = [];
+  const notFound: number[] = [];
+  loop: for (const [i, item] of enumerate(haystack)) {
+    for (const [j, needle] of enumerate(needles)) {
+      if (isPartiallyLike(item, needle)) {
+        found.push(i);
+        needles.splice(j, 1);
+        continue loop;
+      }
+    }
+    notFound.push(i);
+  }
+  return [found.map(i => haystack[i]), notFound.map(i => haystack[i])];
 }

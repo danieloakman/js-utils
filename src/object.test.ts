@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'bun:test';
-import { expectType, propIs, sortByKeys } from '.';
+import { expectType, isPartiallyLike, propIs, sortByKeys, findItemsFrom } from '.';
 
 describe('object', () => {
   it('propIs', async () => {
@@ -29,5 +29,40 @@ describe('object', () => {
     test({ b: 1, a: 2 }, { a: 2, b: 1 });
     test({ b: 1, a: 2, c: 3 }, { a: 2, b: 1, c: 3 });
     test({ a: { b: 2, a: 1 } }, { a: { a: 1, b: 2 } });
+  });
+
+  it('objectIsLike', () => {
+    const yes = ((a: any, b: any) => {
+      const is = isPartiallyLike(a, b);
+      expect(is).toBeTrue();
+      return is;
+    }) as typeof isPartiallyLike;
+    const no = (a: any, b: any) => expect(isPartiallyLike(a, b)).toBeFalse();
+
+    yes({}, {});
+    yes({ a: 1 }, { a: 1 });
+    yes({ a: 1 }, { a: 1, b: 2 });
+    yes({ a: 1, b: 2 }, { a: 1 });
+    {
+      const a: unknown = { a: 1, b: 2 };
+      const b = { a: 1 };
+      if (isPartiallyLike(a, b)) expectType<{ a?: number }>(a);
+    }
+    yes([], []);
+    yes([1], [1]);
+    no([1], [1, 2]);
+    no([1, 2], [1]);
+    no({}, { a: 1 });
+    no({ a: 1 }, {});
+    no({ a: 1 }, { a: 2 });
+    yes({ a: [1] }, { a: [1] });
+    no({ a: [1] }, { a: [1, 2] });
+  });
+
+  it('findItemsFrom', () => {
+    const yes = (a: any, b: any, expect: [unknown[], unknown[]]) => {
+      expect(findItemsFrom(a, b)).toStrictEqual(expect);
+    };
+    yes({}, {}, [[], []]);
   });
 });
