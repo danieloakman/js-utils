@@ -1,4 +1,5 @@
 import { Nullish } from './types';
+import { isObjectLike, sortByKeys } from '.';
 
 /**
  * @see https://stackoverflow.com/a/52171480 For source.
@@ -25,9 +26,9 @@ export function fastHash(str: string, seed = 0): number {
  * then it will be hashed first with `fastHash`, otherwise it's used as is.
  * @throws Throws an Error if `length` is less than zero.
  */
-export function hashWithLength(input: string | number, length: number): string {
+export function hashWithLength(input: string | number, length: number, seed = 0): string {
   if (length < 0) throw new Error('`length` cannot be less than zero');
-  const h = typeof input === 'number' ? input : fastHash(input);
+  const h = typeof input === 'number' ? input : fastHash(input, seed);
   const approxBaseFromLength = Math.max(Math.min(Math.pow(2, Math.ceil(Math.log2(length))), 36), 2);
   let result = h.toString(approxBaseFromLength);
   if (result.length === length) return result;
@@ -40,6 +41,18 @@ export function hashWithLength(input: string | number, length: number): string {
     if (result.length === length) return result;
   }
   return h.toString().padEnd(length, '0').slice(0, length);
+}
+
+/** Coerces any `input` into a string, then uses `fastHash` on it. */
+export function coerceHash(input: unknown, seed = 0): number {
+  if (typeof input === 'string') return fastHash(input, seed);
+  if (typeof input === 'number') return fastHash(input.toString(), seed);
+  if (Array.isArray(input)) return fastHash(input.map(v => coerceHash(v, seed)).join(''));
+  if (isObjectLike(input)) return fastHash(JSON.stringify(sortByKeys(input)), seed);
+  if (typeof input === 'bigint') return fastHash(input.toString());
+  if (typeof input === 'undefined') return fastHash('undefined', seed);
+  if (typeof input === 'symbol') return fastHash(input.toString(), seed);
+  return fastHash(JSON.stringify(input), seed);
 }
 
 /**
