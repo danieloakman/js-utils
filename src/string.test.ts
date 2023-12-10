@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'bun:test';
 import { iter, range } from 'iteragain-es';
-import { fastHash, hashWithLength } from './string';
+import { coerceHash, fastHash, hashWithLength } from './string';
 import { randInteger } from '.';
 
 describe('string', () => {
@@ -14,6 +14,7 @@ describe('string', () => {
       length = str.length;
       // console.log(str, str.length, n);
     }
+    expect(fastHash(JSON.stringify(null)));
   });
 
   it('hashWithLength', () => {
@@ -28,5 +29,21 @@ describe('string', () => {
     iter(range(0, 1000))
       .map(n => [n, randStr(n)] as const)
       .forEach(([n, str]) => test(str, n));
+  });
+
+  it('coerceHash', () => {
+    const yes = (input: unknown, expected: number) => expect(coerceHash(input)).toBe(expected);
+    yes('hello world', fastHash('hello world'));
+    yes(123, fastHash('123'));
+    yes(123n, fastHash('123'));
+    yes(true, fastHash('true'));
+    yes(false, fastHash('false'));
+    yes(null, fastHash('null'));
+    yes(undefined, fastHash('undefined'));
+    yes(Symbol('hello'), fastHash('Symbol(hello)'));
+    yes(Symbol.for('hello'), fastHash('Symbol(hello)'));
+    yes(Symbol.iterator, fastHash('Symbol(Symbol.iterator)'));
+    yes({ a: 1 }, fastHash(JSON.stringify({ a: 1 })));
+    expect(coerceHash([1, 2, 3])).toBeGreaterThan(10000);
   });
 });
