@@ -167,10 +167,7 @@ export function isPartiallyLike<T extends Record<PropertyKey, unknown> | unknown
   return hasAtleastOne;
 }
 
-export function findItemsFrom<T extends Record<string, unknown>>(
-  needles: Partial<T>[],
-  haystack: T[],
-): [found: T[], notFound: T[]] {
+export function findItemsFrom<T extends object>(needles: Partial<T>[], haystack: T[]): [found: T[], notFound: T[]] {
   needles = needles.slice();
   const found: number[] = [];
   const notFound: number[] = [];
