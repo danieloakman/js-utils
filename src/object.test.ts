@@ -60,9 +60,22 @@ describe('object', () => {
   });
 
   it('findItemsFrom', () => {
-    const yes = (a: any, b: any, expect: [unknown[], unknown[]]) => {
-      expect(findItemsFrom(a, b)).toStrictEqual(expect);
+    const yes = (a: any[], b: any[], expected: [unknown[], unknown[]]) => {
+      expect(findItemsFrom(a, b)).toStrictEqual(expected as any);
     };
-    yes({}, {}, [[], []]);
+    yes([{ a: 1 }], [{ a: 1 }], [[{ a: 1 }], []]);
+    yes([{ a: 1 }], [{ a: 1, b: 2 }], [[{ a: 1, b: 2 }], []]);
+    yes([{ b: 2 }], [{ a: 1 }], [[], [{ a: 1 }]]);
+    yes([{ a: 1 }], [{ a: 2 }], [[], [{ a: 2 }]]);
+    yes([{}], [{}], [[{}], []]);
+    interface Item {
+      id: string;
+      n: number;
+      children?: Item[];
+    }
+    const o = (id: number | string, children: Item[] = []): Item => ({ id: id.toString(), n: parseInt(id.toString()), children });
+    yes([o(1)], [o(1)], [[o(1)], []]);
+    yes([o(1)], [o(1), o(2)], [[o(1)], [o(2)]]);
+    yes([o(1, [o(2)])], [o(1, [o(2)])], [[o(1, [o(2)])], []]);
   });
 });
