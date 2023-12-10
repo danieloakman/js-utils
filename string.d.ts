@@ -10,7 +10,9 @@ export declare function fastHash(str: string, seed?: number): number;
  * then it will be hashed first with `fastHash`, otherwise it's used as is.
  * @throws Throws an Error if `length` is less than zero.
  */
-export declare function hashWithLength(input: string | number, length: number): string;
+export declare function hashWithLength(input: string | number, length: number, seed?: number): string;
+/** Coerces any `input` into a string, then uses `fastHash` on it. */
+export declare function coerceHash(input: unknown, seed?: number): number;
 /**
  * Calls regex.exec(string) continually until there are no more matches. Differs from
  * string.match(regex) as that only returns a string array.
