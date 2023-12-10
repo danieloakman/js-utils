@@ -78,6 +78,7 @@ describe('object', () => {
       n: parseInt(id.toString()),
       children,
     });
+    expectType<[Item[], Item[]]>(findItemsFrom([o(1)], [o(2)]));
     yes([o(1)], [o(1)], [[o(1)], []]);
     yes([o(1)], [o(1), o(2)], [[o(1)], [o(2)]]);
     yes([o(1, [o(2)])], [o(1, [o(2)])], [[o(1, [o(2)])], []]);
