@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "bun test",
+    "test:watch": "bun test --watch",
     "compile": "bun run scripts/compile.ts",
     "clean": "bun run scripts/clean.ts",
     "merge": "bun run scripts/merge.ts",
