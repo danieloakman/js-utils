@@ -73,9 +73,14 @@ describe('object', () => {
       n: number;
       children?: Item[];
     }
-    const o = (id: number | string, children: Item[] = []): Item => ({ id: id.toString(), n: parseInt(id.toString()), children });
+    const o = (id: number | string, children: Item[] = []): Item => ({
+      id: id.toString(),
+      n: parseInt(id.toString()),
+      children,
+    });
     yes([o(1)], [o(1)], [[o(1)], []]);
     yes([o(1)], [o(1), o(2)], [[o(1)], [o(2)]]);
     yes([o(1, [o(2)])], [o(1, [o(2)])], [[o(1, [o(2)])], []]);
+    yes([{ a: 1, b: ['1', '2'] }], [{ a: 1, b: ['1', '2'] }], [[{ a: 1, b: ['1', '2'] }], []]);
   });
 });
