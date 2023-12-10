@@ -24,4 +24,4 @@ export declare function propIs<T, Key extends string>(obj: T, key: Key, type: 's
 export declare function sortByKeys<T extends Record<string, unknown>>(obj: T, comparator?: Comparator<string, number>): T;
 /** Returns true if all of `obj`'s properties can be found and are equal to those in `other`. */
 export declare function isPartiallyLike<T extends Record<PropertyKey, unknown> | unknown[]>(obj: unknown, other: T): obj is Partial<T>;
-export declare function findItemsFrom<T extends Record<string, unknown>>(needles: Partial<T>[], haystack: T[]): [found: T[], notFound: T[]];
+export declare function findItemsFrom<T extends object>(needles: Partial<T>[], haystack: T[]): [found: T[], notFound: T[]];
