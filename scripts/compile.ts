@@ -31,7 +31,7 @@ export async function compile(args: CompileArgs): Promise<Error | boolean> {
 
   // Build types and JS with typescript first.
   // This is mainly to create the type declaration files, but also to fill in for any js files that bun doesn't include.
-  ok(await sh(`bunx tsc -p tsconfig.${args.format}.json`));
+  ok(await sh(`bunx tsc -p tsconfig.${args.format}.json --emitDeclarationOnly`));
 
   // Build
   const buildResult = await Bun.build({
