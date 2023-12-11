@@ -1,1 +1,38 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.InMemoryCache=void 0;var _object=require("./object.js");require("./functional.js"),require("./chunk-35d41ec6f373dcfb.js");class i{map=new Map;async get(e){e=this.map.get(e);return(0,_object.a)(e??"")}async delete(e){return this.map.delete(e)}async set(e,s){return this.map.set(e,"string"!=typeof s?JSON.stringify(s):s),!0}async has(e){return this.map.has(e)}async clear(){return this.map.clear(),!0}async*keys(){yield*this.map.keys()}}exports.InMemoryCache=i;
+import"./functional.js";
+import {
+safeJSONParse
+} from "./object.js";
+import"./chunk-1c49e647d94a40b6.js";
+
+// node_modules/.pnpm/a
+class InMemoryCache {
+  map = new Map;
+  async get(key) {
+    const value = this.map.get(key);
+    return safeJSONParse(value ?? "");
+  }
+  async delete(key) {
+    return this.map.delete(key);
+  }
+  async set(key, value) {
+    this.map.set(key, typeof value !== "string" ? JSON.stringify(value) : value);
+    return true;
+  }
+  async has(key) {
+    return this.map.has(key);
+  }
+  async clear() {
+    this.map.clear();
+    return true;
+  }
+  async* keys() {
+    yield* this.map.keys();
+  }
+}
+export {
+  InMemoryCache
+};
+
+
+
+//# debugId=82CE071363FA918B64756e2164756e21

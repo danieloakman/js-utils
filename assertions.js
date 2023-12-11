@@ -1,1 +1,31 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.assert=r,exports.throws=exports.expectType=exports.equal=void 0,require("./functional.js");var _chunk35d41ec6f373dcfb=require("./chunk-35d41ec6f373dcfb.js");function r(e,r){if(!e)throw"string"==typeof r?new Error(r):r??new Error("Assertion failed")}var w=(e,r)=>(0,_chunk35d41ec6f373dcfb.h)("assert").throws(e,r),y=e=>e,z=(e,r,t)=>(0,_chunk35d41ec6f373dcfb.h)("assert").deepStrictEqual(e,r,t);exports.equal=z,exports.expectType=y,exports.throws=w;
+import"./functional.js";
+import {
+__require
+} from "./chunk-1c49e647d94a40b6.js";
+
+// node_modules/.pnp
+function assert(value, message) {
+  if (!value) {
+    if (typeof message === "string")
+      throw new Error(message);
+    else
+      throw message ?? new Error("Assertion failed");
+  }
+}
+var throws = (block, message) => {
+  return __require("assert").throws(block, message);
+};
+var expectType = (value) => value;
+var equal = (actual, expected, message) => {
+  return __require("assert").deepStrictEqual(actual, expected, message);
+};
+export {
+  throws,
+  expectType,
+  equal,
+  assert
+};
+
+
+
+//# debugId=7907F8931700819D64756e2164756e21

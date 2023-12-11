@@ -1,1 +1,65 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.main=exports.importSync=exports.exec=void 0,exports.nodeOnly=I,exports.sh=void 0;var _functional=require("./functional.js");function I(r){return r}require("./chunk-35d41ec6f373dcfb.js");var B=r=>require(r),J=async(r,e)=>{require?.main===r&&e()},K=(...r)=>(0,_functional.f)(({spawn:n}=B("child_process"))=>{const o=r.join("\n");return new Promise(e=>{var r=(0,_functional.d)(()=>n(o,{shell:!0,stdio:"inherit"}));if(r instanceof Error)return e(r);r.on("close",r=>{e(!r||new Error(`Command "${o}" exited with code `+r))}),r.on("error",r=>e(r))})}),L=(...r)=>(0,_functional.f)(({spawn:t}=B("child_process"))=>{const i=r.join("\n");return new Promise(e=>{var r=(0,_functional.d)(()=>t(i,{shell:!0}));if(r instanceof Error)return e(r);let n="";var o=r=>{r=r.toString();n+=r+"\n"};r.stdout?.on("data",o),r.stderr?.on("data",o),r.on("close",r=>{e(r?new Error(`Command "${i}" exited with code `+r):n)}),r.on("error",r=>e(r))})});exports.exec=L,exports.sh=K,exports.main=J,exports.importSync=B;
+import {
+attempt,
+iife
+} from "./functional.js";
+import"./chunk-1c49e647d94a40b6.js";
+
+// node_module
+function nodeOnly(fn) {
+  if (false)
+    ;
+  return fn;
+}
+var importSync = (name) => require(name);
+var main = async (module, mainFn) => {
+  if (require?.main === module)
+    mainFn();
+};
+var sh = (...commands) => iife(({ spawn } = importSync("child_process")) => {
+  const fullCommand = commands.join("\n");
+  return new Promise((resolve) => {
+    const s = attempt(() => spawn(fullCommand, { shell: true, stdio: "inherit" }));
+    if (s instanceof Error)
+      return resolve(s);
+    s.on("close", (code) => {
+      if (code)
+        resolve(new Error(`Command "${fullCommand}" exited with code ${code}`));
+      else
+        resolve(true);
+    });
+    s.on("error", (err) => resolve(err));
+  });
+});
+var exec = (...commands) => iife(({ spawn } = importSync("child_process")) => {
+  const fullCommand = commands.join("\n");
+  return new Promise((resolve) => {
+    const s = attempt(() => spawn(fullCommand, { shell: true }));
+    if (s instanceof Error)
+      return resolve(s);
+    let data = "";
+    const handleData = (chunk) => {
+      const str = chunk.toString();
+      data += str + "\n";
+    };
+    s.stdout?.on("data", handleData);
+    s.stderr?.on("data", handleData);
+    s.on("close", (code) => {
+      if (code)
+        resolve(new Error(`Command "${fullCommand}" exited with code ${code}`));
+      else
+        resolve(data);
+    });
+    s.on("error", (err) => resolve(err));
+  });
+});
+export {
+  sh,
+  nodeOnly,
+  main,
+  importSync,
+  exec
+};
+
+
+
+//# debugId=45B8D925327905C064756e2164756e21

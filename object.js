@@ -1,1 +1,252 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.findItemsFrom=r,exports.groupBy=s,exports.isPartiallyLike=G,exports.propIs=a,exports.a=exports.safeJSONParse=o,exports.b=exports.sortByKeys=M;var _functional=require("./functional.js");require("./chunk-35d41ec6f373dcfb.js");class H{constructor(r){this.iterators=r}[Symbol.iterator](){return this}next(...r){var t;return this.iterators.length?(t=this.iterators[0].next(...r)).done?(this.iterators.shift(),this.next(...r)):t:{done:!0,value:void 0}}}var J=H;class N{constructor(r,t){this.value=r,this.times=t}[Symbol.iterator](){return this}next(){return 0<this.times--?{done:!1,value:this.value}:{done:!0,value:void 0}}}var E=N;class z{constructor(r,t="post-order-DFS"){this.traversal=t,this.inner=null,this.arr=[],this.push(r)}[Symbol.iterator](){return this}next(...r){var t;return this.inner?(t=this.inner.next(...r)).done?(this.inner=null,this.next(...r)):t:this.arr.length?(t=this.arr.shift(),this.isObject(t[1])?(this.inner=new J("post-order-DFS"===this.traversal?[new z(t[1]),new E(t,1)]:[new E(t,1),new z(t[1])]),this.next(...r)):{value:t,done:!1}):{done:!0,value:void 0}}isObject(r){return"object"==typeof r&&null!==r}push(r){for(var t of Object.keys(r))this.arr.push([t,r[t],r])}}var Q=z;function P(r){return"function"==typeof(null==r?void 0:r[Symbol.iterator])}var V=P;function R(r){return"function"==typeof(null==r?void 0:r.next)}var X=R;class Y{constructor(r,t){this.func=r,this.sentinel=t}[Symbol.iterator](){return this}next(...r){r=this.func(...r);return r===this.sentinel?(this.func=()=>this.sentinel,{done:!0,value:void 0}):{done:!1,value:r}}}var Z=Y;function C(...r){if(X(r[0]))return r[0];if(V(r[0]))return r[0][Symbol.iterator]();if("object"==typeof r[0]&&null!==r[0])return new Q(r[0]);if("function"==typeof r[0])return new Z(r[0],r[1]);throw new TypeError(`Cannot convert ${typeof r[0]} to an iterator.`)}var _=C;class ${constructor(r,t){this.iterator=r,this.iteratee=t}[Symbol.iterator](){return this}next(...r){var{value:r,done:t}=this.iterator.next(...r);return t?{done:!0,value:void 0}:{value:this.iteratee(r),done:t}}}var B=$;function D(r){return new B(_(r),(t=0,r=>[t++,r]));var t}function s(r,...t){var e,n=t.map(r=>[r,{}]);for(e of r)for(var[i,o]of n){i="string"==typeof i?e?.[i]:i(e);o[i]=(o[i]??[]).concat(e)}return n.length<2?n[0][1]:n.map(([,r])=>r)}function o(...r){return(0,_functional.e)(JSON.parse,...r)}function a(r,t,e){if(!t.length)return!1;let n=r;for(var i of t.split(".")){if(!(0,_functional.c)(n))return!1;n=n[i]}return"null"===e?null===n:"nullish"===e?null===n||void 0===n:"record"===e?"object"==typeof n&&null!==n:"array"===e?Array.isArray(n):"string[]"===e?Array.isArray(n)&&n.every(r=>"string"==typeof r):typeof n===e}function M(n,i=(r,t)=>r.localeCompare(t)){return Object.keys(n).sort(i).reduce((r,t)=>{var e=n[t];return!Array.isArray(e)&&(0,_functional.c)(e)?r[t]=M(e,i):r[t]=e,r},{})}function G(r,t){if(!(0,_functional.c)(r)||!(0,_functional.c)(t))return!1;if(!Object.keys(r).length)return!Object.keys(t).length;if(Array.isArray(r)&&Array.isArray(t)){if(r.length!==t.length)return!1;for(var[e,n]of D(r))if((0,_functional.c)(n)&&(0,_functional.c)(t[e])){if(!G(n,t[e]))return!1}else if(t[e]!==n)return!1;return!0}let i=!1;for(var[o,s]of Object.entries(r))if(o in t){if((0,_functional.c)(s)&&(0,_functional.c)(t[o])){if(!G(s,t[o]))return!1}else if(t[o]!==s)return!1;i=!0}return i}function r(r,t){r=r.slice();var e=[],n=[];r:for(var[i,o]of D(t)){for(var[s,a]of D(r))if(G(o,a)){e.push(i),r.splice(s,1);continue r}n.push(i)}return[e.map(r=>t[r]),n.map(r=>t[r])]}
+import {
+isObjectLike,
+safeCall
+} from "./functional.js";
+import"./chunk-1c49e647d94a40b6.js";
+
+// node_modules/.pnpm/argparse@2.0.1/node_modules/argparse/lib/textwrap.jsal/RoundrobinIterato
+class ConcatIterator {
+  constructor(iterators) {
+    this.iterators = iterators;
+  }
+  [Symbol.iterator]() {
+    return this;
+  }
+  next(...args) {
+    if (!this.iterators.length)
+      return { done: true, value: undefined };
+    const next = this.iterators[0].next(...args);
+    if (!next.done)
+      return next;
+    this.iterators.shift();
+    return this.next(...args);
+  }
+}
+var ConcatIterator_default = ConcatIterator;
+
+// node_modules/.pnpm/argparse@2.0.1/node_modules/argparse/lib/textwrap.jsal/RoundrobinIterato
+class RepeatIterator {
+  constructor(value, times) {
+    this.value = value;
+    this.times = times;
+  }
+  [Symbol.iterator]() {
+    return this;
+  }
+  next() {
+    if (this.times-- > 0)
+      return { done: false, value: this.value };
+    return { done: true, value: undefined };
+  }
+}
+var RepeatIterator_default = RepeatIterator;
+
+// node_modules/.pnpm/argparse@2.0.1/node_modules/argparse/lib/textwrap.jsal/RoundrobinIterato
+class ObjectIterator {
+  constructor(object, traversal = "post-order-DFS") {
+    this.traversal = traversal;
+    this.inner = null;
+    this.arr = [];
+    this.push(object);
+  }
+  [Symbol.iterator]() {
+    return this;
+  }
+  next(...args) {
+    if (this.inner) {
+      const next2 = this.inner.next(...args);
+      if (!next2.done)
+        return next2;
+      this.inner = null;
+      return this.next(...args);
+    }
+    if (!this.arr.length)
+      return { done: true, value: undefined };
+    const next = this.arr.shift();
+    if (this.isObject(next[1])) {
+      this.inner = new ConcatIterator_default(this.traversal === "post-order-DFS" ? [new ObjectIterator(next[1]), new RepeatIterator_default(next, 1)] : [new RepeatIterator_default(next, 1), new ObjectIterator(next[1])]);
+      return this.next(...args);
+    }
+    return { value: next, done: false };
+  }
+  isObject(value) {
+    return typeof value === "object" && value !== null;
+  }
+  push(obj) {
+    for (const key of Object.keys(obj))
+      this.arr.push([key, obj[key], obj]);
+  }
+}
+var ObjectIterator_default = ObjectIterator;
+
+// node_modules/.pnpm/argparse@2.0.1/node_modules/argparse/lib/textwrap.jsal/Roun
+function isIterable(arg) {
+  return typeof (arg === null || arg === undefined ? undefined : arg[Symbol.iterator]) === "function";
+}
+var isIterable_default = isIterable;
+
+// node_modules/.pnpm/argparse@2.0.1/node_modules/argparse/lib/textwrap.jsal/Roun
+function isIterator(arg) {
+  return typeof (arg === null || arg === undefined ? undefined : arg.next) === "function";
+}
+var isIterator_default = isIterator;
+
+// node_modules/.pnpm/argparse@2.0.1/node_modules/argparse/lib/textwrap.jsal/RoundrobinIterator.
+class FunctionIterator {
+  constructor(func, sentinel) {
+    this.func = func;
+    this.sentinel = sentinel;
+  }
+  [Symbol.iterator]() {
+    return this;
+  }
+  next(...args) {
+    const result = this.func(...args);
+    return result === this.sentinel ? (this.func = () => this.sentinel, { done: true, value: undefined }) : { done: false, value: result };
+  }
+}
+var FunctionIterator_default = FunctionIterator;
+
+// node_modules/.pnpm/argparse@2.0.1/node_modules/argparse/lib/textwrap.jsal/Roun
+function toIterator(...args) {
+  if (isIterator_default(args[0]))
+    return args[0];
+  if (isIterable_default(args[0]))
+    return args[0][Symbol.iterator]();
+  if (typeof args[0] === "object" && args[0] !== null)
+    return new ObjectIterator_default(args[0]);
+  if (typeof args[0] === "function")
+    return new FunctionIterator_default(args[0], args[1]);
+  throw new TypeError(`Cannot convert ${typeof args[0]} to an iterator.`);
+}
+var toIterator_default = toIterator;
+
+// node_modules/.pnpm/argparse@2.0.1/node_modules/argparse/lib/textwrap.jsal/RoundrobinIter
+class MapIterator {
+  constructor(iterator, iteratee) {
+    this.iterator = iterator;
+    this.iteratee = iteratee;
+  }
+  [Symbol.iterator]() {
+    return this;
+  }
+  next(...args) {
+    const { value, done } = this.iterator.next(...args);
+    if (done)
+      return { done: true, value: undefined };
+    return { value: this.iteratee(value), done };
+  }
+}
+var MapIterator_default = MapIterator;
+
+// node_modules/.pnpm/argparse@2.0.1/node_modules/argparse/lib/textwrap.jsal/Rou
+function enumerate(arg) {
+  return new MapIterator_default(toIterator_default(arg), ((count = 0) => (v) => [count++, v])());
+}
+
+// node_modules/
+function groupBy(arr, ...keys) {
+  const results = keys.map((key) => [key, {}]);
+  for (const value of arr) {
+    for (const [key, map] of results) {
+      const k = typeof key === "string" ? value?.[key] : key(value);
+      map[k] = (map[k] ?? []).concat(value);
+    }
+  }
+  return results.length < 2 ? results[0][1] : results.map(([_, map]) => map);
+}
+function safeJSONParse(...args) {
+  return safeCall(JSON.parse, ...args);
+}
+function propIs(obj, key, type) {
+  if (!key.length)
+    return false;
+  let currentObj = obj;
+  for (const k of key.split(".")) {
+    if (!isObjectLike(currentObj))
+      return false;
+    currentObj = currentObj[k];
+  }
+  if (type === "null")
+    return currentObj === null;
+  if (type === "nullish")
+    return currentObj === null || currentObj === undefined;
+  if (type === "record")
+    return typeof currentObj === "object" && currentObj !== null;
+  if (type === "array")
+    return Array.isArray(currentObj);
+  if (type === "string[]")
+    return Array.isArray(currentObj) && currentObj.every((v) => typeof v === "string");
+  return typeof currentObj === type;
+}
+function sortByKeys(obj, comparator = (a, b) => a.localeCompare(b)) {
+  return Object.keys(obj).sort(comparator).reduce((acc, key) => {
+    const value = obj[key];
+    if (!Array.isArray(value) && isObjectLike(value))
+      acc[key] = sortByKeys(value, comparator);
+    else
+      acc[key] = value;
+    return acc;
+  }, {});
+}
+function isPartiallyLike(obj, other) {
+  if (!isObjectLike(obj) || !isObjectLike(other))
+    return false;
+  if (!Object.keys(obj).length)
+    return !Object.keys(other).length;
+  if (Array.isArray(obj) && Array.isArray(other)) {
+    if (obj.length !== other.length)
+      return false;
+    for (const [idx, value] of enumerate(obj)) {
+      if (isObjectLike(value) && isObjectLike(other[idx])) {
+        if (!isPartiallyLike(value, other[idx]))
+          return false;
+      } else if (other[idx] !== value)
+        return false;
+    }
+    return true;
+  }
+  let hasAtleastOne = false;
+  for (const [key, value] of Object.entries(obj)) {
+    if (!(key in other))
+      continue;
+    if (isObjectLike(value) && isObjectLike(other[key])) {
+      if (!isPartiallyLike(value, other[key]))
+        return false;
+      hasAtleastOne = true;
+    } else if (other[key] === value)
+      hasAtleastOne = true;
+    else
+      return false;
+  }
+  return hasAtleastOne;
+}
+function findItemsFrom(needles, haystack) {
+  needles = needles.slice();
+  const found = [];
+  const notFound = [];
+  loop:
+    for (const [i, item] of enumerate(haystack)) {
+      for (const [j, needle] of enumerate(needles)) {
+        if (isPartiallyLike(item, needle)) {
+          found.push(i);
+          needles.splice(j, 1);
+          continue loop;
+        }
+      }
+      notFound.push(i);
+    }
+  return [found.map((i) => haystack[i]), notFound.map((i) => haystack[i])];
+}
+export {
+  sortByKeys,
+  safeJSONParse,
+  propIs,
+  isPartiallyLike,
+  groupBy,
+  findItemsFrom
+};
+
+
+
+//# debugId=15B36F4D307BBC5E64756e2164756e21

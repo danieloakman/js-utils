@@ -1,1 +1,52 @@
-"use strict";function w(t){return t*k}function y(t){return t*q}function z(t,n){return t.reduce((t,r,e)=>t+Math.abs(r-n[e]),0)}function B(t,r,e){return t+(r-t)*e}function C(t,r){return Math.floor(Math.random()*(r-t+1))+t}function F(t,r){return Math.random()*(r-t)+t}function H(t,r){r=Math.pow(10,r);return Math.round(t*r)/r}function J(t){t=parseInt(t);return isNaN(t)?null:t}function K(t){t=parseFloat(t);return isNaN(t)?null:t}Object.defineProperty(exports,"__esModule",{value:!0}),exports.RADIANS_MULT=exports.DEGREES_MULT=void 0,exports.lerp=B,exports.manhattanDistance=z,exports.randFloat=F,exports.randInteger=C,exports.roundTo=H,exports.safeParseFloat=K,exports.safeParseInt=J,exports.toDegrees=y,exports.toRadians=w,require("./chunk-35d41ec6f373dcfb.js");var k=exports.RADIANS_MULT=Math.PI/180,q=exports.DEGREES_MULT=180/Math.PI;
+import"./chunk-1c49e647d94a40b6.js";
+
+// node_modules/
+function toRadians(degrees) {
+  return degrees * RADIANS_MULT;
+}
+function toDegrees(radians) {
+  return radians * DEGREES_MULT;
+}
+function manhattanDistance(a, b) {
+  return a.reduce((sum, v, i) => sum + Math.abs(v - b[i]), 0);
+}
+function lerp(a, b, t) {
+  return a + (b - a) * t;
+}
+function randInteger(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+function randFloat(min, max) {
+  return Math.random() * (max - min) + min;
+}
+function roundTo(n, places) {
+  const mult = Math.pow(10, places);
+  return Math.round(n * mult) / mult;
+}
+function safeParseInt(str) {
+  const n = parseInt(str);
+  return isNaN(n) ? null : n;
+}
+function safeParseFloat(str) {
+  const n = parseFloat(str);
+  return isNaN(n) ? null : n;
+}
+var RADIANS_MULT = Math.PI / 180;
+var DEGREES_MULT = 180 / Math.PI;
+export {
+  toRadians,
+  toDegrees,
+  safeParseInt,
+  safeParseFloat,
+  roundTo,
+  randInteger,
+  randFloat,
+  manhattanDistance,
+  lerp,
+  RADIANS_MULT,
+  DEGREES_MULT
+};
+
+
+
+//# debugId=0FD63CBE89D4117A64756e2164756e21
