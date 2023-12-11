@@ -5,7 +5,7 @@ safeCall
 } from "./functional.js";
 import"./chunk-1c49e647d94a40b6.js";
 
-// node_modules/.pnpm/argparse@2.0.1/node_modules/argparse/lib/textwrap.jsal/TriplewiseIterato
+// node_modules/.pnpm/argparse@2.0.1/node_modules/argparse/lib/textwrap.jsal/RoundrobinIterato
 class ConcatIterator {
   constructor(iterators) {
     this.iterators = iterators;
@@ -25,7 +25,7 @@ class ConcatIterator {
 }
 var ConcatIterator_default = ConcatIterator;
 
-// node_modules/.pnpm/argparse@2.0.1/node_modules/argparse/lib/textwrap.jsal/TriplewiseIterato
+// node_modules/.pnpm/argparse@2.0.1/node_modules/argparse/lib/textwrap.jsal/RoundrobinIterato
 class RepeatIterator {
   constructor(value, times) {
     this.value = value;
@@ -42,7 +42,7 @@ class RepeatIterator {
 }
 var RepeatIterator_default = RepeatIterator;
 
-// node_modules/.pnpm/argparse@2.0.1/node_modules/argparse/lib/textwrap.jsal/TriplewiseIterato
+// node_modules/.pnpm/argparse@2.0.1/node_modules/argparse/lib/textwrap.jsal/RoundrobinIterato
 class ObjectIterator {
   constructor(object, traversal = "post-order-DFS") {
     this.traversal = traversal;
@@ -80,19 +80,19 @@ class ObjectIterator {
 }
 var ObjectIterator_default = ObjectIterator;
 
-// node_modules/.pnpm/argparse@2.0.1/node_modules/argparse/lib/textwrap.jsal/Trip
+// node_modules/.pnpm/argparse@2.0.1/node_modules/argparse/lib/textwrap.jsal/Roun
 function isIterable(arg) {
   return typeof (arg === null || arg === undefined ? undefined : arg[Symbol.iterator]) === "function";
 }
 var isIterable_default = isIterable;
 
-// node_modules/.pnpm/argparse@2.0.1/node_modules/argparse/lib/textwrap.jsal/Trip
+// node_modules/.pnpm/argparse@2.0.1/node_modules/argparse/lib/textwrap.jsal/Roun
 function isIterator(arg) {
   return typeof (arg === null || arg === undefined ? undefined : arg.next) === "function";
 }
 var isIterator_default = isIterator;
 
-// node_modules/.pnpm/argparse@2.0.1/node_modules/argparse/lib/textwrap.jsal/TriplewiseIterator.
+// node_modules/.pnpm/argparse@2.0.1/node_modules/argparse/lib/textwrap.jsal/RoundrobinIterator.
 class FunctionIterator {
   constructor(func, sentinel) {
     this.func = func;
@@ -108,7 +108,7 @@ class FunctionIterator {
 }
 var FunctionIterator_default = FunctionIterator;
 
-// node_modules/.pnpm/argparse@2.0.1/node_modules/argparse/lib/textwrap.jsal/Trip
+// node_modules/.pnpm/argparse@2.0.1/node_modules/argparse/lib/textwrap.jsal/Roun
 function toIterator(...args) {
   if (isIterator_default(args[0]))
     return args[0];
@@ -122,7 +122,7 @@ function toIterator(...args) {
 }
 var toIterator_default = toIterator;
 
-// node_modules/.pnpm/argparse@2.0.1/node_modules/argparse/lib/textwrap.jsal/TriplewiseIter
+// node_modules/.pnpm/argparse@2.0.1/node_modules/argparse/lib/textwrap.jsal/RoundrobinIter
 class MapIterator {
   constructor(iterator, iteratee) {
     this.iterator = iterator;
@@ -140,7 +140,7 @@ class MapIterator {
 }
 var MapIterator_default = MapIterator;
 
-// node_modules/.pnpm/argparse@2.0.1/node_modules/argparse/lib/textwrap.jsal/Tri
+// node_modules/.pnpm/argparse@2.0.1/node_modules/argparse/lib/textwrap.jsal/Rou
 function enumerate(arg) {
   return new MapIterator_default(toIterator_default(arg), ((count = 0) => (v) => [count++, v])());
 }
@@ -249,5 +249,3 @@ export {
 };
 
 
-
-//# debugId=D0113043BD56083964756e2164756e21
