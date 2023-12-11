@@ -1,96 +1,323 @@
-import {
-assert,
-equal,
-expectType,
-throws
-} from "./assertions.js";
-import {
-BinarySearch
-} from "./BinarySearch.js";
-import {
-exec,
-importSync,
-main,
-nodeOnly,
-sh
-} from "./misc.js";
-import {
-DEGREES_MULT,
-RADIANS_MULT,
-lerp,
-manhattanDistance,
-randFloat,
-randInteger,
-roundTo,
-safeParseFloat,
-safeParseInt,
-toDegrees,
-toRadians
-} from "./number.js";
-import {
-attempt,
-constant,
-effect,
-identity,
-iife,
-isNullish,
-isObjectLike,
-isOk,
-limitConcurrentCalls,
-multiComparator,
-noop,
-ok,
-okOr,
-once,
-pipe,
-raise,
-safeCall,
-sleep
-} from "./functional.js";
-import"./types.js";
-import {
-InMemoryCache
-} from "./InMemoryCache.js";
-import {
-findItemsFrom,
-groupBy,
-isPartiallyLike,
-propIs,
-safeJSONParse,
-sortByKeys
-} from "./object.js";
-import {
-__commonJS,
-__require
-} from "./chunk-1c49e647d94a40b6.js";
+"use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "BinarySearch", {
+  enumerable: true,
+  get: function () {
+    return _BinarySearch.BinarySearch;
+  }
+});
+Object.defineProperty(exports, "DEGREES_MULT", {
+  enumerable: true,
+  get: function () {
+    return _number.DEGREES_MULT;
+  }
+});
+Object.defineProperty(exports, "InMemoryCache", {
+  enumerable: true,
+  get: function () {
+    return _InMemoryCache.InMemoryCache;
+  }
+});
+Object.defineProperty(exports, "RADIANS_MULT", {
+  enumerable: true,
+  get: function () {
+    return _number.RADIANS_MULT;
+  }
+});
+Object.defineProperty(exports, "assert", {
+  enumerable: true,
+  get: function () {
+    return _assertions.assert;
+  }
+});
+Object.defineProperty(exports, "attempt", {
+  enumerable: true,
+  get: function () {
+    return _functional.attempt;
+  }
+});
+exports.coerceHash = coerceHash;
+Object.defineProperty(exports, "constant", {
+  enumerable: true,
+  get: function () {
+    return _functional.constant;
+  }
+});
+Object.defineProperty(exports, "effect", {
+  enumerable: true,
+  get: function () {
+    return _functional.effect;
+  }
+});
+Object.defineProperty(exports, "equal", {
+  enumerable: true,
+  get: function () {
+    return _assertions.equal;
+  }
+});
+Object.defineProperty(exports, "exec", {
+  enumerable: true,
+  get: function () {
+    return _misc.exec;
+  }
+});
+Object.defineProperty(exports, "expectType", {
+  enumerable: true,
+  get: function () {
+    return _assertions.expectType;
+  }
+});
+exports.fastHash = fastHash;
+Object.defineProperty(exports, "findItemsFrom", {
+  enumerable: true,
+  get: function () {
+    return _object.findItemsFrom;
+  }
+});
+Object.defineProperty(exports, "groupBy", {
+  enumerable: true,
+  get: function () {
+    return _object.groupBy;
+  }
+});
+exports.hashWithLength = hashWithLength;
+Object.defineProperty(exports, "identity", {
+  enumerable: true,
+  get: function () {
+    return _functional.identity;
+  }
+});
+Object.defineProperty(exports, "iife", {
+  enumerable: true,
+  get: function () {
+    return _functional.iife;
+  }
+});
+Object.defineProperty(exports, "importSync", {
+  enumerable: true,
+  get: function () {
+    return _misc.importSync;
+  }
+});
+Object.defineProperty(exports, "isNullish", {
+  enumerable: true,
+  get: function () {
+    return _functional.isNullish;
+  }
+});
+Object.defineProperty(exports, "isObjectLike", {
+  enumerable: true,
+  get: function () {
+    return _functional.isObjectLike;
+  }
+});
+Object.defineProperty(exports, "isOk", {
+  enumerable: true,
+  get: function () {
+    return _functional.isOk;
+  }
+});
+Object.defineProperty(exports, "isPartiallyLike", {
+  enumerable: true,
+  get: function () {
+    return _object.isPartiallyLike;
+  }
+});
+Object.defineProperty(exports, "lerp", {
+  enumerable: true,
+  get: function () {
+    return _number.lerp;
+  }
+});
+Object.defineProperty(exports, "limitConcurrentCalls", {
+  enumerable: true,
+  get: function () {
+    return _functional.limitConcurrentCalls;
+  }
+});
+Object.defineProperty(exports, "main", {
+  enumerable: true,
+  get: function () {
+    return _misc.main;
+  }
+});
+Object.defineProperty(exports, "manhattanDistance", {
+  enumerable: true,
+  get: function () {
+    return _number.manhattanDistance;
+  }
+});
+exports.matches = matches;
+Object.defineProperty(exports, "multiComparator", {
+  enumerable: true,
+  get: function () {
+    return _functional.multiComparator;
+  }
+});
+Object.defineProperty(exports, "nodeOnly", {
+  enumerable: true,
+  get: function () {
+    return _misc.nodeOnly;
+  }
+});
+Object.defineProperty(exports, "noop", {
+  enumerable: true,
+  get: function () {
+    return _functional.noop;
+  }
+});
+Object.defineProperty(exports, "ok", {
+  enumerable: true,
+  get: function () {
+    return _functional.ok;
+  }
+});
+Object.defineProperty(exports, "okOr", {
+  enumerable: true,
+  get: function () {
+    return _functional.okOr;
+  }
+});
+Object.defineProperty(exports, "once", {
+  enumerable: true,
+  get: function () {
+    return _functional.once;
+  }
+});
+exports.parseArgs = void 0;
+Object.defineProperty(exports, "pipe", {
+  enumerable: true,
+  get: function () {
+    return _functional.pipe;
+  }
+});
+Object.defineProperty(exports, "propIs", {
+  enumerable: true,
+  get: function () {
+    return _object.propIs;
+  }
+});
+Object.defineProperty(exports, "raise", {
+  enumerable: true,
+  get: function () {
+    return _functional.raise;
+  }
+});
+Object.defineProperty(exports, "randFloat", {
+  enumerable: true,
+  get: function () {
+    return _number.randFloat;
+  }
+});
+Object.defineProperty(exports, "randInteger", {
+  enumerable: true,
+  get: function () {
+    return _number.randInteger;
+  }
+});
+Object.defineProperty(exports, "roundTo", {
+  enumerable: true,
+  get: function () {
+    return _number.roundTo;
+  }
+});
+Object.defineProperty(exports, "safeCall", {
+  enumerable: true,
+  get: function () {
+    return _functional.safeCall;
+  }
+});
+Object.defineProperty(exports, "safeJSONParse", {
+  enumerable: true,
+  get: function () {
+    return _object.safeJSONParse;
+  }
+});
+Object.defineProperty(exports, "safeParseFloat", {
+  enumerable: true,
+  get: function () {
+    return _number.safeParseFloat;
+  }
+});
+Object.defineProperty(exports, "safeParseInt", {
+  enumerable: true,
+  get: function () {
+    return _number.safeParseInt;
+  }
+});
+Object.defineProperty(exports, "sh", {
+  enumerable: true,
+  get: function () {
+    return _misc.sh;
+  }
+});
+Object.defineProperty(exports, "sleep", {
+  enumerable: true,
+  get: function () {
+    return _functional.sleep;
+  }
+});
+Object.defineProperty(exports, "sortByKeys", {
+  enumerable: true,
+  get: function () {
+    return _object.sortByKeys;
+  }
+});
+exports.stringSplice = stringSplice;
+Object.defineProperty(exports, "throws", {
+  enumerable: true,
+  get: function () {
+    return _assertions.throws;
+  }
+});
+Object.defineProperty(exports, "toDegrees", {
+  enumerable: true,
+  get: function () {
+    return _number.toDegrees;
+  }
+});
+exports.toMatch = toMatch;
+Object.defineProperty(exports, "toRadians", {
+  enumerable: true,
+  get: function () {
+    return _number.toRadians;
+  }
+});
+var _assertions = require("./assertions.js");
+var _BinarySearch = require("./BinarySearch.js");
+var _misc = require("./misc.js");
+var _number = require("./number.js");
+var _functional = require("./functional.js");
+require("./types.js");
+var _InMemoryCache = require("./InMemoryCache.js");
+var _object = require("./object.js");
+var _chunk1c49e647d94a40b = require("./chunk-1c49e647d94a40b6.js");
 // node_modules/.pnpm/argparse@2.0.1/node_modules/argparse/lib/textwr
-var require_sub = __commonJS((exports, module) => {
-  var { inspect } = __require("util");
+var require_sub = (0, _chunk1c49e647d94a40b.__commonJS)((exports, module) => {
+  var {
+    inspect
+  } = (0, _chunk1c49e647d94a40b.__require)("util");
   module.exports = function sub(pattern, ...values) {
     let regex = /%(?:(%)|(-)?(\*)?(?:\((\w+)\))?([A-Za-z]))/g;
-    let result = pattern.replace(regex, function(_, is_literal, is_left_align, is_padded, name, format) {
-      if (is_literal)
-        return "%";
+    let result = pattern.replace(regex, function (_, is_literal, is_left_align, is_padded, name, format) {
+      if (is_literal) return "%";
       let padded_count = 0;
       if (is_padded) {
-        if (values.length === 0)
-          throw new TypeError("not enough arguments for format string");
+        if (values.length === 0) throw new TypeError("not enough arguments for format string");
         padded_count = values.shift();
-        if (!Number.isInteger(padded_count))
-          throw new TypeError("* wants int");
+        if (!Number.isInteger(padded_count)) throw new TypeError("* wants int");
       }
       let str;
       if (name !== undefined) {
         let dict = values[0];
-        if (typeof dict !== "object" || dict === null)
-          throw new TypeError("format requires a mapping");
-        if (!(name in dict))
-          throw new TypeError(`no such key: '${name}'`);
+        if (typeof dict !== "object" || dict === null) throw new TypeError("format requires a mapping");
+        if (!(name in dict)) throw new TypeError(`no such key: '${name}'`);
         str = dict[name];
       } else {
-        if (values.length === 0)
-          throw new TypeError("not enough arguments for format string");
+        if (values.length === 0) throw new TypeError("not enough arguments for format string");
         str = values.shift();
       }
       switch (format) {
@@ -117,8 +344,7 @@ var require_sub = __commonJS((exports, module) => {
       }
     });
     if (values.length) {
-      if (values.length === 1 && typeof values[0] === "object" && values[0] !== null) {
-      } else {
+      if (values.length === 1 && typeof values[0] === "object" && values[0] !== null) {} else {
         throw new TypeError("not all arguments converted during string formatting");
       }
     }
@@ -127,18 +353,28 @@ var require_sub = __commonJS((exports, module) => {
 });
 
 // node_modules/.pnpm/argparse@2.0.1/node_modules/argparse/lib/textwrap.js
-var require_textwrap = __commonJS((exports, module) => {
-  var wrap = function(text, options = {}) {
-    let { width = 70, ...kwargs } = options;
-    let w = new TextWrapper(Object.assign({ width }, kwargs));
+var require_textwrap = (0, _chunk1c49e647d94a40b.__commonJS)((exports, module) => {
+  var wrap = function (text, options = {}) {
+    let {
+      width = 70,
+      ...kwargs
+    } = options;
+    let w = new TextWrapper(Object.assign({
+      width
+    }, kwargs));
     return w.wrap(text);
   };
-  var fill = function(text, options = {}) {
-    let { width = 70, ...kwargs } = options;
-    let w = new TextWrapper(Object.assign({ width }, kwargs));
+  var fill = function (text, options = {}) {
+    let {
+      width = 70,
+      ...kwargs
+    } = options;
+    let w = new TextWrapper(Object.assign({
+      width
+    }, kwargs));
     return w.fill(text);
   };
-  var dedent = function(text) {
+  var dedent = function (text) {
     let margin = undefined;
     text = text.replace(_whitespace_only_re, "");
     let indents = text.match(_leading_whitespace_re) || [];
@@ -146,11 +382,10 @@ var require_textwrap = __commonJS((exports, module) => {
       indent = indent.slice(0, -1);
       if (margin === undefined) {
         margin = indent;
-      } else if (indent.startsWith(margin)) {
-      } else if (margin.startsWith(indent)) {
+      } else if (indent.startsWith(margin)) {} else if (margin.startsWith(indent)) {
         margin = indent;
       } else {
-        for (let i = 0;i < margin.length && i < indent.length; i++) {
+        for (let i = 0; i < margin.length && i < indent.length; i++) {
           if (margin[i] !== indent[i]) {
             margin = margin.slice(0, i);
             break;
@@ -164,7 +399,6 @@ var require_textwrap = __commonJS((exports, module) => {
     return text;
   };
   var wordsep_simple_re = /([\t\n\x0b\x0c\r ]+)/;
-
   class TextWrapper {
     constructor(options = {}) {
       let {
@@ -263,7 +497,7 @@ var require_textwrap = __commonJS((exports, module) => {
         }
         if (chunks.length && chunks[chunks.length - 1].length > width) {
           this._handle_long_word(chunks, cur_line, cur_len, width);
-          cur_len = cur_line.map((l) => l.length).reduce((a, b) => a + b, 0);
+          cur_len = cur_line.map(l => l.length).reduce((a, b) => a + b, 0);
         }
         if (this.drop_whitespace && cur_line.length > 0 && cur_line[cur_line.length - 1].trim() === "") {
           cur_len -= cur_line[cur_line.length - 1].length;
@@ -314,98 +548,92 @@ var require_textwrap = __commonJS((exports, module) => {
   }
   var _whitespace_only_re = /^[ \t]+$/mg;
   var _leading_whitespace_re = /(^[ \t]*)(?:[^ \t\n])/mg;
-  module.exports = { wrap, fill, dedent };
+  module.exports = {
+    wrap,
+    fill,
+    dedent
+  };
 });
 
 // /home/dano/repos/personal/js-utils/node_modules/argparse/argparse.js
-var require_argparse = __commonJS((exports, module) => {
-  var get_argv = function() {
+var require_argparse = (0, _chunk1c49e647d94a40b.__commonJS)((exports, module) => {
+  var get_argv = function () {
     return process.argv.slice(1);
   };
-  var get_terminal_size = function() {
+  var get_terminal_size = function () {
     return {
       columns: +process.env.COLUMNS || process.stdout.columns || 80
     };
   };
-  var hasattr = function(object2, name) {
+  var hasattr = function (object2, name) {
     return Object.prototype.hasOwnProperty.call(object2, name);
   };
-  var getattr = function(object2, name, value) {
+  var getattr = function (object2, name, value) {
     return hasattr(object2, name) ? object2[name] : value;
   };
-  var setattr = function(object2, name, value) {
+  var setattr = function (object2, name, value) {
     object2[name] = value;
   };
-  var setdefault = function(object2, name, value) {
-    if (!hasattr(object2, name))
-      object2[name] = value;
+  var setdefault = function (object2, name, value) {
+    if (!hasattr(object2, name)) object2[name] = value;
     return object2[name];
   };
-  var delattr = function(object2, name) {
+  var delattr = function (object2, name) {
     delete object2[name];
   };
-  var range = function(from, to, step = 1) {
-    if (arguments.length === 1)
-      [to, from] = [from, 0];
+  var range = function (from, to, step = 1) {
+    if (arguments.length === 1) [to, from] = [from, 0];
     if (typeof from !== "number" || typeof to !== "number" || typeof step !== "number") {
       throw new TypeError("argument cannot be interpreted as an integer");
     }
-    if (step === 0)
-      throw new TypeError("range() arg 3 must not be zero");
+    if (step === 0) throw new TypeError("range() arg 3 must not be zero");
     let result = [];
     if (step > 0) {
-      for (let i = from;i < to; i += step)
-        result.push(i);
+      for (let i = from; i < to; i += step) result.push(i);
     } else {
-      for (let i = from;i > to; i += step)
-        result.push(i);
+      for (let i = from; i > to; i += step) result.push(i);
     }
     return result;
   };
-  var splitlines = function(str, keepends = false) {
+  var splitlines = function (str, keepends = false) {
     let result;
     if (!keepends) {
       result = str.split(/\r\n|[\n\r\v\f\x1c\x1d\x1e\x85\u2028\u2029]/);
     } else {
       result = [];
       let parts = str.split(/(\r\n|[\n\r\v\f\x1c\x1d\x1e\x85\u2028\u2029])/);
-      for (let i = 0;i < parts.length; i += 2) {
+      for (let i = 0; i < parts.length; i += 2) {
         result.push(parts[i] + (i + 1 < parts.length ? parts[i + 1] : ""));
       }
     }
-    if (!result[result.length - 1])
-      result.pop();
+    if (!result[result.length - 1]) result.pop();
     return result;
   };
-  var _string_lstrip = function(string2, prefix_chars) {
+  var _string_lstrip = function (string2, prefix_chars) {
     let idx = 0;
-    while (idx < string2.length && prefix_chars.includes(string2[idx]))
-      idx++;
+    while (idx < string2.length && prefix_chars.includes(string2[idx])) idx++;
     return idx ? string2.slice(idx) : string2;
   };
-  var _string_split = function(string2, sep, maxsplit) {
+  var _string_split = function (string2, sep, maxsplit) {
     let result = string2.split(sep);
     if (result.length > maxsplit) {
       result = result.slice(0, maxsplit).concat([result.slice(maxsplit).join(sep)]);
     }
     return result;
   };
-  var _array_equal = function(array1, array2) {
-    if (array1.length !== array2.length)
-      return false;
-    for (let i = 0;i < array1.length; i++) {
-      if (array1[i] !== array2[i])
-        return false;
+  var _array_equal = function (array1, array2) {
+    if (array1.length !== array2.length) return false;
+    for (let i = 0; i < array1.length; i++) {
+      if (array1[i] !== array2[i]) return false;
     }
     return true;
   };
-  var _array_remove = function(array, item) {
+  var _array_remove = function (array, item) {
     let idx = array.indexOf(item);
-    if (idx === -1)
-      throw new TypeError(sub("%r not in list", item));
+    if (idx === -1) throw new TypeError(sub("%r not in list", item));
     array.splice(idx, 1);
   };
-  var _choices_to_array = function(choices) {
+  var _choices_to_array = function (choices) {
     if (choices === undefined) {
       return [];
     } else if (Array.isArray(choices)) {
@@ -418,9 +646,9 @@ var require_argparse = __commonJS((exports, module) => {
       throw new Error(sub("invalid choices value: %r", choices));
     }
   };
-  var _callable = function(cls) {
+  var _callable = function (cls) {
     let result = {
-      [cls.name]: function(...args2) {
+      [cls.name]: function (...args2) {
         let this_class = new.target === result || !new.target;
         return Reflect.construct(cls, args2, this_class ? cls : new.target);
       }
@@ -429,47 +657,39 @@ var require_argparse = __commonJS((exports, module) => {
     cls.prototype[Symbol.toStringTag] = cls.name;
     return result[cls.name];
   };
-  var _alias = function(object2, from, to) {
+  var _alias = function (object2, from, to) {
     try {
       let name = object2.constructor.name;
       Object.defineProperty(object2, from, {
         value: util.deprecate(object2[to], sub("%s.%s() is renamed to %s.%s()", name, from, name, to)),
         enumerable: false
       });
-    } catch {
-    }
+    } catch {}
   };
-  var _camelcase_alias = function(_class) {
+  var _camelcase_alias = function (_class) {
     for (let name of Object.getOwnPropertyNames(_class.prototype)) {
-      let camelcase = name.replace(/\w_[a-z]/g, (s) => s[0] + s[2].toUpperCase());
-      if (camelcase !== name)
-        _alias(_class.prototype, camelcase, name);
+      let camelcase = name.replace(/\w_[a-z]/g, s => s[0] + s[2].toUpperCase());
+      if (camelcase !== name) _alias(_class.prototype, camelcase, name);
     }
     return _class;
   };
-  var _to_legacy_name = function(key) {
-    key = key.replace(/\w_[a-z]/g, (s) => s[0] + s[2].toUpperCase());
-    if (key === "default")
-      key = "defaultValue";
-    if (key === "const")
-      key = "constant";
+  var _to_legacy_name = function (key) {
+    key = key.replace(/\w_[a-z]/g, s => s[0] + s[2].toUpperCase());
+    if (key === "default") key = "defaultValue";
+    if (key === "const") key = "constant";
     return key;
   };
-  var _to_new_name = function(key) {
-    if (key === "defaultValue")
-      key = "default";
-    if (key === "constant")
-      key = "const";
-    key = key.replace(/[A-Z]/g, (c) => "_" + c.toLowerCase());
+  var _to_new_name = function (key) {
+    if (key === "defaultValue") key = "default";
+    if (key === "constant") key = "const";
+    key = key.replace(/[A-Z]/g, c => "_" + c.toLowerCase());
     return key;
   };
-  var _parse_opts = function(args2, descriptor) {
+  var _parse_opts = function (args2, descriptor) {
     function get_name() {
-      let stack = new Error().stack.split("\n").map((x) => x.match(/^    at (.*) \(.*\)$/)).filter(Boolean).map((m) => m[1]).map((fn) => fn.match(/[^ .]*$/)[0]);
-      if (stack.length && stack[0] === get_name.name)
-        stack.shift();
-      if (stack.length && stack[0] === _parse_opts.name)
-        stack.shift();
+      let stack = new Error().stack.split("\n").map(x => x.match(/^    at (.*) \(.*\)$/)).filter(Boolean).map(m => m[1]).map(fn => fn.match(/[^ .]*$/)[0]);
+      if (stack.length && stack[0] === get_name.name) stack.shift();
+      if (stack.length && stack[0] === _parse_opts.name) stack.shift();
       return stack.length ? stack[0] : "";
     }
     args2 = Array.from(args2);
@@ -483,8 +703,7 @@ var require_argparse = __commonJS((exports, module) => {
     for (let key of Object.keys(descriptor)) {
       let old_name = _to_legacy_name(key);
       if (old_name !== key && old_name in kwargs) {
-        if (key in kwargs) {
-        } else {
+        if (key in kwargs) {} else {
           kwargs[key] = kwargs[old_name];
         }
         renames.push([old_name, key]);
@@ -504,8 +723,7 @@ var require_argparse = __commonJS((exports, module) => {
           for (let key2 of Object.keys(kwargs)) {
             let new_name = _to_new_name(key2);
             if (new_name !== key2 && key2 in kwargs) {
-              if (new_name in kwargs) {
-              } else {
+              if (new_name in kwargs) {} else {
                 kwargs[new_name] = kwargs[key2];
               }
               renames2.push([key2, new_name]);
@@ -545,19 +763,17 @@ var require_argparse = __commonJS((exports, module) => {
     }
     if (missing_positionals.length) {
       let strs = missing_positionals.map(repr);
-      if (strs.length > 1)
-        strs[strs.length - 1] = "and " + strs[strs.length - 1];
+      if (strs.length > 1) strs[strs.length - 1] = "and " + strs[strs.length - 1];
       let str_joined = strs.join(strs.length === 2 ? "" : ", ");
       throw new TypeError(sub("%s() missing %i required positional argument%s: %s", get_name(), strs.length, strs.length === 1 ? "" : "s", str_joined));
     }
     return result;
   };
-  var deprecate = function(id, string2) {
-    _deprecations[id] = _deprecations[id] || util.deprecate(() => {
-    }, string2);
+  var deprecate = function (id, string2) {
+    _deprecations[id] = _deprecations[id] || util.deprecate(() => {}, string2);
     _deprecations[id]();
   };
-  var _AttributeHolder = function(cls = Object) {
+  var _AttributeHolder = function (cls = Object) {
     return class _AttributeHolder2 extends cls {
       [util.inspect.custom]() {
         let type_name = this.constructor.name;
@@ -589,13 +805,13 @@ var require_argparse = __commonJS((exports, module) => {
       }
     };
   };
-  var _copy_items = function(items) {
+  var _copy_items = function (items) {
     if (items === undefined) {
       return [];
     }
     return items.slice(0);
   };
-  var _get_action_name = function(argument) {
+  var _get_action_name = function (argument) {
     if (argument === undefined) {
       return;
     } else if (argument.option_strings.length) {
@@ -615,22 +831,17 @@ var require_argparse = __commonJS((exports, module) => {
   var PARSER = "A...";
   var REMAINDER = "...";
   var _UNRECOGNIZED_ARGS_ATTR = "_unrecognized_args";
-  var assert2 = __require("assert");
-  var util = __require("util");
-  var fs = __require("fs");
+  var assert2 = (0, _chunk1c49e647d94a40b.__require)("assert");
+  var util = (0, _chunk1c49e647d94a40b.__require)("util");
+  var fs = (0, _chunk1c49e647d94a40b.__require)("fs");
   var sub = require_sub();
-  var path = __require("path");
+  var path = (0, _chunk1c49e647d94a40b.__require)("path");
   var repr = util.inspect;
   var no_default = Symbol("no_default_value");
   var _deprecations = {};
   var HelpFormatter = _camelcase_alias(_callable(class HelpFormatter2 {
     constructor() {
-      let [
-        prog,
-        indent_increment,
-        max_help_position,
-        width
-      ] = _parse_opts(arguments, {
+      let [prog, indent_increment, max_help_position, width] = _parse_opts(arguments, {
         prog: no_default,
         indent_increment: 2,
         max_help_position: 24,
@@ -691,7 +902,7 @@ var require_argparse = __commonJS((exports, module) => {
         for (let subaction of this._iter_indented_subactions(action)) {
           invocations.push(this._format_action_invocation(subaction));
         }
-        let invocation_length = Math.max(...invocations.map((invocation) => invocation.length));
+        let invocation_length = Math.max(...invocations.map(invocation => invocation.length));
         let action_length = invocation_length + this._current_indent;
         this._action_max_length = Math.max(this._action_max_length, action_length);
         this._add_item(this._format_action.bind(this), [action]);
@@ -711,18 +922,24 @@ var require_argparse = __commonJS((exports, module) => {
       return help;
     }
     _join_parts(part_strings) {
-      return part_strings.filter((part) => part && part !== SUPPRESS).join("");
+      return part_strings.filter(part => part && part !== SUPPRESS).join("");
     }
     _format_usage(usage, actions, groups, prefix) {
       if (prefix === undefined) {
         prefix = "usage: ";
       }
       if (usage !== undefined) {
-        usage = sub(usage, { prog: this._prog });
+        usage = sub(usage, {
+          prog: this._prog
+        });
       } else if (usage === undefined && !actions.length) {
-        usage = sub("%(prog)s", { prog: this._prog });
+        usage = sub("%(prog)s", {
+          prog: this._prog
+        });
       } else if (usage === undefined) {
-        let prog = sub("%(prog)s", { prog: this._prog });
+        let prog = sub("%(prog)s", {
+          prog: this._prog
+        });
         let optionals = [];
         let positionals = [];
         for (let action of actions) {
@@ -797,7 +1014,7 @@ var require_argparse = __commonJS((exports, module) => {
       return sub("%s%s\n\n", prefix, usage);
     }
     _format_actions_usage(actions, groups) {
-      let group_actions = new Set;
+      let group_actions = new Set();
       let inserts = {};
       for (let group of groups) {
         let start = actions.indexOf(group._group_actions[0]);
@@ -885,7 +1102,9 @@ var require_argparse = __commonJS((exports, module) => {
     }
     _format_text(text) {
       if (text.includes("%(prog)")) {
-        text = sub(text, { prog: this._prog });
+        text = sub(text, {
+          prog: this._prog
+        });
       }
       let text_width = Math.max(this._width - this._current_indent, 11);
       let indent = " ".repeat(this._current_indent);
@@ -997,7 +1216,9 @@ var require_argparse = __commonJS((exports, module) => {
       return result;
     }
     _expand_help(action) {
-      let params = Object.assign({ prog: this._prog }, action);
+      let params = Object.assign({
+        prog: this._prog
+      }, action);
       for (let name of Object.keys(params)) {
         if (params[name] === SUPPRESS) {
           delete params[name];
@@ -1030,7 +1251,9 @@ var require_argparse = __commonJS((exports, module) => {
     _split_lines(text, width) {
       text = text.replace(this._whitespace_matcher, " ").trim();
       let textwrap = require_textwrap();
-      return textwrap.wrap(text, { width });
+      return textwrap.wrap(text, {
+        width
+      });
     }
     _fill_text(text, width, indent) {
       text = text.replace(this._whitespace_matcher, " ").trim();
@@ -1081,7 +1304,7 @@ var require_argparse = __commonJS((exports, module) => {
   });
   var RawDescriptionHelpFormatter = _camelcase_alias(_callable(class RawDescriptionHelpFormatter2 extends HelpFormatter {
     _fill_text(text, width, indent) {
-      return splitlines(text, true).map((line) => indent + line).join("");
+      return splitlines(text, true).map(line => indent + line).join("");
     }
   }));
   var RawTextHelpFormatter = _camelcase_alias(_callable(class RawTextHelpFormatter2 extends RawDescriptionHelpFormatter {
@@ -1140,18 +1363,7 @@ var require_argparse = __commonJS((exports, module) => {
   });
   var Action = _camelcase_alias(_callable(class Action2 extends _AttributeHolder(Function) {
     constructor() {
-      let [
-        option_strings,
-        dest,
-        nargs,
-        const_value,
-        default_value,
-        type,
-        choices,
-        required,
-        help,
-        metavar
-      ] = _parse_opts(arguments, {
+      let [option_strings, dest, nargs, const_value, default_value, type, choices, required, help, metavar] = _parse_opts(arguments, {
         option_strings: no_default,
         dest: no_default,
         nargs: undefined,
@@ -1176,18 +1388,8 @@ var require_argparse = __commonJS((exports, module) => {
       this.metavar = metavar;
     }
     _get_kwargs() {
-      let names = [
-        "option_strings",
-        "dest",
-        "nargs",
-        "const",
-        "default",
-        "type",
-        "choices",
-        "help",
-        "metavar"
-      ];
-      return names.map((name) => [name, getattr(this, name)]);
+      let names = ["option_strings", "dest", "nargs", "const", "default", "type", "choices", "help", "metavar"];
+      return names.map(name => [name, getattr(this, name)]);
     }
     format_usage() {
       return this.option_strings[0];
@@ -1198,16 +1400,7 @@ var require_argparse = __commonJS((exports, module) => {
   }));
   var BooleanOptionalAction = _camelcase_alias(_callable(class BooleanOptionalAction2 extends Action {
     constructor() {
-      let [
-        option_strings,
-        dest,
-        default_value,
-        type,
-        choices,
-        required,
-        help,
-        metavar
-      ] = _parse_opts(arguments, {
+      let [option_strings, dest, default_value, type, choices, required, help, metavar] = _parse_opts(arguments, {
         option_strings: no_default,
         dest: no_default,
         default: undefined,
@@ -1251,18 +1444,7 @@ var require_argparse = __commonJS((exports, module) => {
   }));
   var _StoreAction = _callable(class _StoreAction2 extends Action {
     constructor() {
-      let [
-        option_strings,
-        dest,
-        nargs,
-        const_value,
-        default_value,
-        type,
-        choices,
-        required,
-        help,
-        metavar
-      ] = _parse_opts(arguments, {
+      let [option_strings, dest, nargs, const_value, default_value, type, choices, required, help, metavar] = _parse_opts(arguments, {
         option_strings: no_default,
         dest: no_default,
         nargs: undefined,
@@ -1299,14 +1481,7 @@ var require_argparse = __commonJS((exports, module) => {
   });
   var _StoreConstAction = _callable(class _StoreConstAction2 extends Action {
     constructor() {
-      let [
-        option_strings,
-        dest,
-        const_value,
-        default_value,
-        required,
-        help
-      ] = _parse_opts(arguments, {
+      let [option_strings, dest, const_value, default_value, required, help] = _parse_opts(arguments, {
         option_strings: no_default,
         dest: no_default,
         const: no_default,
@@ -1331,13 +1506,7 @@ var require_argparse = __commonJS((exports, module) => {
   });
   var _StoreTrueAction = _callable(class _StoreTrueAction2 extends _StoreConstAction {
     constructor() {
-      let [
-        option_strings,
-        dest,
-        default_value,
-        required,
-        help
-      ] = _parse_opts(arguments, {
+      let [option_strings, dest, default_value, required, help] = _parse_opts(arguments, {
         option_strings: no_default,
         dest: no_default,
         default: false,
@@ -1356,13 +1525,7 @@ var require_argparse = __commonJS((exports, module) => {
   });
   var _StoreFalseAction = _callable(class _StoreFalseAction2 extends _StoreConstAction {
     constructor() {
-      let [
-        option_strings,
-        dest,
-        default_value,
-        required,
-        help
-      ] = _parse_opts(arguments, {
+      let [option_strings, dest, default_value, required, help] = _parse_opts(arguments, {
         option_strings: no_default,
         dest: no_default,
         default: true,
@@ -1381,18 +1544,7 @@ var require_argparse = __commonJS((exports, module) => {
   });
   var _AppendAction = _callable(class _AppendAction2 extends Action {
     constructor() {
-      let [
-        option_strings,
-        dest,
-        nargs,
-        const_value,
-        default_value,
-        type,
-        choices,
-        required,
-        help,
-        metavar
-      ] = _parse_opts(arguments, {
+      let [option_strings, dest, nargs, const_value, default_value, type, choices, required, help, metavar] = _parse_opts(arguments, {
         option_strings: no_default,
         dest: no_default,
         nargs: undefined,
@@ -1432,15 +1584,7 @@ var require_argparse = __commonJS((exports, module) => {
   });
   var _AppendConstAction = _callable(class _AppendConstAction2 extends Action {
     constructor() {
-      let [
-        option_strings,
-        dest,
-        const_value,
-        default_value,
-        required,
-        help,
-        metavar
-      ] = _parse_opts(arguments, {
+      let [option_strings, dest, const_value, default_value, required, help, metavar] = _parse_opts(arguments, {
         option_strings: no_default,
         dest: no_default,
         const: no_default,
@@ -1469,13 +1613,7 @@ var require_argparse = __commonJS((exports, module) => {
   });
   var _CountAction = _callable(class _CountAction2 extends Action {
     constructor() {
-      let [
-        option_strings,
-        dest,
-        default_value,
-        required,
-        help
-      ] = _parse_opts(arguments, {
+      let [option_strings, dest, default_value, required, help] = _parse_opts(arguments, {
         option_strings: no_default,
         dest: no_default,
         default: undefined,
@@ -1501,12 +1639,7 @@ var require_argparse = __commonJS((exports, module) => {
   });
   var _HelpAction = _callable(class _HelpAction2 extends Action {
     constructor() {
-      let [
-        option_strings,
-        dest,
-        default_value,
-        help
-      ] = _parse_opts(arguments, {
+      let [option_strings, dest, default_value, help] = _parse_opts(arguments, {
         option_strings: no_default,
         dest: SUPPRESS,
         default: SUPPRESS,
@@ -1527,13 +1660,7 @@ var require_argparse = __commonJS((exports, module) => {
   });
   var _VersionAction = _callable(class _VersionAction2 extends Action {
     constructor() {
-      let [
-        option_strings,
-        version,
-        dest,
-        default_value,
-        help
-      ] = _parse_opts(arguments, {
+      let [option_strings, version, dest, default_value, help] = _parse_opts(arguments, {
         option_strings: no_default,
         version: undefined,
         dest: SUPPRESS,
@@ -1562,15 +1689,7 @@ var require_argparse = __commonJS((exports, module) => {
   });
   var _SubParsersAction = _camelcase_alias(_callable(class _SubParsersAction2 extends Action {
     constructor() {
-      let [
-        option_strings,
-        prog,
-        parser_class,
-        dest,
-        required,
-        help,
-        metavar
-      ] = _parse_opts(arguments, {
+      let [option_strings, prog, parser_class, dest, required, help, metavar] = _parse_opts(arguments, {
         option_strings: no_default,
         prog: no_default,
         parser_class: no_default,
@@ -1595,10 +1714,7 @@ var require_argparse = __commonJS((exports, module) => {
       this._choices_actions = [];
     }
     add_parser() {
-      let [
-        name,
-        kwargs
-      ] = _parse_opts(arguments, {
+      let [name, kwargs] = _parse_opts(arguments, {
         name: no_default,
         "**kwargs": no_default
       });
@@ -1652,11 +1768,17 @@ var require_argparse = __commonJS((exports, module) => {
   }));
   _SubParsersAction.prototype._ChoicesPseudoAction = _callable(class _ChoicesPseudoAction extends Action {
     constructor(name, aliases, help) {
-      let metavar = name, dest = name;
+      let metavar = name,
+        dest = name;
       if (aliases.length) {
         metavar += sub(" (%s)", aliases.join(", "));
       }
-      super({ option_strings: [], dest, help, metavar });
+      super({
+        option_strings: [],
+        dest,
+        help,
+        metavar
+      });
     }
   });
   var _ExtendAction = _callable(class _ExtendAction2 extends _AppendAction {
@@ -1669,17 +1791,7 @@ var require_argparse = __commonJS((exports, module) => {
   });
   var FileType = _callable(class FileType2 extends Function {
     constructor() {
-      let [
-        flags,
-        encoding,
-        mode,
-        autoClose,
-        emitClose,
-        start,
-        end,
-        highWaterMark,
-        fs2
-      ] = _parse_opts(arguments, {
+      let [flags, encoding, mode, autoClose, emitClose, start, end, highWaterMark, fs2] = _parse_opts(arguments, {
         flags: "r",
         encoding: undefined,
         mode: undefined,
@@ -1698,22 +1810,14 @@ var require_argparse = __commonJS((exports, module) => {
       });
       this._flags = flags;
       this._options = {};
-      if (encoding !== undefined)
-        this._options.encoding = encoding;
-      if (mode !== undefined)
-        this._options.mode = mode;
-      if (autoClose !== undefined)
-        this._options.autoClose = autoClose;
-      if (emitClose !== undefined)
-        this._options.emitClose = emitClose;
-      if (start !== undefined)
-        this._options.start = start;
-      if (end !== undefined)
-        this._options.end = end;
-      if (highWaterMark !== undefined)
-        this._options.highWaterMark = highWaterMark;
-      if (fs2 !== undefined)
-        this._options.fs = fs2;
+      if (encoding !== undefined) this._options.encoding = encoding;
+      if (mode !== undefined) this._options.mode = mode;
+      if (autoClose !== undefined) this._options.autoClose = autoClose;
+      if (emitClose !== undefined) this._options.emitClose = emitClose;
+      if (start !== undefined) this._options.start = start;
+      if (end !== undefined) this._options.end = end;
+      if (highWaterMark !== undefined) this._options.highWaterMark = highWaterMark;
+      if (fs2 !== undefined) this._options.fs = fs2;
     }
     call(string2) {
       if (string2 === "-") {
@@ -1730,11 +1834,17 @@ var require_argparse = __commonJS((exports, module) => {
       try {
         fd = fs.openSync(string2, this._flags, this._options.mode);
       } catch (e) {
-        let args2 = { filename: string2, error: e.message };
+        let args2 = {
+          filename: string2,
+          error: e.message
+        };
         let message = "can't open '%(filename)s': %(error)s";
         throw new ArgumentTypeError(sub(message, args2));
       }
-      let options = Object.assign({ fd, flags: this._flags }, this._options);
+      let options = Object.assign({
+        fd,
+        flags: this._flags
+      }, this._options);
       if (this._flags.includes("r")) {
         return fs.createReadStream(undefined, options);
       } else if (this._flags.includes("w")) {
@@ -1747,13 +1857,15 @@ var require_argparse = __commonJS((exports, module) => {
     [util.inspect.custom]() {
       let args2 = [this._flags];
       let kwargs = Object.entries(this._options).map(([k, v]) => {
-        if (k === "mode")
-          v = { value: v, [util.inspect.custom]() {
+        if (k === "mode") v = {
+          value: v,
+          [util.inspect.custom]() {
             return "0o" + this.value.toString(8);
-          } };
+          }
+        };
         return [k, v];
       });
-      let args_str = [].concat(args2.filter((arg) => arg !== -1).map(repr)).concat(kwargs.filter(([, arg]) => arg !== undefined).map(([kw, arg]) => sub("%s=%r", kw, arg))).join(", ");
+      let args_str = [].concat(args2.filter(arg => arg !== -1).map(repr)).concat(kwargs.filter(([, arg]) => arg !== undefined).map(([kw, arg]) => sub("%s=%r", kw, arg))).join(", ");
       return sub("%s(%s)", this.constructor.name, args_str);
     }
     toString() {
@@ -1769,12 +1881,7 @@ var require_argparse = __commonJS((exports, module) => {
   Namespace.prototype[Symbol.toStringTag] = undefined;
   var _ActionsContainer = _camelcase_alias(_callable(class _ActionsContainer2 {
     constructor() {
-      let [
-        description,
-        prefix_chars,
-        argument_default,
-        conflict_handler
-      ] = _parse_opts(arguments, {
+      let [description, prefix_chars, argument_default, conflict_handler] = _parse_opts(arguments, {
         description: no_default,
         prefix_chars: no_default,
         argument_default: no_default,
@@ -1797,7 +1904,7 @@ var require_argparse = __commonJS((exports, module) => {
       this.register("action", "version", _VersionAction);
       this.register("action", "parsers", _SubParsersAction);
       this.register("action", "extend", _ExtendAction);
-      ["storeConst", "storeTrue", "storeFalse", "appendConst"].forEach((old_name) => {
+      ["storeConst", "storeTrue", "storeFalse", "appendConst"].forEach(old_name => {
         let new_name = _to_new_name(old_name);
         this.register("action", old_name, util.deprecate(this._registry_get("action", new_name), sub('{action: "%s"} is renamed to {action: "%s"}', old_name, new_name)));
       });
@@ -1834,10 +1941,7 @@ var require_argparse = __commonJS((exports, module) => {
       return this._defaults[dest];
     }
     add_argument() {
-      let [
-        args2,
-        kwargs
-      ] = _parse_opts(arguments, {
+      let [args2, kwargs] = _parse_opts(arguments, {
         "*args": no_default,
         "**kwargs": no_default
       });
@@ -1927,7 +2031,7 @@ var require_argparse = __commonJS((exports, module) => {
         }
         title_group_map[group.title] = group;
       }
-      let group_map = new Map;
+      let group_map = new Map();
       for (let group of container._action_groups) {
         if (!(group.title in title_group_map)) {
           title_group_map[group.title] = this.add_argument_group({
@@ -1953,10 +2057,7 @@ var require_argparse = __commonJS((exports, module) => {
       }
     }
     _get_positional_kwargs() {
-      let [
-        dest,
-        kwargs
-      ] = _parse_opts(arguments, {
+      let [dest, kwargs] = _parse_opts(arguments, {
         dest: no_default,
         "**kwargs": no_default
       });
@@ -1970,13 +2071,13 @@ var require_argparse = __commonJS((exports, module) => {
       if (kwargs.nargs === ZERO_OR_MORE && !("default" in kwargs)) {
         kwargs.required = true;
       }
-      return Object.assign(kwargs, { dest, option_strings: [] });
+      return Object.assign(kwargs, {
+        dest,
+        option_strings: []
+      });
     }
     _get_optional_kwargs() {
-      let [
-        args2,
-        kwargs
-      ] = _parse_opts(arguments, {
+      let [args2, kwargs] = _parse_opts(arguments, {
         "*args": no_default,
         "**kwargs": no_default
       });
@@ -2013,7 +2114,10 @@ var require_argparse = __commonJS((exports, module) => {
         }
         dest = dest.replace(/-/g, "_");
       }
-      return Object.assign(kwargs, { dest, option_strings });
+      return Object.assign(kwargs, {
+        dest,
+        option_strings
+      });
     }
     _pop_action_class(kwargs, default_value = undefined) {
       let action = getattr(kwargs, "action", default_value);
@@ -2059,12 +2163,7 @@ var require_argparse = __commonJS((exports, module) => {
   }));
   var _ArgumentGroup = _callable(class _ArgumentGroup2 extends _ActionsContainer {
     constructor() {
-      let [
-        container,
-        title,
-        description,
-        kwargs
-      ] = _parse_opts(arguments, {
+      let [container, title, description, kwargs] = _parse_opts(arguments, {
         container: no_default,
         title: undefined,
         description: undefined,
@@ -2073,7 +2172,9 @@ var require_argparse = __commonJS((exports, module) => {
       setdefault(kwargs, "conflict_handler", container.conflict_handler);
       setdefault(kwargs, "prefix_chars", container.prefix_chars);
       setdefault(kwargs, "argument_default", container.argument_default);
-      super(Object.assign({ description }, kwargs));
+      super(Object.assign({
+        description
+      }, kwargs));
       this.title = title;
       this._group_actions = [];
       this._registries = container._registries;
@@ -2095,10 +2196,7 @@ var require_argparse = __commonJS((exports, module) => {
   });
   var _MutuallyExclusiveGroup = _callable(class _MutuallyExclusiveGroup2 extends _ArgumentGroup {
     constructor() {
-      let [
-        container,
-        required
-      ] = _parse_opts(arguments, {
+      let [container, required] = _parse_opts(arguments, {
         container: no_default,
         required: false
       });
@@ -2122,23 +2220,7 @@ var require_argparse = __commonJS((exports, module) => {
   });
   var ArgumentParser = _camelcase_alias(_callable(class ArgumentParser2 extends _AttributeHolder(_ActionsContainer) {
     constructor() {
-      let [
-        prog,
-        usage,
-        description,
-        epilog,
-        parents,
-        formatter_class,
-        prefix_chars,
-        fromfile_prefix_chars,
-        argument_default,
-        conflict_handler,
-        add_help,
-        allow_abbrev,
-        exit_on_error,
-        debug,
-        version
-      ] = _parse_opts(arguments, {
+      let [prog, usage, description, epilog, parents, formatter_class, prefix_chars, fromfile_prefix_chars, argument_default, conflict_handler, add_help, allow_abbrev, exit_on_error, debug, version] = _parse_opts(arguments, {
         prog: undefined,
         usage: undefined,
         description: undefined,
@@ -2188,14 +2270,14 @@ var require_argparse = __commonJS((exports, module) => {
       this.register("type", undefined, identity2);
       this.register("type", null, identity2);
       this.register("type", "auto", identity2);
-      this.register("type", "int", function(x) {
+      this.register("type", "int", function (x) {
         let result = Number(x);
         if (!Number.isInteger(result)) {
           throw new TypeError(sub("could not convert string to int: %r", x));
         }
         return result;
       });
-      this.register("type", "float", function(x) {
+      this.register("type", "float", function (x) {
         let result = Number(x);
         if (isNaN(result)) {
           throw new TypeError(sub("could not convert string to float: %r", x));
@@ -2226,20 +2308,11 @@ var require_argparse = __commonJS((exports, module) => {
       }
     }
     _get_kwargs() {
-      let names = [
-        "prog",
-        "usage",
-        "description",
-        "formatter_class",
-        "conflict_handler",
-        "add_help"
-      ];
-      return names.map((name) => [name, getattr(this, name)]);
+      let names = ["prog", "usage", "description", "formatter_class", "conflict_handler", "add_help"];
+      return names.map(name => [name, getattr(this, name)]);
     }
     add_subparsers() {
-      let [
-        kwargs
-      ] = _parse_opts(arguments, {
+      let [kwargs] = _parse_opts(arguments, {
         "**kwargs": no_default
       });
       if (this._subparsers !== undefined) {
@@ -2263,7 +2336,9 @@ var require_argparse = __commonJS((exports, module) => {
         kwargs.prog = formatter.format_help().trim();
       }
       let parsers_class = this._pop_action_class(kwargs, "parsers");
-      let action = new parsers_class(Object.assign({ option_strings: [] }, kwargs));
+      let action = new parsers_class(Object.assign({
+        option_strings: []
+      }, kwargs));
       this._subparsers._add_action(action);
       return action;
     }
@@ -2276,10 +2351,10 @@ var require_argparse = __commonJS((exports, module) => {
       return action;
     }
     _get_optional_actions() {
-      return this._actions.filter((action) => action.option_strings.length);
+      return this._actions.filter(action => action.option_strings.length);
     }
     _get_positional_actions() {
-      return this._actions.filter((action) => !action.option_strings.length);
+      return this._actions.filter(action => !action.option_strings.length);
     }
     parse_args(args2 = undefined, namespace = undefined) {
       let argv;
@@ -2295,7 +2370,7 @@ var require_argparse = __commonJS((exports, module) => {
         args2 = get_argv().slice(1);
       }
       if (namespace === undefined) {
-        namespace = new Namespace;
+        namespace = new Namespace();
       }
       for (let action of this._actions) {
         if (action.dest !== SUPPRESS) {
@@ -2334,7 +2409,7 @@ var require_argparse = __commonJS((exports, module) => {
       if (this.fromfile_prefix_chars !== undefined) {
         arg_strings = this._read_args_from_files(arg_strings);
       }
-      let action_conflicts = new Map;
+      let action_conflicts = new Map();
       for (let mutex_group of this._mutually_exclusive_groups) {
         let group_actions = mutex_group._group_actions;
         for (let [i, mutex_action] of Object.entries(mutex_group._group_actions)) {
@@ -2366,8 +2441,8 @@ var require_argparse = __commonJS((exports, module) => {
         }
       }
       let arg_strings_pattern = arg_string_pattern_parts.join("");
-      let seen_actions = new Set;
-      let seen_non_default_actions = new Set;
+      let seen_actions = new Set();
+      let seen_non_default_actions = new Set();
       let extras;
       let take_action = (action, argument_strings, option_string = undefined) => {
         seen_actions.add(action);
@@ -2386,12 +2461,12 @@ var require_argparse = __commonJS((exports, module) => {
           action(this, namespace, argument_values, option_string);
         }
       };
-      let consume_optional = (start_index2) => {
+      let consume_optional = start_index2 => {
         let option_tuple = option_string_indices[start_index2];
         let [action, option_string, explicit_arg] = option_tuple;
         let action_tuples = [];
         let stop;
-        for (;; ) {
+        for (;;) {
           if (action === undefined) {
             extras.push(arg_strings[start_index2]);
             return start_index2 + 1;
@@ -2438,10 +2513,10 @@ var require_argparse = __commonJS((exports, module) => {
         return stop;
       };
       let positionals = this._get_positional_actions();
-      let consume_positionals = (start_index2) => {
+      let consume_positionals = start_index2 => {
         let selected_pattern = arg_strings_pattern.slice(start_index2);
         let arg_counts = this._match_arguments_partial(positionals, selected_pattern);
-        for (let i = 0;i < positionals.length && i < arg_counts.length; i++) {
+        for (let i = 0; i < positionals.length && i < arg_counts.length; i++) {
           let action = positionals[i];
           let arg_count = arg_counts[i];
           let args2 = arg_strings.slice(start_index2, start_index2 + arg_count);
@@ -2455,7 +2530,7 @@ var require_argparse = __commonJS((exports, module) => {
       let start_index = 0;
       let max_option_string_index = Math.max(-1, ...Object.keys(option_string_indices).map(Number));
       while (start_index <= max_option_string_index) {
-        let next_option_string_index = Math.min(...Object.keys(option_string_indices).map(Number).filter((index) => index >= start_index));
+        let next_option_string_index = Math.min(...Object.keys(option_string_indices).map(Number).filter(index => index >= start_index));
         if (start_index !== next_option_string_index) {
           let positionals_end_index = consume_positionals(start_index);
           if (positionals_end_index > start_index) {
@@ -2499,7 +2574,7 @@ var require_argparse = __commonJS((exports, module) => {
             }
           }
           if (no_actions_used) {
-            let names = group._group_actions.filter((action) => action.help !== SUPPRESS).map((action) => _get_action_name(action));
+            let names = group._group_actions.filter(action => action.help !== SUPPRESS).map(action => _get_action_name(action));
             let msg = "one of the arguments %s is required";
             this.error(sub(msg, names.join(" ")));
           }
@@ -2554,10 +2629,10 @@ var require_argparse = __commonJS((exports, module) => {
       let result = [];
       for (let i of range(actions.length, 0, -1)) {
         let actions_slice = actions.slice(0, i);
-        let pattern = actions_slice.map((action) => this._get_nargs_pattern(action)).join("");
+        let pattern = actions_slice.map(action => this._get_nargs_pattern(action)).join("");
         let match = arg_strings_pattern.match(new RegExp("^" + pattern));
         if (match !== null) {
-          result = result.concat(match.slice(1).map((string2) => string2.length));
+          result = result.concat(match.slice(1).map(string2 => string2.length));
           break;
         }
       }
@@ -2587,7 +2662,10 @@ var require_argparse = __commonJS((exports, module) => {
       let option_tuples = this._get_option_tuples(arg_string);
       if (option_tuples.length > 1) {
         let options = option_tuples.map(([, option_string]) => option_string).join(", ");
-        let args2 = { option: arg_string, matches: options };
+        let args2 = {
+          option: arg_string,
+          matches: options
+        };
         let msg = "ambiguous option: %(option)s could match %(matches)s";
         this.error(sub(msg, args2));
       } else if (option_tuples.length === 1) {
@@ -2683,7 +2761,7 @@ var require_argparse = __commonJS((exports, module) => {
     parse_known_intermixed_args(args2 = undefined, namespace = undefined) {
       let extras;
       let positionals = this._get_positional_actions();
-      let a = positionals.filter((action) => [PARSER, REMAINDER].includes(action.nargs));
+      let a = positionals.filter(action => [PARSER, REMAINDER].includes(action.nargs));
       if (a.length) {
         throw new TypeError(sub("parse_intermixed_args: positional arg with nargs=%s", a[0].nargs));
       }
@@ -2750,8 +2828,7 @@ var require_argparse = __commonJS((exports, module) => {
       if (![PARSER, REMAINDER].includes(action.nargs)) {
         try {
           _array_remove(arg_strings, "--");
-        } catch (err) {
-        }
+        } catch (err) {}
       }
       let value;
       if (!arg_strings.length && action.nargs === OPTIONAL) {
@@ -2776,14 +2853,14 @@ var require_argparse = __commonJS((exports, module) => {
         value = this._get_value(action, arg_string);
         this._check_value(action, value);
       } else if (action.nargs === REMAINDER) {
-        value = arg_strings.map((v) => this._get_value(action, v));
+        value = arg_strings.map(v => this._get_value(action, v));
       } else if (action.nargs === PARSER) {
-        value = arg_strings.map((v) => this._get_value(action, v));
+        value = arg_strings.map(v => this._get_value(action, v));
         this._check_value(action, value[0]);
       } else if (action.nargs === SUPPRESS) {
         value = SUPPRESS;
       } else {
-        value = arg_strings.map((v) => this._get_value(action, v));
+        value = arg_strings.map(v => this._get_value(action, v));
         for (let v of value) {
           this._check_value(action, v);
         }
@@ -2813,7 +2890,10 @@ var require_argparse = __commonJS((exports, module) => {
           throw new ArgumentError(action, msg);
         } else if (err instanceof TypeError) {
           let name = getattr(action.type, "name", repr(action.type));
-          let args2 = { type: name, value: arg_string };
+          let args2 = {
+            type: name,
+            value: arg_string
+          };
           let msg = "invalid %(type)s value: %(value)r";
           throw new ArgumentError(action, sub(msg, args2));
         } else {
@@ -2851,22 +2931,21 @@ var require_argparse = __commonJS((exports, module) => {
       return formatter.format_help();
     }
     _get_formatter() {
-      return new this.formatter_class({ prog: this.prog });
+      return new this.formatter_class({
+        prog: this.prog
+      });
     }
     print_usage(file = undefined) {
-      if (file === undefined)
-        file = process.stdout;
+      if (file === undefined) file = process.stdout;
       this._print_message(this.format_usage(), file);
     }
     print_help(file = undefined) {
-      if (file === undefined)
-        file = process.stdout;
+      if (file === undefined) file = process.stdout;
       this._print_message(this.format_help(), file);
     }
     _print_message(message, file = undefined) {
       if (message) {
-        if (file === undefined)
-          file = process.stderr;
+        if (file === undefined) file = process.stderr;
         file.write(message);
       }
     }
@@ -2877,10 +2956,12 @@ var require_argparse = __commonJS((exports, module) => {
       process.exit(status);
     }
     error(message) {
-      if (this.debug === true)
-        throw new Error(message);
+      if (this.debug === true) throw new Error(message);
       this.print_usage(process.stderr);
-      let args2 = { prog: this.prog, message };
+      let args2 = {
+        prog: this.prog,
+        message
+      };
       this.exit(2, sub("%(prog)s: error: %(message)s\n", args2));
     }
   }));
@@ -2907,7 +2988,14 @@ var require_argparse = __commonJS((exports, module) => {
   Object.defineProperty(module.exports, "Const", {
     get() {
       let result = {};
-      Object.entries({ ONE_OR_MORE, OPTIONAL, PARSER, REMAINDER, SUPPRESS, ZERO_OR_MORE }).forEach(([n, v]) => {
+      Object.entries({
+        ONE_OR_MORE,
+        OPTIONAL,
+        PARSER,
+        REMAINDER,
+        SUPPRESS,
+        ZERO_OR_MORE
+      }).forEach(([n, v]) => {
         Object.defineProperty(result, n, {
           get() {
             deprecate(n, sub("use argparse.%s instead of argparse.Const.%s", n, n));
@@ -2915,7 +3003,9 @@ var require_argparse = __commonJS((exports, module) => {
           }
         });
       });
-      Object.entries({ _UNRECOGNIZED_ARGS_ATTR }).forEach(([n, v]) => {
+      Object.entries({
+        _UNRECOGNIZED_ARGS_ATTR
+      }).forEach(([n, v]) => {
         Object.defineProperty(result, n, {
           get() {
             deprecate(n, sub("argparse.Const.%s is an internal symbol and will no longer be available", n));
@@ -2930,8 +3020,9 @@ var require_argparse = __commonJS((exports, module) => {
 });
 // node_modules/
 function fastHash(str, seed = 0) {
-  let h1 = 3735928559 ^ seed, h2 = 1103547991 ^ seed;
-  for (let i = 0, ch;i < str.length; i++) {
+  let h1 = 3735928559 ^ seed,
+    h2 = 1103547991 ^ seed;
+  for (let i = 0, ch; i < str.length; i++) {
     ch = str.charCodeAt(i);
     h1 = Math.imul(h1 ^ ch, 2246822519);
     h2 = Math.imul(h2 ^ ch, 3266489917);
@@ -2943,131 +3034,67 @@ function fastHash(str, seed = 0) {
   return 2097152 * (h2 >>> 0) + (h1 >>> 11);
 }
 function hashWithLength(input, length, seed = 0) {
-  if (length < 0)
-    throw new Error("`length` cannot be less than zero");
+  if (length < 0) throw new Error("`length` cannot be less than zero");
   const h = typeof input === "number" ? input : fastHash(input, seed);
   const approxBaseFromLength = Math.max(Math.min(Math.pow(2, Math.ceil(Math.log2(length))), 36), 2);
   let result = h.toString(approxBaseFromLength);
-  if (result.length === length)
-    return result;
-  for (let i = 1;i < length * 2; i++) {
-    if (approxBaseFromLength + i > 36)
-      continue;
+  if (result.length === length) return result;
+  for (let i = 1; i < length * 2; i++) {
+    if (approxBaseFromLength + i > 36) continue;
     result = h.toString(approxBaseFromLength + i);
-    if (result.length === length)
-      return result;
-    if (approxBaseFromLength - i < 2)
-      continue;
+    if (result.length === length) return result;
+    if (approxBaseFromLength - i < 2) continue;
     result = h.toString(approxBaseFromLength - i);
-    if (result.length === length)
-      return result;
+    if (result.length === length) return result;
   }
   return h.toString().padEnd(length, "0").slice(0, length);
 }
 function coerceHash(input, seed = 0) {
-  if (typeof input === "string")
-    return fastHash(input, seed);
-  if (typeof input === "number")
-    return fastHash(input.toString(), seed);
-  if (Array.isArray(input))
-    return fastHash(input.map((v) => coerceHash(v, seed)).join(""));
-  if (isObjectLike(input))
-    return fastHash(JSON.stringify(sortByKeys(input)), seed);
-  if (typeof input === "bigint")
-    return fastHash(input.toString());
-  if (typeof input === "undefined")
-    return fastHash("undefined", seed);
-  if (typeof input === "symbol")
-    return fastHash(input.toString(), seed);
+  if (typeof input === "string") return fastHash(input, seed);
+  if (typeof input === "number") return fastHash(input.toString(), seed);
+  if (Array.isArray(input)) return fastHash(input.map(v => coerceHash(v, seed)).join(""));
+  if ((0, _functional.isObjectLike)(input)) return fastHash(JSON.stringify((0, _object.sortByKeys)(input)), seed);
+  if (typeof input === "bigint") return fastHash(input.toString());
+  if (typeof input === "undefined") return fastHash("undefined", seed);
+  if (typeof input === "symbol") return fastHash(input.toString(), seed);
   return fastHash(JSON.stringify(input), seed);
 }
 function matches(regex, string) {
-  if (!regex.flags.includes("g"))
-    regex = new RegExp(regex.source, regex.flags + "g");
+  if (!regex.flags.includes("g")) regex = new RegExp(regex.source, regex.flags + "g");
   return {
     [Symbol.iterator]() {
       return this;
     },
     next: () => {
       const result = regex.exec(string);
-      if (!result)
-        return { done: true, value: undefined };
-      return { done: false, value: result };
+      if (!result) return {
+        done: true,
+        value: undefined
+      };
+      return {
+        done: false,
+        value: result
+      };
     }
   };
 }
 function toMatch(value) {
-  if (!value || typeof value.index !== "number" || typeof value.input !== "string")
-    return null;
+  if (!value || typeof value.index !== "number" || typeof value.input !== "string") return null;
   const str = value[0];
-  return Object.assign(str, { start: value.index, end: value.index + str.length, input: value.input });
+  return Object.assign(str, {
+    start: value.index,
+    end: value.index + str.length,
+    input: value.input
+  });
 }
 function stringSplice(str, index, count = 1, add = "") {
-  if (index < 0 || count < 0)
-    throw new Error("index and count parameters cannot be less than zero");
+  if (index < 0 || count < 0) throw new Error("index and count parameters cannot be less than zero");
   return str.slice(0, index) + add + str.slice(index + count);
 }
 // node_module
 var parseArgs = (constructorParams, ...args2) => {
-  const parser = new (require_argparse()).ArgumentParser(constructorParams);
-  for (const arg of args2)
-    parser.add_argument(...arg);
+  const parser = new (require_argparse().ArgumentParser)(constructorParams);
+  for (const arg of args2) parser.add_argument(...arg);
   return parser.parse_args();
 };
-export {
-  toRadians,
-  toMatch,
-  toDegrees,
-  throws,
-  stringSplice,
-  sortByKeys,
-  sleep,
-  sh,
-  safeParseInt,
-  safeParseFloat,
-  safeJSONParse,
-  safeCall,
-  roundTo,
-  randInteger,
-  randFloat,
-  raise,
-  propIs,
-  pipe,
-  parseArgs,
-  once,
-  okOr,
-  ok,
-  noop,
-  nodeOnly,
-  multiComparator,
-  matches,
-  manhattanDistance,
-  main,
-  limitConcurrentCalls,
-  lerp,
-  isPartiallyLike,
-  isOk,
-  isObjectLike,
-  isNullish,
-  importSync,
-  iife,
-  identity,
-  hashWithLength,
-  groupBy,
-  findItemsFrom,
-  fastHash,
-  expectType,
-  exec,
-  equal,
-  effect,
-  constant,
-  coerceHash,
-  attempt,
-  assert,
-  RADIANS_MULT,
-  InMemoryCache,
-  DEGREES_MULT,
-  BinarySearch
-};
-
-//# debugId=E649273A9CFD3D7464756e2164756e21
+exports.parseArgs = parseArgs;

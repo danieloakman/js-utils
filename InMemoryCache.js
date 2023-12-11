@@ -1,15 +1,18 @@
-import"./functional.js";
-import {
-safeJSONParse
-} from "./object.js";
-import"./chunk-1c49e647d94a40b6.js";
+"use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.InMemoryCache = void 0;
+require("./functional.js");
+var _object = require("./object.js");
+require("./chunk-1c49e647d94a40b6.js");
 // node_modules/.pnpm/a
 class InMemoryCache {
-  map = new Map;
+  map = new Map();
   async get(key) {
     const value = this.map.get(key);
-    return safeJSONParse(value ?? "");
+    return (0, _object.safeJSONParse)(value ?? "");
   }
   async delete(key) {
     return this.map.delete(key);
@@ -25,14 +28,8 @@ class InMemoryCache {
     this.map.clear();
     return true;
   }
-  async* keys() {
+  async *keys() {
     yield* this.map.keys();
   }
 }
-export {
-  InMemoryCache
-};
-
-
-
-//# debugId=82CE071363FA918B64756e2164756e21
+exports.InMemoryCache = InMemoryCache;

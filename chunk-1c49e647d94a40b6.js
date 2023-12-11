@@ -1,8 +1,14 @@
-var __commonJS = (cb, mod) => () => (mod || cb((mod = { exports: {} }).exports, mod), mod.exports);
-var __require = (id) => {
-  return import.meta.require(id);
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.__require = exports.__commonJS = void 0;
+var __commonJS = (cb, mod) => () => (mod || cb((mod = {
+  exports: {}
+}).exports, mod), mod.exports);
+exports.__commonJS = __commonJS;
+var __require = id => {
+  return require(id);
 };
-
-export { __commonJS, __require };
-
-//# debugId=1C49E647D94A40B664756e2164756e21
+exports.__require = __require;
