@@ -1,1 +1,25 @@
-import{e as r} from"./functional.js";function b(o){return(...t)=>r("This function is only available in Node compatible run times (e.g. Node, Bun).")}var h=(o)=>require(o),i=(...o)=>r("Cannot have a main function in this runtime environment."),j=()=>r("Cannot run shell commands in browser."),k=()=>r("Cannot run shell commands in browser.");export{j as sh,b as nodeOnly,i as main,h as importSync,k as exec};
+import {
+raise
+} from "./functional.js";
+
+// node_module
+function nodeOnly(fn) {
+  if (true)
+    return (..._) => raise("This function is only available in Node compatible run times (e.g. Node, Bun).");
+  return fn;
+}
+var importSync = (name) => require(name);
+var main = (..._) => raise("Cannot have a main function in this runtime environment.");
+var sh = () => raise("Cannot run shell commands in browser.");
+var exec = () => raise("Cannot run shell commands in browser.");
+export {
+  sh,
+  nodeOnly,
+  main,
+  importSync,
+  exec
+};
+
+
+
+//# debugId=1ECDED52DDE32CA864756e2164756e21

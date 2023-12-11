@@ -1,1 +1,50 @@
-function w(o){return o*k}function y(o){return o*q}function z(o,c){return o.reduce((f,h,j)=>f+Math.abs(h-c[j]),0)}function B(o,c,f){return o+(c-o)*f}function C(o,c){return Math.floor(Math.random()*(c-o+1))+o}function F(o,c){return Math.random()*(c-o)+o}function H(o,c){const f=Math.pow(10,c);return Math.round(o*f)/f}function J(o){const c=parseInt(o);return isNaN(c)?null:c}function K(o){const c=parseFloat(o);return isNaN(c)?null:c}var k=Math.PI/180,q=180/Math.PI;export{w as toRadians,y as toDegrees,J as safeParseInt,K as safeParseFloat,H as roundTo,C as randInteger,F as randFloat,z as manhattanDistance,B as lerp,k as RADIANS_MULT,q as DEGREES_MULT};
+// node_modules/
+function toRadians(degrees) {
+  return degrees * RADIANS_MULT;
+}
+function toDegrees(radians) {
+  return radians * DEGREES_MULT;
+}
+function manhattanDistance(a, b) {
+  return a.reduce((sum, v, i) => sum + Math.abs(v - b[i]), 0);
+}
+function lerp(a, b, t) {
+  return a + (b - a) * t;
+}
+function randInteger(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+function randFloat(min, max) {
+  return Math.random() * (max - min) + min;
+}
+function roundTo(n, places) {
+  const mult = Math.pow(10, places);
+  return Math.round(n * mult) / mult;
+}
+function safeParseInt(str) {
+  const n = parseInt(str);
+  return isNaN(n) ? null : n;
+}
+function safeParseFloat(str) {
+  const n = parseFloat(str);
+  return isNaN(n) ? null : n;
+}
+var RADIANS_MULT = Math.PI / 180;
+var DEGREES_MULT = 180 / Math.PI;
+export {
+  toRadians,
+  toDegrees,
+  safeParseInt,
+  safeParseFloat,
+  roundTo,
+  randInteger,
+  randFloat,
+  manhattanDistance,
+  lerp,
+  RADIANS_MULT,
+  DEGREES_MULT
+};
+
+
+
+//# debugId=CD2514E85CCB288264756e2164756e21
