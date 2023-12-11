@@ -1,2 +1,66 @@
 // @bun
-import{d as x,f as z} from"./functional.js";import"./chunk-35d41ec6f373dcfb.js";function I(g){return g}var B=(g)=>import.meta.require(g),J=async(g,_)=>{if(g===Bun.main)_()},K=(...g)=>z(({spawn:_}=B("child_process"))=>{const q=g.join("\n");return new Promise((U)=>{const T=x(()=>_(q,{shell:!0,stdio:"inherit"}));if(T instanceof Error)return U(T);T.on("close",(b)=>{if(b)U(new Error(`Command "${q}" exited with code ${b}`));else U(!0)}),T.on("error",(b)=>U(b))})}),L=(...g)=>z(({spawn:_}=B("child_process"))=>{const q=g.join("\n");return new Promise((U)=>{const T=x(()=>_(q,{shell:!0}));if(T instanceof Error)return U(T);let b="";const A=(j)=>{const E=j.toString();b+=E+"\n"};T.stdout?.on("data",A),T.stderr?.on("data",A),T.on("close",(j)=>{if(j)U(new Error(`Command "${q}" exited with code ${j}`));else U(b)}),T.on("error",(j)=>U(j))})});export{K as sh,I as nodeOnly,J as main,B as importSync,L as exec};
+import {
+attempt,
+iife
+} from "./functional.js";
+import"./chunk-1c49e647d94a40b6.js";
+
+// node_module
+function nodeOnly(fn) {
+  if (false)
+    ;
+  return fn;
+}
+var importSync = (name) => import.meta.require(name);
+var main = async (module, mainFn) => {
+  if (module === Bun.main)
+    mainFn();
+};
+var sh = (...commands) => iife(({ spawn } = importSync("child_process")) => {
+  const fullCommand = commands.join("\n");
+  return new Promise((resolve) => {
+    const s = attempt(() => spawn(fullCommand, { shell: true, stdio: "inherit" }));
+    if (s instanceof Error)
+      return resolve(s);
+    s.on("close", (code) => {
+      if (code)
+        resolve(new Error(`Command "${fullCommand}" exited with code ${code}`));
+      else
+        resolve(true);
+    });
+    s.on("error", (err) => resolve(err));
+  });
+});
+var exec = (...commands) => iife(({ spawn } = importSync("child_process")) => {
+  const fullCommand = commands.join("\n");
+  return new Promise((resolve) => {
+    const s = attempt(() => spawn(fullCommand, { shell: true }));
+    if (s instanceof Error)
+      return resolve(s);
+    let data = "";
+    const handleData = (chunk) => {
+      const str = chunk.toString();
+      data += str + "\n";
+    };
+    s.stdout?.on("data", handleData);
+    s.stderr?.on("data", handleData);
+    s.on("close", (code) => {
+      if (code)
+        resolve(new Error(`Command "${fullCommand}" exited with code ${code}`));
+      else
+        resolve(data);
+    });
+    s.on("error", (err) => resolve(err));
+  });
+});
+export {
+  sh,
+  nodeOnly,
+  main,
+  importSync,
+  exec
+};
+
+
+
+//# debugId=CF33326157FFA40964756e2164756e21

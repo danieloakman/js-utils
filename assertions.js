@@ -1,2 +1,32 @@
 // @bun
-import"./functional.js";import{h} from"./chunk-35d41ec6f373dcfb.js";function r(d,i){if(!d)if(typeof i==="string")throw new Error(i);else throw i??new Error("Assertion failed")}var w=(d,i)=>{return import.meta.require("assert").throws(d,i)},y=(d)=>d,z=(d,i,j)=>{return import.meta.require("assert").deepStrictEqual(d,i,j)};export{w as throws,y as expectType,z as equal,r as assert};
+import"./functional.js";
+import {
+__require
+} from "./chunk-1c49e647d94a40b6.js";
+
+// node_modules/.pnp
+function assert(value, message) {
+  if (!value) {
+    if (typeof message === "string")
+      throw new Error(message);
+    else
+      throw message ?? new Error("Assertion failed");
+  }
+}
+var throws = (block, message) => {
+  return import.meta.require("assert").throws(block, message);
+};
+var expectType = (value) => value;
+var equal = (actual, expected, message) => {
+  return import.meta.require("assert").deepStrictEqual(actual, expected, message);
+};
+export {
+  throws,
+  expectType,
+  equal,
+  assert
+};
+
+
+
+//# debugId=35E735027216623064756e2164756e21

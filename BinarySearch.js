@@ -1,2 +1,67 @@
 // @bun
-import"./chunk-35d41ec6f373dcfb.js";class v{array;constructor(C,O={}){if(C.length<2)throw new Error("Array must be of at least length 2.");this.array=C,this.comparator=O.comparator||this.comparator}has(C){return this.indexOf(C)!==-1}indexOf(C){const{found:O,index:T}=this.search(C);return O?T:-1}closestIndexOf(C){const{found:O,index:T}=this.search(C);if(O)return T;let j=0,k=null;for(let q=T-1;q<=T+1;q++){if(q<0||q>=this.array.length)continue;const u=Math.abs(this.comparator(C,this.array[q]));if(!k||u<k)k=u,j=q}return j}at(C){return this.array[C]}comparator=(C,O)=>C-O;search(C){let O=0,T=this.array.length-1,j;do{j=Math.floor((O+T)/2);const k=this.comparator(C,this.array[j]);if(k>0)O=j+1;else if(k<0)T=j-1;else return{found:!0,index:j}}while(O<=T);return{found:!1,index:j}}}var z=v;export{z as default,v as BinarySearch};
+import"./chunk-1c49e647d94a40b6.js";
+
+// node_modules/.pnpm/
+class BinarySearch {
+  array;
+  constructor(array, options = {}) {
+    if (array.length < 2)
+      throw new Error("Array must be of at least length 2.");
+    this.array = array;
+    this.comparator = options.comparator || this.comparator;
+  }
+  has(element) {
+    return this.indexOf(element) !== -1;
+  }
+  indexOf(element) {
+    const { found, index } = this.search(element);
+    return found ? index : -1;
+  }
+  closestIndexOf(element) {
+    const { found, index } = this.search(element);
+    if (found)
+      return index;
+    let closestIndex = 0;
+    let closestDiff = null;
+    for (let i = index - 1;i <= index + 1; i++) {
+      if (i < 0 || i >= this.array.length)
+        continue;
+      const diff = Math.abs(this.comparator(element, this.array[i]));
+      if (!closestDiff || diff < closestDiff) {
+        closestDiff = diff;
+        closestIndex = i;
+      }
+    }
+    return closestIndex;
+  }
+  at(index) {
+    return this.array[index];
+  }
+  comparator = (a, b) => a - b;
+  search(element) {
+    let left = 0;
+    let right = this.array.length - 1;
+    let index;
+    do {
+      index = Math.floor((left + right) / 2);
+      const diff = this.comparator(element, this.array[index]);
+      if (diff > 0) {
+        left = index + 1;
+      } else if (diff < 0) {
+        right = index - 1;
+      } else {
+        return { found: true, index };
+      }
+    } while (left <= right);
+    return { found: false, index };
+  }
+}
+var BinarySearch_default = BinarySearch;
+export {
+  BinarySearch_default as default,
+  BinarySearch
+};
+
+
+
+//# debugId=EEF7C39358A487C064756e2164756e21

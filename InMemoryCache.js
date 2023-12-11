@@ -1,2 +1,39 @@
 // @bun
-import{a as h} from"./object.js";import"./functional.js";import"./chunk-35d41ec6f373dcfb.js";class i{map=new Map;async get(n){const p=this.map.get(n);return h(p??"")}async delete(n){return this.map.delete(n)}async set(n,p){return this.map.set(n,typeof p!=="string"?JSON.stringify(p):p),!0}async has(n){return this.map.has(n)}async clear(){return this.map.clear(),!0}async*keys(){yield*this.map.keys()}}export{i as InMemoryCache};
+import"./functional.js";
+import {
+safeJSONParse
+} from "./object.js";
+import"./chunk-1c49e647d94a40b6.js";
+
+// node_modules/.pnpm/a
+class InMemoryCache {
+  map = new Map;
+  async get(key) {
+    const value = this.map.get(key);
+    return safeJSONParse(value ?? "");
+  }
+  async delete(key) {
+    return this.map.delete(key);
+  }
+  async set(key, value) {
+    this.map.set(key, typeof value !== "string" ? JSON.stringify(value) : value);
+    return true;
+  }
+  async has(key) {
+    return this.map.has(key);
+  }
+  async clear() {
+    this.map.clear();
+    return true;
+  }
+  async* keys() {
+    yield* this.map.keys();
+  }
+}
+export {
+  InMemoryCache
+};
+
+
+
+//# debugId=63F653816842850E64756e2164756e21
