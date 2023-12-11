@@ -29,6 +29,7 @@
     "husky": "^8.0.3",
     "iteragain-es": "^3.18.3",
     "lint-staged": "^14.0.1",
+    "lodash-es": "^4.17.21",
     "more-node-fs": "^2.0.2",
     "prettier": "^2.8.8",
     "pretty-quick": "^3.1.3",
@@ -43,8 +44,5 @@
       "eslint --cache --fix"
     ]
   },
-  "types": "index.d.ts",
-  "dependencies": {
-    "lodash-es": "^4.17.21"
-  }
+  "types": "index.d.ts"
 }
