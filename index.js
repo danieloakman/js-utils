@@ -195,5 +195,3 @@ export {
   DEGREES_MULT,
   BinarySearch
 };
-
-//# debugId=AD2ED5CACD4A6F1E64756e2164756e21

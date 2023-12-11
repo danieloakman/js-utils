@@ -3,7 +3,7 @@ isObjectLike,
 safeCall
 } from "./functional.js";
 
-// node_modules/.pnpm/iteragain-es@3.18.3/node_modules/iteragain-es/internal/GroupByIterator.j
+// node_modules/.pnpm/iteragain-es@3.18.3/node_modules/iteragain-es/internal/RepeatIterator.js
 class ConcatIterator {
   constructor(iterators) {
     this.iterators = iterators;
@@ -23,7 +23,7 @@ class ConcatIterator {
 }
 var ConcatIterator_default = ConcatIterator;
 
-// node_modules/.pnpm/iteragain-es@3.18.3/node_modules/iteragain-es/internal/GroupByIterator.j
+// node_modules/.pnpm/iteragain-es@3.18.3/node_modules/iteragain-es/internal/RepeatIterator.js
 class RepeatIterator {
   constructor(value, times) {
     this.value = value;
@@ -40,7 +40,7 @@ class RepeatIterator {
 }
 var RepeatIterator_default = RepeatIterator;
 
-// node_modules/.pnpm/iteragain-es@3.18.3/node_modules/iteragain-es/internal/GroupByIterator.j
+// node_modules/.pnpm/iteragain-es@3.18.3/node_modules/iteragain-es/internal/RepeatIterator.js
 class ObjectIterator {
   constructor(object, traversal = "post-order-DFS") {
     this.traversal = traversal;
@@ -78,19 +78,19 @@ class ObjectIterator {
 }
 var ObjectIterator_default = ObjectIterator;
 
-// node_modules/.pnpm/iteragain-es@3.18.3/node_modules/iteragain-es/internal/Grou
+// node_modules/.pnpm/iteragain-es@3.18.3/node_modules/iteragain-es/internal/Repe
 function isIterable(arg) {
   return typeof (arg === null || arg === undefined ? undefined : arg[Symbol.iterator]) === "function";
 }
 var isIterable_default = isIterable;
 
-// node_modules/.pnpm/iteragain-es@3.18.3/node_modules/iteragain-es/internal/Grou
+// node_modules/.pnpm/iteragain-es@3.18.3/node_modules/iteragain-es/internal/Repe
 function isIterator(arg) {
   return typeof (arg === null || arg === undefined ? undefined : arg.next) === "function";
 }
 var isIterator_default = isIterator;
 
-// node_modules/.pnpm/iteragain-es@3.18.3/node_modules/iteragain-es/internal/GroupByIterator.js.
+// node_modules/.pnpm/iteragain-es@3.18.3/node_modules/iteragain-es/internal/RepeatIterator.jsr.
 class FunctionIterator {
   constructor(func, sentinel) {
     this.func = func;
@@ -106,7 +106,7 @@ class FunctionIterator {
 }
 var FunctionIterator_default = FunctionIterator;
 
-// node_modules/.pnpm/iteragain-es@3.18.3/node_modules/iteragain-es/internal/Grou
+// node_modules/.pnpm/iteragain-es@3.18.3/node_modules/iteragain-es/internal/Repe
 function toIterator(...args) {
   if (isIterator_default(args[0]))
     return args[0];
@@ -120,7 +120,7 @@ function toIterator(...args) {
 }
 var toIterator_default = toIterator;
 
-// node_modules/.pnpm/iteragain-es@3.18.3/node_modules/iteragain-es/internal/GroupByIterato
+// node_modules/.pnpm/iteragain-es@3.18.3/node_modules/iteragain-es/internal/RepeatIterator
 class MapIterator {
   constructor(iterator, iteratee) {
     this.iterator = iterator;
@@ -138,7 +138,7 @@ class MapIterator {
 }
 var MapIterator_default = MapIterator;
 
-// node_modules/.pnpm/iteragain-es@3.18.3/node_modules/iteragain-es/internal/Gro
+// node_modules/.pnpm/iteragain-es@3.18.3/node_modules/iteragain-es/internal/Rep
 function enumerate(arg) {
   return new MapIterator_default(toIterator_default(arg), ((count = 0) => (v) => [count++, v])());
 }
@@ -247,5 +247,3 @@ export {
 };
 
 
-
-//# debugId=D9312338F3A8F74764756e2164756e21
