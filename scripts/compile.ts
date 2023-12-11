@@ -1,9 +1,11 @@
 #! bun
 import { join, relative } from 'path';
-import { iife, ok, parseArgs, pipe, sh } from '../src';
+import { iife, ok, parseArgs, pipe, sh, matches, raise, stringSplice, toMatch } from '../src';
 import { readdirDeep } from 'more-node-fs';
-import { minify } from 'uglify-js';
 import { clean } from './clean';
+import { existsSync } from 'fs';
+import { filterMap, toArray } from 'iteragain-es';
+import { last } from 'lodash-es';
 
 export const esmToCjs = iife(
   ({ transformSync } = require('@babel/core')) =>
@@ -35,15 +37,16 @@ export async function compile(args: CompileArgs): Promise<Error | boolean> {
 
   // Build
   const buildResult = await Bun.build({
-    minify: true,
+    minify: false,
     entrypoints: srcFiles as string[],
     outdir: '.',
-    splitting: false,
+    splitting: true,
     external: ['arg-parse'],
     // TODO: once bun supports cjs as a format, then put args.format here. For now babel is being used to transpile to cjs.
     format: 'esm',
     target: args.target,
     root: './src',
+    sourcemap: 'external',
     define: {
       'Bun.env.RUNTIME': `'${args.target}'`,
       'parseArgs': '() => { throw new Error("Can\'t parse args in browser.") }',
@@ -52,25 +55,41 @@ export async function compile(args: CompileArgs): Promise<Error | boolean> {
 
   if (buildResult.logs.length) console.log(buildResult.logs);
 
+  if (!existsSync(join(import.meta.dir, '../index.js')))
+    return new Error('Build did not contain `index.js` file, aborting.');
+
   if (!buildResult.success) return new Error('Build failed.');
+
   console.log(
     'Compiled:',
     await readdirDeep(process.cwd(), { ignore: /node_modules/ }).then(({ files }) =>
       files.filter(v => v.endsWith('.js')).map(v => relative(process.cwd(), v)),
     ),
-    // buildResult.outputs.map(v => relative(process.cwd(), v.path)),
   );
+
+  /** Up to date file text contents. Because buildResult.outputs *could* contain an out of date blob. */
+  const buildOutputs = buildResult.outputs.map(v => ({ path: v.path, text: () => Bun.file(v.path).text() }));
+
+  for (const output of buildOutputs) {
+    const text = await output.text();
+    const m = toArray(filterMap(matches(/export {[^}]+}/g, text), toMatch));
+    if (m.length >= 2) {
+      console.log('Found multiple exports in', output.path);
+      const l = last(m) ?? raise('Could not find last');
+      await Bun.write(output.path, stringSplice(text, l.start, l.length + 1));
+    }
+  }
 
   if (args.format === 'cjs') {
     // Transpile to cjs:
-    for (const output of buildResult.outputs) {
+    for (const output of buildOutputs) {
       const transpiled = pipe(
         await output.text(),
         esmToCjs,
         str => str.replaceAll('import.meta.require', 'require'),
-        minify,
-        ok,
-        v => v.code,
+        // minify,
+        // ok,
+        // v => v.code,
       );
       await Bun.write(output.path, transpiled);
     }
