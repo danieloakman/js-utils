@@ -46,7 +46,7 @@ export async function compile(args: CompileArgs): Promise<Error | boolean> {
     format: 'esm',
     target: args.target,
     root: './src',
-    sourcemap: 'external',
+    // sourcemap: 'external',
     define: {
       'Bun.env.RUNTIME': `'${args.target}'`,
       'parseArgs': '() => { throw new Error("Can\'t parse args in browser.") }',
