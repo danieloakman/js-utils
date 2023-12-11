@@ -38,7 +38,7 @@ export async function compile(args: CompileArgs): Promise<Error | boolean> {
     minify: true,
     entrypoints: srcFiles as string[],
     outdir: '.',
-    splitting: true,
+    splitting: false,
     external: ['arg-parse'],
     // TODO: once bun supports cjs as a format, then put args.format here. For now babel is being used to transpile to cjs.
     format: 'esm',
