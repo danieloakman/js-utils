@@ -44,5 +44,3 @@ export {
   RADIANS_MULT,
   DEGREES_MULT
 };
-
-
