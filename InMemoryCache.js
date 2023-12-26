@@ -33,5 +33,3 @@ class InMemoryCache {
 export {
   InMemoryCache
 };
-
-

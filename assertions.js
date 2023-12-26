@@ -26,5 +26,3 @@ export {
   equal,
   assert
 };
-
-
