@@ -2,7 +2,6 @@
   "name": "js-utils",
   "version": "0.1.0",
   "author": "Daniel Oakman",
-  "main": "index.js",
   "scripts": {
     "test": "bun test",
     "test:watch": "bun test --watch",
@@ -44,5 +43,7 @@
       "eslint --cache --fix"
     ]
   },
-  "types": "index.d.ts"
+  "main": "index.js",
+  "types": "index.d.ts",
+  "files": ["*.d.ts", "*.js"]
 }
