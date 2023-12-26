@@ -74,3 +74,6 @@ export type ObjectWithValueAtPath<Path extends string[], Value> = Path extends [
  *      ^? { a: string } & { b: number }
  */
 export type UnionToIntersection<U> = (U extends any ? (x: U) => void : never) extends (x: infer I) => void ? I : never;
+
+/** Unions T with itself and with it wrapped in a Promise. */
+export type PromiseOrValue<T> = T | Promise<T>;
