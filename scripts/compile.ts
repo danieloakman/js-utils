@@ -1,11 +1,12 @@
 #! bun
 import { join, relative } from 'path';
 import { iife, ok, parseArgs, pipe, sh, matches, raise, stringSplice, toMatch } from '../src';
-import { readdirDeep } from 'more-node-fs';
+import { readdirDeep, walkdir } from 'more-node-fs';
 import { clean } from './clean';
 import { existsSync } from 'fs';
 import { filterMap, toArray } from 'iteragain-es';
 import { last } from 'lodash-es';
+import { rm } from 'fs/promises';
 
 export const esmToCjs = iife(
   ({ transformSync } = require('@babel/core')) =>
@@ -31,9 +32,14 @@ export async function compile(args: CompileArgs): Promise<Error | boolean> {
   // Build types only:
   // ok(await sh('bunx tsc -p tsconfig.types-only.json'));
 
-  // Build types and JS with typescript first.
-  // This is mainly to create the type declaration files, but also to fill in for any js files that bun doesn't include.
-  ok(await sh(`bunx tsc -p tsconfig.${args.format}.json --emitDeclarationOnly`));
+  // Build types and index.js with typescript first, This is mainly to create the type declaration files, but also to
+  // include the `index.js` which is sometimes not included.
+  ok(await sh(`bunx tsc -p tsconfig.${args.format}.json`));
+  for await (const { path, stats } of walkdir(join(import.meta.dir, '../'), { ignore: /node_modules/i })) {
+    if (!stats.isFile() || !path.endsWith('.js')) continue;
+    // Remove all js files except index.js:
+    if (!path.endsWith('index.js')) await rm(path);
+  }
 
   // Build
   const buildResult = await Bun.build({
@@ -70,9 +76,11 @@ export async function compile(args: CompileArgs): Promise<Error | boolean> {
   /** Up to date file text contents. Because buildResult.outputs *could* contain an out of date blob. */
   const buildOutputs = buildResult.outputs.map(v => ({ path: v.path, text: () => Bun.file(v.path).text() }));
 
+  // Post build processing and checks:
   for (const output of buildOutputs) {
     const text = await output.text();
     const m = toArray(filterMap(matches(/export {[^}]+}/g, text), toMatch));
+    // Remove all exports except the last one:
     if (m.length >= 2) {
       console.log('Found multiple exports in', output.path);
       const l = last(m) ?? raise('Could not find last');
