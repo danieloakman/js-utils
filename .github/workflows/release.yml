@@ -2,8 +2,9 @@ name: Release
 
 on:
   push:
+    # branches: [master, main]
     tags:
-      - 'v*'
+      - "v*"
   workflow_dispatch:
 
 jobs:
@@ -11,36 +12,26 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      # Give the default GITHUB_TOKEN write permission to commit and push the
-      # added or changed files to the repository.
+      # Need this to upload release assets
       contents: write
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # - name: Create Release
-      #   id: create_release
-      #   uses: actions/create-release@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-      #   with:
-      #     tag_name: ${{ github.ref }}
-      #     release_name: Release ${{ github.ref }}
-      #     # body: |
-      #     #   Changes in this Release
-      #     #   - First Change
-      #     #   - Second Change
-      #     draft: false
-      #     prerelease: true
-
       - uses: oven-sh/setup-bun@v1
         with:
           bun-version: latest
 
-      - name: Install Dependencies 🛠️
+      - name: Install Dependencies 📥
         run: |
           bun install
+
+      - name: Check, Lint, Test 🧪
+        run: |
+          bun check
+          bun lint
+          bun test
 
       - name: Compile to Bun runtime 🛠️
         run: |
@@ -68,10 +59,3 @@ jobs:
             js-utils-bun.tgz
             js-utils-node.tgz
             js-utils-browser.tgz
-
-      - uses: actions/upload-artifact@v3
-        if: failure()
-        with:
-          name: deploy-docs-report
-          path: deploy-docs-report
-          retention-days: 30
