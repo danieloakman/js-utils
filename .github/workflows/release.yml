@@ -2,37 +2,23 @@ name: Release
 
 on:
   push:
+    # branches: [master, main]
     tags:
-      - 'v*'
+      - "v*.*.*"
   workflow_dispatch:
 
 jobs:
   release:
     runs-on: ubuntu-latest
 
-    permissions:
-      # Give the default GITHUB_TOKEN write permission to commit and push the
-      # added or changed files to the repository.
-      contents: write
+    # permissions:
+    #   # Give the default GITHUB_TOKEN write permission to commit and push the
+    #   # added or changed files to the repository.
+    #   contents: write
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      # - name: Create Release
-      #   id: create_release
-      #   uses: actions/create-release@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-      #   with:
-      #     tag_name: ${{ github.ref }}
-      #     release_name: Release ${{ github.ref }}
-      #     # body: |
-      #     #   Changes in this Release
-      #     #   - First Change
-      #     #   - Second Change
-      #     draft: false
-      #     prerelease: true
 
       - uses: oven-sh/setup-bun@v1
         with:
