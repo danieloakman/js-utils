@@ -1,7 +1,8 @@
 name: Release
 
 on:
-  push:
+  # TODO: couldn't get this to work, so just going to write a script to do it when manually run 
+  # push:
     # branches: [master, main]
     # tags:
     #   - "v*.*.*"
