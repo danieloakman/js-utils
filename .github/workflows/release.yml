@@ -47,19 +47,19 @@ jobs:
         run: |
           bun compile bun -f esm
           npm pack
-          mv js-utils*.tgz js-utils-bun.tgz
+          mv js-utils-[0-9]*.tgz js-utils-bun.tgz
 
       - name: Compile to Node runtime 🛠️
         run: |
           bun compile node -f cjs
           npm pack
-          mv js-utils*.tgz js-utils-node.tgz
+          mv js-utils-[0-9]*.tgz js-utils-node.tgz
 
       - name: Compile to Browser runtime 🛠️
         run: |
           bun compile browser -f esm
           npm pack
-          mv js-utils*.tgz js-utils-browser.tgz
+          mv js-utils-[0-9]*.tgz js-utils-browser.tgz
 
       - name: Release
         uses: softprops/action-gh-release@v1
