@@ -37,25 +37,25 @@ jobs:
         run: |
           bun compile bun -f esm
           npm pack
-          mv js-utils-[0-9]*.tgz js-utils-bun.tgz
+          mv js-utils-[0-9]*.tgz bun.tgz
 
       - name: Compile to Node runtime 🛠️
         run: |
           bun compile node -f cjs
           npm pack
-          mv js-utils-[0-9]*.tgz js-utils-node.tgz
+          mv js-utils-[0-9]*.tgz node.tgz
 
       - name: Compile to Browser runtime 🛠️
         run: |
           bun compile browser -f esm
           npm pack
-          mv js-utils-[0-9]*.tgz js-utils-browser.tgz
+          mv js-utils-[0-9]*.tgz browser.tgz
 
       - name: Release
         uses: softprops/action-gh-release@v1
         # if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            js-utils-bun.tgz
-            js-utils-node.tgz
-            js-utils-browser.tgz
+            bun.tgz
+            node.tgz
+            browser.tgz
