@@ -3,8 +3,8 @@ name: Release
 on:
   push:
     # branches: [master, main]
-    tags:
-      - "v*.*.*"
+    # tags:
+    #   - "v*.*.*"
   workflow_dispatch:
 
 jobs:
@@ -48,7 +48,7 @@ jobs:
 
       - name: Release
         uses: softprops/action-gh-release@v1
-        # if: startsWith(github.ref, 'refs/tags/')
+        if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
             js-utils-bun.tgz
