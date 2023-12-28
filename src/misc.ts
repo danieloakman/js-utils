@@ -1,4 +1,4 @@
-import { attempt, iife, raise, constant } from './functional';
+import { attempt, iife, raise } from './functional';
 import { Fn } from './types';
 
 /**
