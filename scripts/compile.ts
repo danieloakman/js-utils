@@ -33,19 +33,21 @@ export async function compile(args: CompileArgs): Promise<Error | boolean> {
   // ok(await sh('bunx tsc -p tsconfig.types-only.json'));
 
   // Build types and index.js with typescript first to create the declaration files:
-  ok(await sh(`bunx tsc -p tsconfig.${args.format}.json --emitDeclarationOnly`));
+  // ok(await sh(`bunx tsc -p tsconfig.${args.format}.json --emitDeclarationOnly`));
 
-  // Commented out as it's now all bundled into index.js instead of separate files:
-  // ok(await sh(`bunx tsc -p tsconfig.${args.format}.json`));
-  // for await (const { path, stats } of walkdir(join(import.meta.dir, '../'), { ignore: /node_modules/i })) {
-  //   if (!stats.isFile() || !path.endsWith('.js')) continue;
-  //   // Remove all js files except index.js:
-  //   if (!path.endsWith('index.js')) await rm(path);
-  // }
+  // Include the declaration files in the build and make sure that the index.js file is in there:
+  ok(await sh(`bunx tsc -p tsconfig.${args.format}.json`));
+  for await (const { path, stats } of walkdir(join(import.meta.dir, '../'), { ignore: /node_modules/i })) {
+    if (!stats.isFile() || !path.endsWith('.js')) continue;
+    // Remove all js files except index.js:
+    if (!path.endsWith('index.js')) await rm(path);
+  }
 
   const buildResult = await Bun.build({
     minify: false,
-    entrypoints: [join(import.meta.dir, '../src/index.ts')],
+    // If bundling into one index.js:
+    // entrypoints: [join(import.meta.dir, '../src/index.ts')],
+    entrypoints: srcFiles,
     outdir: '.',
     splitting: true,
     external: ['arg-parse'],
