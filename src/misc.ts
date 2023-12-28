@@ -1,4 +1,4 @@
-import { attempt, iife, raise } from './functional';
+import { attempt, iife, raise, constant } from './functional';
 import { Fn } from './types';
 
 /**
@@ -90,3 +90,27 @@ export const exec: (...commands: string[]) => Promise<Error | string> =
             s.on('error', err => resolve(err));
           });
         });
+
+/** Returns true if node is debugging. */
+export const isInDebug =
+  Bun.env.RUNTIME !== 'browser'
+    ? () => typeof require('inspector').url() !== 'undefined'
+    : () => raise('Not implemented for browser.');
+
+export const question =
+  Bun.env.RUNTIME !== 'browser'
+    ? async (questionStr: string, defaultAnswer: string | null | undefined = undefined): Promise<string> => {
+        if (isInDebug()) return defaultAnswer || '';
+        const readline = await import('readline');
+        const r1 = readline.createInterface({
+          input: process.stdin,
+          output: process.stdout,
+        });
+        return new Promise(resolve =>
+          r1.question(questionStr, answer => {
+            r1.close();
+            resolve(answer || defaultAnswer || '');
+          }),
+        );
+      }
+    : () => raise('Cannot ask questions in browser.');
