@@ -1,0 +1,8 @@
+{
+  "version": 3,
+  "sources": ["src/InMemoryCache.ts"],
+  "sourceRoot": "./src",
+  "sourcesContent": ["import type { DataCache, Nullish } from './types';\nimport { safeJSONParse } from './object';\n\nexport class InMemoryCache implements DataCache<unknown> {\n  protected readonly map = new Map<string, string>();\n\n  async get<T = unknown>(key: string): Promise<Nullish<T>> {\n    const value = this.map.get(key);\n    return safeJSONParse(value ?? '');\n  }\n\n  async delete(key: string): Promise<boolean> {\n    return this.map.delete(key);\n  }\n\n  async set(key: string, value: unknown): Promise<boolean> {\n    this.map.set(key, typeof value !== 'string' ? JSON.stringify(value) : value);\n    return true;\n  }\n\n  async has(key: string): Promise<boolean> {\n    return this.map.has(key);\n  }\n\n  async clear(): Promise<boolean> {\n    this.map.clear();\n    return true;\n  }\n\n  async *keys() {\n    yield* this.map.keys();\n  }\n}\n"],
+  "mappings": ";;;;;AAGO,IAAM,gBAAN,MAAkD;AAAA,EACpC,MAAM,oBAAI,IAAoB;AAAA,EAEjD,MAAM,IAAiB,KAAkC;AACvD,QAAM,QAAQ,KAAK,IAAI,IAAI,GAAG;AAC9B,WAAO,cAAc,SAAS,EAAE;AAAA,EAClC;AAAA,EAEA,MAAM,OAAO,KAA+B;AAC1C,WAAO,KAAK,IAAI,OAAO,GAAG;AAAA,EAC5B;AAAA,EAEA,MAAM,IAAI,KAAa,OAAkC;AACvD,gBAAK,IAAI,IAAI,KAAK,OAAO,SAAU,WAAW,KAAK,UAAU,KAAK,IAAI,KAAK,GACpE;AAAA,EACT;AAAA,EAEA,MAAM,IAAI,KAA+B;AACvC,WAAO,KAAK,IAAI,IAAI,GAAG;AAAA,EACzB;AAAA,EAEA,MAAM,QAA0B;AAC9B,gBAAK,IAAI,MAAM,GACR;AAAA,EACT;AAAA,EAEA,OAAO,OAAO;AACZ,WAAO,KAAK,IAAI,KAAK;AAAA,EACvB;AACF;",
+  "names": []
+}

@@ -1,33 +1,10 @@
-import"./functional.js";
 import {
-safeJSONParse
-} from "./object.js";
-
-// node_modules/iteraga
-class InMemoryCache {
-  map = new Map;
-  async get(key) {
-    const value = this.map.get(key);
-    return safeJSONParse(value ?? "");
-  }
-  async delete(key) {
-    return this.map.delete(key);
-  }
-  async set(key, value) {
-    this.map.set(key, typeof value !== "string" ? JSON.stringify(value) : value);
-    return true;
-  }
-  async has(key) {
-    return this.map.has(key);
-  }
-  async clear() {
-    this.map.clear();
-    return true;
-  }
-  async* keys() {
-    yield* this.map.keys();
-  }
-}
+  InMemoryCache
+} from "./chunk-74MTRBOK.js";
+import "./chunk-IZHTQNHD.js";
+import "./chunk-TAV5PMOH.js";
+import "./chunk-7FEMDAWU.js";
 export {
   InMemoryCache
 };
+//# sourceMappingURL=InMemoryCache.js.map

@@ -1,22 +1,15 @@
 import {
-raise
-} from "./functional.js";
-
-// node_modules/iter
-function assert(value, message) {
-  if (!value) {
-    if (typeof message === "string")
-      throw new Error(message);
-    else
-      throw message ?? new Error("Assertion failed");
-  }
-}
-var throws = () => raise("Can' use `throws` ");
-var expectType = (value) => value;
-var equal = () => raise("Can't use `equal`, not implemented in browser.");
-export {
-  throws,
-  expectType,
+  assert,
   equal,
-  assert
+  expectType,
+  throws
+} from "./chunk-RDL3WC4D.js";
+import "./chunk-TAV5PMOH.js";
+import "./chunk-7FEMDAWU.js";
+export {
+  assert,
+  equal,
+  expectType,
+  throws
 };
+//# sourceMappingURL=assertions.js.map
