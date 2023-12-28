@@ -27,3 +27,6 @@ export declare const sh: (...commands: string[]) => Promise<Error | boolean>;
  * returned.
  */
 export declare const exec: (...commands: string[]) => Promise<Error | string>;
+/** Returns true if node is debugging. */
+export declare const isInDebug: () => boolean;
+export declare const question: (questionStr: string, defaultAnswer?: string | null | undefined) => Promise<string>;
