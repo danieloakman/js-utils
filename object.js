@@ -3,7 +3,7 @@ isObjectLike,
 safeCall
 } from "./functional.js";
 
-// node_modules/iteragain-es/internal/TeedIterator.jsor
+// node_modules/iteragain-es/internal/TeedIterator.jsr.
 class ConcatIterator {
   constructor(iterators) {
     this.iterators = iterators;
@@ -23,7 +23,7 @@ class ConcatIterator {
 }
 var ConcatIterator_default = ConcatIterator;
 
-// node_modules/iteragain-es/internal/TeedIterator.jsor
+// node_modules/iteragain-es/internal/TeedIterator.jsr.
 class RepeatIterator {
   constructor(value, times) {
     this.value = value;
@@ -40,7 +40,7 @@ class RepeatIterator {
 }
 var RepeatIterator_default = RepeatIterator;
 
-// node_modules/iteragain-es/internal/TeedIterator.jsor
+// node_modules/iteragain-es/internal/TeedIterator.jsr.
 class ObjectIterator {
   constructor(object, traversal = "post-order-DFS") {
     this.traversal = traversal;
@@ -90,7 +90,7 @@ function isIterator(arg) {
 }
 var isIterator_default = isIterator;
 
-// node_modules/iteragain-es/internal/TeedIterator.jsor.j
+// node_modules/iteragain-es/internal/TeedIterator.jsr.js
 class FunctionIterator {
   constructor(func, sentinel) {
     this.func = func;
