@@ -9,14 +9,14 @@ exports.hashWithLength = hashWithLength;
 exports.matches = matches;
 exports.stringSplice = stringSplice;
 exports.toMatch = toMatch;
-require("./types.js");
-var _functional = require("./functional.js");
+require("./BinarySearch.js");
 require("./number.js");
-require("./InMemoryCache.js");
+require("./types.js");
+require("./misc.js");
 require("./assertions.js");
 var _object = require("./object.js");
-require("./BinarySearch.js");
-require("./misc.js");
+require("./InMemoryCache.js");
+var _functional = require("./functional.js");
 var _chunk8250b88d1c414ae = require("./chunk-8250b88d1c414ae5.js");
 // node_modules/argparse/lib/textwr
 var require_sub = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) => {
@@ -288,21 +288,21 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
       columns: +process.env.COLUMNS || process.stdout.columns || 80
     };
   };
-  var hasattr = function (object, name) {
-    return Object.prototype.hasOwnProperty.call(object, name);
+  var hasattr = function (object2, name) {
+    return Object.prototype.hasOwnProperty.call(object2, name);
   };
-  var getattr = function (object, name, value) {
-    return hasattr(object, name) ? object[name] : value;
+  var getattr = function (object2, name, value) {
+    return hasattr(object2, name) ? object2[name] : value;
   };
-  var setattr = function (object, name, value) {
-    object[name] = value;
+  var setattr = function (object2, name, value) {
+    object2[name] = value;
   };
-  var setdefault = function (object, name, value) {
-    if (!hasattr(object, name)) object[name] = value;
-    return object[name];
+  var setdefault = function (object2, name, value) {
+    if (!hasattr(object2, name)) object2[name] = value;
+    return object2[name];
   };
-  var delattr = function (object, name) {
-    delete object[name];
+  var delattr = function (object2, name) {
+    delete object2[name];
   };
   var range = function (from, to, step = 1) {
     if (arguments.length === 1) [to, from] = [from, 0];
@@ -332,13 +332,13 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
     if (!result[result.length - 1]) result.pop();
     return result;
   };
-  var _string_lstrip = function (string, prefix_chars) {
+  var _string_lstrip = function (string2, prefix_chars) {
     let idx = 0;
-    while (idx < string.length && prefix_chars.includes(string[idx])) idx++;
-    return idx ? string.slice(idx) : string;
+    while (idx < string2.length && prefix_chars.includes(string2[idx])) idx++;
+    return idx ? string2.slice(idx) : string2;
   };
-  var _string_split = function (string, sep, maxsplit) {
-    let result = string.split(sep);
+  var _string_split = function (string2, sep, maxsplit) {
+    let result = string2.split(sep);
     if (result.length > maxsplit) {
       result = result.slice(0, maxsplit).concat([result.slice(maxsplit).join(sep)]);
     }
@@ -371,20 +371,20 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
   };
   var _callable = function (cls) {
     let result = {
-      [cls.name]: function (...args) {
+      [cls.name]: function (...args2) {
         let this_class = new.target === result || !new.target;
-        return Reflect.construct(cls, args, this_class ? cls : new.target);
+        return Reflect.construct(cls, args2, this_class ? cls : new.target);
       }
     };
     result[cls.name].prototype = cls.prototype;
     cls.prototype[Symbol.toStringTag] = cls.name;
     return result[cls.name];
   };
-  var _alias = function (object, from, to) {
+  var _alias = function (object2, from, to) {
     try {
-      let name = object.constructor.name;
-      Object.defineProperty(object, from, {
-        value: util.deprecate(object[to], sub("%s.%s() is renamed to %s.%s()", name, from, name, to)),
+      let name = object2.constructor.name;
+      Object.defineProperty(object2, from, {
+        value: util.deprecate(object2[to], sub("%s.%s() is renamed to %s.%s()", name, from, name, to)),
         enumerable: false
       });
     } catch {}
@@ -408,19 +408,19 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
     key = key.replace(/[A-Z]/g, c => "_" + c.toLowerCase());
     return key;
   };
-  var _parse_opts = function (args, descriptor) {
+  var _parse_opts = function (args2, descriptor) {
     function get_name() {
       let stack = new Error().stack.split("\n").map(x => x.match(/^    at (.*) \(.*\)$/)).filter(Boolean).map(m => m[1]).map(fn => fn.match(/[^ .]*$/)[0]);
       if (stack.length && stack[0] === get_name.name) stack.shift();
       if (stack.length && stack[0] === _parse_opts.name) stack.shift();
       return stack.length ? stack[0] : "";
     }
-    args = Array.from(args);
+    args2 = Array.from(args2);
     let kwargs = {};
     let result = [];
-    let last_opt = args.length && args[args.length - 1];
+    let last_opt = args2.length && args2[args2.length - 1];
     if (typeof last_opt === "object" && last_opt !== null && !Array.isArray(last_opt) && (!last_opt.constructor || last_opt.constructor.name === "Object")) {
-      kwargs = Object.assign({}, args.pop());
+      kwargs = Object.assign({}, args2.pop());
     }
     let renames = [];
     for (let key of Object.keys(descriptor)) {
@@ -438,7 +438,7 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
       deprecate("camelcase_" + name, sub("%s(): following options are renamed: %s", name, renames.map(([a, b]) => sub("%r -> %r", a, b))));
     }
     let missing_positionals = [];
-    let positional_count = args.length;
+    let positional_count = args2.length;
     for (let [key, def] of Object.entries(descriptor)) {
       if (key[0] === "*") {
         if (key.length > 0 && key[1] === "*") {
@@ -460,16 +460,16 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
           result.push(kwargs);
           kwargs = {};
         } else {
-          result.push(args);
-          args = [];
+          result.push(args2);
+          args2 = [];
         }
-      } else if (key in kwargs && args.length > 0) {
+      } else if (key in kwargs && args2.length > 0) {
         throw new TypeError(sub("%s() got multiple values for argument %r", get_name(), key));
       } else if (key in kwargs) {
         result.push(kwargs[key]);
         delete kwargs[key];
-      } else if (args.length > 0) {
-        result.push(args.shift());
+      } else if (args2.length > 0) {
+        result.push(args2.shift());
       } else if (def !== no_default) {
         result.push(def);
       } else {
@@ -479,7 +479,7 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
     if (Object.keys(kwargs).length) {
       throw new TypeError(sub("%s() got an unexpected keyword argument %r", get_name(), Object.keys(kwargs)[0]));
     }
-    if (args.length) {
+    if (args2.length) {
       let from = Object.entries(descriptor).filter(([k, v]) => k[0] !== "*" && v !== no_default).length;
       let to = Object.entries(descriptor).filter(([k]) => k[0] !== "*").length;
       throw new TypeError(sub("%s() takes %s positional argument%s but %s %s given", get_name(), from === to ? sub("from %s to %s", from, to) : to, from === to && to === 1 ? "" : "s", positional_count, positional_count === 1 ? "was" : "were"));
@@ -492,8 +492,8 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
     }
     return result;
   };
-  var deprecate = function (id, string) {
-    _deprecations[id] = _deprecations[id] || util.deprecate(() => {}, string);
+  var deprecate = function (id, string2) {
+    _deprecations[id] = _deprecations[id] || util.deprecate(() => {}, string2);
     _deprecations[id]();
   };
   var _AttributeHolder = function (cls = Object) {
@@ -595,8 +595,8 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
       assert(this._current_indent >= 0, "Indent decreased below 0.");
       this._level -= 1;
     }
-    _add_item(func, args) {
-      this._current_section.items.push([func, args]);
+    _add_item(func, args2) {
+      this._current_section.items.push([func, args2]);
     }
     start_section(heading) {
       this._indent();
@@ -615,8 +615,8 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
     }
     add_usage(usage, actions, groups, prefix = undefined) {
       if (usage !== SUPPRESS) {
-        let args = [usage, actions, groups, prefix];
-        this._add_item(this._format_usage.bind(this), args);
+        let args2 = [usage, actions, groups, prefix];
+        this._add_item(this._format_usage.bind(this), args2);
       }
     }
     add_argument(action) {
@@ -1008,7 +1008,7 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
       if (this.parent !== undefined) {
         this.formatter._indent();
       }
-      let item_help = this.formatter._join_parts(this.items.map(([func, args]) => func.apply(null, args)));
+      let item_help = this.formatter._join_parts(this.items.map(([func, args2]) => func.apply(null, args2)));
       if (this.parent !== undefined) {
         this.formatter._dedent();
       }
@@ -1471,11 +1471,11 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
       if (hasattr(this._name_parser_map, parser_name)) {
         parser = this._name_parser_map[parser_name];
       } else {
-        let args = {
+        let args2 = {
           parser_name,
           choices: this._name_parser_map.join(", ")
         };
-        let msg = sub("unknown parser %(parser_name)r (choices: %(choices)s)", args);
+        let msg = sub("unknown parser %(parser_name)r (choices: %(choices)s)", args2);
         throw new ArgumentError(this, msg);
       }
       let subnamespace;
@@ -1542,8 +1542,8 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
       if (highWaterMark !== undefined) this._options.highWaterMark = highWaterMark;
       if (fs2 !== undefined) this._options.fs = fs2;
     }
-    call(string) {
-      if (string === "-") {
+    call(string2) {
+      if (string2 === "-") {
         if (this._flags.includes("r")) {
           return process.stdin;
         } else if (this._flags.includes("w")) {
@@ -1555,14 +1555,14 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
       }
       let fd;
       try {
-        fd = fs.openSync(string, this._flags, this._options.mode);
+        fd = fs.openSync(string2, this._flags, this._options.mode);
       } catch (e) {
-        let args = {
-          filename: string,
+        let args2 = {
+          filename: string2,
           error: e.message
         };
         let message = "can't open '%(filename)s': %(error)s";
-        throw new ArgumentTypeError(sub(message, args));
+        throw new ArgumentTypeError(sub(message, args2));
       }
       let options = Object.assign({
         fd,
@@ -1573,12 +1573,12 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
       } else if (this._flags.includes("w")) {
         return fs.createWriteStream(undefined, options);
       } else {
-        let msg = sub('argument "%s" with mode %r', string, this._flags);
+        let msg = sub('argument "%s" with mode %r', string2, this._flags);
         throw new TypeError(msg);
       }
     }
     [util.inspect.custom]() {
-      let args = [this._flags];
+      let args2 = [this._flags];
       let kwargs = Object.entries(this._options).map(([k, v]) => {
         if (k === "mode") v = {
           value: v,
@@ -1588,7 +1588,7 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
         };
         return [k, v];
       });
-      let args_str = [].concat(args.filter(arg => arg !== -1).map(repr)).concat(kwargs.filter(([, arg]) => arg !== undefined).map(([kw, arg]) => sub("%s=%r", kw, arg))).join(", ");
+      let args_str = [].concat(args2.filter(arg => arg !== -1).map(repr)).concat(kwargs.filter(([, arg]) => arg !== undefined).map(([kw, arg]) => sub("%s=%r", kw, arg))).join(", ");
       return sub("%s(%s)", this.constructor.name, args_str);
     }
     toString() {
@@ -1640,9 +1640,9 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
       this._negative_number_matcher = /^-\d+$|^-\d*\.\d+$/;
       this._has_negative_number_optionals = [];
     }
-    register(registry_name, value, object) {
+    register(registry_name, value, object2) {
       let registry = setdefault(this._registries, registry_name, {});
-      registry[value] = object;
+      registry[value] = object2;
     }
     _registry_get(registry_name, value, default_value = undefined) {
       return getattr(this._registries[registry_name], value, default_value);
@@ -1664,24 +1664,24 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
       return this._defaults[dest];
     }
     add_argument() {
-      let [args, kwargs] = _parse_opts(arguments, {
+      let [args2, kwargs] = _parse_opts(arguments, {
         "*args": no_default,
         "**kwargs": no_default
       });
-      if (args.length === 1 && Array.isArray(args[0])) {
-        args = args[0];
+      if (args2.length === 1 && Array.isArray(args2[0])) {
+        args2 = args2[0];
         deprecate("argument-array", sub("use add_argument(%(args)s, {...}) instead of add_argument([ %(args)s ], { ... })", {
-          args: args.map(repr).join(", ")
+          args: args2.map(repr).join(", ")
         }));
       }
       let chars = this.prefix_chars;
-      if (!args.length || args.length === 1 && !chars.includes(args[0][0])) {
-        if (args.length && "dest" in kwargs) {
+      if (!args2.length || args2.length === 1 && !chars.includes(args2[0][0])) {
+        if (args2.length && "dest" in kwargs) {
           throw new TypeError("dest supplied twice for positional argument");
         }
-        kwargs = this._get_positional_kwargs(...args, kwargs);
+        kwargs = this._get_positional_kwargs(...args2, kwargs);
       } else {
-        kwargs = this._get_optional_kwargs(...args, kwargs);
+        kwargs = this._get_optional_kwargs(...args2, kwargs);
       }
       if (!("default" in kwargs)) {
         let dest = kwargs.dest;
@@ -1800,21 +1800,21 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
       });
     }
     _get_optional_kwargs() {
-      let [args, kwargs] = _parse_opts(arguments, {
+      let [args2, kwargs] = _parse_opts(arguments, {
         "*args": no_default,
         "**kwargs": no_default
       });
       let option_strings = [];
       let long_option_strings = [];
       let option_string;
-      for (option_string of args) {
+      for (option_string of args2) {
         if (!this.prefix_chars.includes(option_string[0])) {
-          let args2 = {
+          let args3 = {
             option: option_string,
             prefix_chars: this.prefix_chars
           };
           let msg = "invalid option string %(option)r: must start with a character %(prefix_chars)r";
-          throw new TypeError(sub(msg, args2));
+          throw new TypeError(sub(msg, args3));
         }
         option_strings.push(option_string);
         if (option_string.length > 1 && this.prefix_chars.includes(option_string[1])) {
@@ -1987,8 +1987,8 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
       this._positionals = this.add_argument_group("positional arguments");
       this._optionals = this.add_argument_group("optional arguments");
       this._subparsers = undefined;
-      function identity(string) {
-        return string;
+      function identity(string2) {
+        return string2;
       }
       this.register("type", undefined, identity);
       this.register("type", null, identity);
@@ -2079,18 +2079,18 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
     _get_positional_actions() {
       return this._actions.filter(action => !action.option_strings.length);
     }
-    parse_args(args = undefined, namespace = undefined) {
+    parse_args(args2 = undefined, namespace = undefined) {
       let argv;
-      [args, argv] = this.parse_known_args(args, namespace);
+      [args2, argv] = this.parse_known_args(args2, namespace);
       if (argv && argv.length > 0) {
         let msg = "unrecognized arguments: %s";
         this.error(sub(msg, argv.join(" ")));
       }
-      return args;
+      return args2;
     }
-    parse_known_args(args = undefined, namespace = undefined) {
-      if (args === undefined) {
-        args = get_argv().slice(1);
+    parse_known_args(args2 = undefined, namespace = undefined) {
+      if (args2 === undefined) {
+        args2 = get_argv().slice(1);
       }
       if (namespace === undefined) {
         namespace = new Namespace();
@@ -2111,7 +2111,7 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
       }
       if (this.exit_on_error) {
         try {
-          [namespace, args] = this._parse_known_args(args, namespace);
+          [namespace, args2] = this._parse_known_args(args2, namespace);
         } catch (err) {
           if (err instanceof ArgumentError) {
             this.error(err.message);
@@ -2120,13 +2120,13 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
           }
         }
       } else {
-        [namespace, args] = this._parse_known_args(args, namespace);
+        [namespace, args2] = this._parse_known_args(args2, namespace);
       }
       if (hasattr(namespace, _UNRECOGNIZED_ARGS_ATTR)) {
-        args = args.concat(getattr(namespace, _UNRECOGNIZED_ARGS_ATTR));
+        args2 = args2.concat(getattr(namespace, _UNRECOGNIZED_ARGS_ATTR));
         delattr(namespace, _UNRECOGNIZED_ARGS_ATTR);
       }
-      return [namespace, args];
+      return [namespace, args2];
     }
     _parse_known_args(arg_strings, namespace) {
       if (this.fromfile_prefix_chars !== undefined) {
@@ -2212,8 +2212,8 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
               }
             } else if (arg_count === 1) {
               stop = start_index2 + 1;
-              let args = [explicit_arg];
-              action_tuples.push([action, args, option_string]);
+              let args2 = [explicit_arg];
+              action_tuples.push([action, args2, option_string]);
               break;
             } else {
               let msg = "ignored explicit argument %r";
@@ -2224,14 +2224,14 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
             let selected_patterns = arg_strings_pattern.slice(start);
             let arg_count = this._match_argument(action, selected_patterns);
             stop = start + arg_count;
-            let args = arg_strings.slice(start, stop);
-            action_tuples.push([action, args, option_string]);
+            let args2 = arg_strings.slice(start, stop);
+            action_tuples.push([action, args2, option_string]);
             break;
           }
         }
         assert(action_tuples.length);
-        for (let [action2, args, option_string2] of action_tuples) {
-          take_action(action2, args, option_string2);
+        for (let [action2, args2, option_string2] of action_tuples) {
+          take_action(action2, args2, option_string2);
         }
         return stop;
       };
@@ -2242,9 +2242,9 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
         for (let i = 0; i < positionals.length && i < arg_counts.length; i++) {
           let action = positionals[i];
           let arg_count = arg_counts[i];
-          let args = arg_strings.slice(start_index2, start_index2 + arg_count);
+          let args2 = arg_strings.slice(start_index2, start_index2 + arg_count);
           start_index2 += arg_count;
-          take_action(action, args);
+          take_action(action, args2);
         }
         positionals = positionals.slice(arg_counts.length);
         return start_index2;
@@ -2355,7 +2355,7 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
         let pattern = actions_slice.map(action => this._get_nargs_pattern(action)).join("");
         let match = arg_strings_pattern.match(new RegExp("^" + pattern));
         if (match !== null) {
-          result = result.concat(match.slice(1).map(string => string.length));
+          result = result.concat(match.slice(1).map(string2 => string2.length));
           break;
         }
       }
@@ -2385,12 +2385,12 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
       let option_tuples = this._get_option_tuples(arg_string);
       if (option_tuples.length > 1) {
         let options = option_tuples.map(([, option_string]) => option_string).join(", ");
-        let args = {
+        let args2 = {
           option: arg_string,
           matches: options
         };
         let msg = "ambiguous option: %(option)s could match %(matches)s";
-        this.error(sub(msg, args));
+        this.error(sub(msg, args2));
       } else if (option_tuples.length === 1) {
         let [option_tuple] = option_tuples;
         return option_tuple;
@@ -2472,16 +2472,16 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
       }
       return nargs_pattern;
     }
-    parse_intermixed_args(args = undefined, namespace = undefined) {
+    parse_intermixed_args(args2 = undefined, namespace = undefined) {
       let argv;
-      [args, argv] = this.parse_known_intermixed_args(args, namespace);
+      [args2, argv] = this.parse_known_intermixed_args(args2, namespace);
       if (argv.length) {
         let msg = "unrecognized arguments: %s";
         this.error(sub(msg, argv.join(" ")));
       }
-      return args;
+      return args2;
     }
-    parse_known_intermixed_args(args = undefined, namespace = undefined) {
+    parse_known_intermixed_args(args2 = undefined, namespace = undefined) {
       let extras;
       let positionals = this._get_positional_actions();
       let a = positionals.filter(action => [PARSER, REMAINDER].includes(action.nargs));
@@ -2509,7 +2509,7 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
             action.save_default = action.default;
             action.default = SUPPRESS;
           }
-          [namespace, remaining_args] = this.parse_known_args(args, namespace);
+          [namespace, remaining_args] = this.parse_known_args(args2, namespace);
           for (let action of positionals) {
             let attr = getattr(namespace, action.dest);
             if (Array.isArray(attr) && attr.length === 0) {
@@ -2613,12 +2613,12 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
           throw new ArgumentError(action, msg);
         } else if (err instanceof TypeError) {
           let name = getattr(action.type, "name", repr(action.type));
-          let args = {
+          let args2 = {
             type: name,
             value: arg_string
           };
           let msg = "invalid %(type)s value: %(value)r";
-          throw new ArgumentError(action, sub(msg, args));
+          throw new ArgumentError(action, sub(msg, args2));
         } else {
           throw err;
         }
@@ -2627,12 +2627,12 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
     }
     _check_value(action, value) {
       if (action.choices !== undefined && !_choices_to_array(action.choices).includes(value)) {
-        let args = {
+        let args2 = {
           value,
           choices: _choices_to_array(action.choices).map(repr).join(", ")
         };
         let msg = "invalid choice: %(value)r (choose from %(choices)s)";
-        throw new ArgumentError(action, sub(msg, args));
+        throw new ArgumentError(action, sub(msg, args2));
       }
     }
     format_usage() {
@@ -2681,11 +2681,11 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
     error(message) {
       if (this.debug === true) throw new Error(message);
       this.print_usage(process.stderr);
-      let args = {
+      let args2 = {
         prog: this.prog,
         message
       };
-      this.exit(2, sub("%(prog)s: error: %(message)s\n", args));
+      this.exit(2, sub("%(prog)s: error: %(message)s\n", args2));
     }
   }));
   module.exports = {
@@ -2741,13 +2741,6 @@ var require_argparse = (0, _chunk8250b88d1c414ae.__commonJS)((exports, module) =
     enumerable: false
   });
 });
-
-// node_module
-var parseArgs = (constructorParams, ...args) => {
-  const parser = new (require_argparse().ArgumentParser)(constructorParams);
-  for (const arg of args) parser.add_argument(...arg);
-  return parser.parse_args();
-};
 // node_modules/
 function fastHash(str, seed = 0) {
   let h1 = 3735928559 ^ seed,
@@ -2789,14 +2782,14 @@ function coerceHash(input, seed = 0) {
   if (typeof input === "symbol") return fastHash(input.toString(), seed);
   return fastHash(JSON.stringify(input), seed);
 }
-function matches(regex, string2) {
+function matches(regex, string) {
   if (!regex.flags.includes("g")) regex = new RegExp(regex.source, regex.flags + "g");
   return {
     [Symbol.iterator]() {
       return this;
     },
     next: () => {
-      const result = regex.exec(string2);
+      const result = regex.exec(string);
       if (!result) return {
         done: true,
         value: undefined
@@ -2821,3 +2814,9 @@ function stringSplice(str, index, count = 1, add = "") {
   if (index < 0 || count < 0) throw new Error("index and count parameters cannot be less than zero");
   return str.slice(0, index) + add + str.slice(index + count);
 }
+// node_module
+var parseArgs = (constructorParams, ...args2) => {
+  const parser = new (require_argparse().ArgumentParser)(constructorParams);
+  for (const arg of args2) parser.add_argument(...arg);
+  return parser.parse_args();
+};

@@ -4,8 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.InMemoryCache = void 0;
-require("./functional.js");
 var _object = require("./object.js");
+require("./functional.js");
 require("./chunk-8250b88d1c414ae5.js");
 // node_modules/argpars
 class InMemoryCache {
