@@ -69,6 +69,16 @@ export async function compile(args: CompileArgs): Promise<Error | boolean> {
 
   if (!buildResult.success) return new Error('Build failed.');
 
+  // Add empty js files for all ts files that were not compiled:
+  const srcdir = join(import.meta.dir, '../src');
+  for (const srcFile of srcFiles) {
+    const expectedJsFile = relative(srcdir, srcFile.replace(/\.ts$/, '.js'));
+    if (!buildResult.outputs.some(v => v.path.endsWith(expectedJsFile))) {
+      await Bun.write(expectedJsFile, '');
+      // return new Error(`Build did not contain ${expectedJsFile}`);
+    }
+  }
+
   console.log(
     'Compiled:',
     await readdirDeep(process.cwd(), { ignore: /node_modules/ }).then(({ files }) =>
