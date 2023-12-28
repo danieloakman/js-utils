@@ -1,8 +1,7 @@
 {
   "name": "js-utils",
-  "version": "0.1.0",
+  "version": "0.2.2",
   "author": "Daniel Oakman",
-  "main": "index.js",
   "scripts": {
     "test": "bun test",
     "test:watch": "bun test --watch",
@@ -11,7 +10,12 @@
     "merge": "bun run scripts/merge.ts",
     "check": "bunx tsc --noEmit",
     "lint": "bunx eslint --ignore-path .eslintignore ./src --ext .ts",
-    "format": "bunx prettier --write **.ts"
+    "format": "bunx prettier --write **.ts",
+    "v:patch": "npm version patch -m 'Upgrade to %s'",
+    "v:minor": "npm version minor -m 'Upgrade to %s'",
+    "v:major": "npm version major -m 'Upgrade to %s'",
+    "preversion": "bun check && bun lint && bun test",
+    "postversion": "git push --follow-tags"
   },
   "devDependencies": {
     "@babel/core": "^7.22.19",
@@ -44,5 +48,10 @@
       "eslint --cache --fix"
     ]
   },
-  "types": "index.d.ts"
+  "main": "index.js",
+  "types": "index.d.ts",
+  "files": [
+    "*.d.ts",
+    "*.js"
+  ]
 }
