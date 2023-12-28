@@ -5,7 +5,7 @@ safeCall
 } from "./functional.js";
 import"./chunk-8250b88d1c414ae5.js";
 
-// node_modules/argparse/lib/textwrap.jsedIterator.jsr.
+// node_modules/argparse/lib/textwrap.jsatMapIterator.j
 class ConcatIterator {
   constructor(iterators) {
     this.iterators = iterators;
@@ -25,7 +25,7 @@ class ConcatIterator {
 }
 var ConcatIterator_default = ConcatIterator;
 
-// node_modules/argparse/lib/textwrap.jsedIterator.jsr.
+// node_modules/argparse/lib/textwrap.jsatMapIterator.j
 class RepeatIterator {
   constructor(value, times) {
     this.value = value;
@@ -42,7 +42,7 @@ class RepeatIterator {
 }
 var RepeatIterator_default = RepeatIterator;
 
-// node_modules/argparse/lib/textwrap.jsedIterator.jsr.
+// node_modules/argparse/lib/textwrap.jsatMapIterator.j
 class ObjectIterator {
   constructor(object, traversal = "post-order-DFS") {
     this.traversal = traversal;
@@ -80,19 +80,19 @@ class ObjectIterator {
 }
 var ObjectIterator_default = ObjectIterator;
 
-// node_modules/argparse/lib/textwrap.jsed
+// node_modules/argparse/lib/textwrap.jsat
 function isIterable(arg) {
   return typeof (arg === null || arg === undefined ? undefined : arg[Symbol.iterator]) === "function";
 }
 var isIterable_default = isIterable;
 
-// node_modules/argparse/lib/textwrap.jsed
+// node_modules/argparse/lib/textwrap.jsat
 function isIterator(arg) {
   return typeof (arg === null || arg === undefined ? undefined : arg.next) === "function";
 }
 var isIterator_default = isIterator;
 
-// node_modules/argparse/lib/textwrap.jsedIterator.jsr.js
+// node_modules/argparse/lib/textwrap.jsatMapIterator.jss
 class FunctionIterator {
   constructor(func, sentinel) {
     this.func = func;
@@ -108,7 +108,7 @@ class FunctionIterator {
 }
 var FunctionIterator_default = FunctionIterator;
 
-// node_modules/argparse/lib/textwrap.jsed
+// node_modules/argparse/lib/textwrap.jsat
 function toIterator(...args) {
   if (isIterator_default(args[0]))
     return args[0];
@@ -122,7 +122,7 @@ function toIterator(...args) {
 }
 var toIterator_default = toIterator;
 
-// node_modules/argparse/lib/textwrap.jsedIterator.j
+// node_modules/argparse/lib/textwrap.jsatMapIterato
 class MapIterator {
   constructor(iterator, iteratee) {
     this.iterator = iterator;
@@ -140,7 +140,7 @@ class MapIterator {
 }
 var MapIterator_default = MapIterator;
 
-// node_modules/argparse/lib/textwrap.jse
+// node_modules/argparse/lib/textwrap.jsa
 function enumerate(arg) {
   return new MapIterator_default(toIterator_default(arg), ((count = 0) => (v) => [count++, v])());
 }
