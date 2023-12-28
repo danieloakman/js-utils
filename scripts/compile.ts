@@ -34,6 +34,7 @@ export async function compile(args: CompileArgs): Promise<Error | boolean> {
 
   // Build types and index.js with typescript first, This is mainly to create the type declaration files, but also to
   // include the `index.js` which is sometimes not included.
+  // ok(await sh(`bunx tsc -p tsconfig.${args.format}.json --emitDeclarationOnly`));
   ok(await sh(`bunx tsc -p tsconfig.${args.format}.json`));
   for await (const { path, stats } of walkdir(join(import.meta.dir, '../'), { ignore: /node_modules/i })) {
     if (!stats.isFile() || !path.endsWith('.js')) continue;
