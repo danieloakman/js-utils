@@ -1,5 +1,5 @@
 import type { ArgumentParser, ArgumentOptions } from 'argparse';
-import { raise } from '.';
+import { raise } from './functional';
 
 export type AddArgumentParams =
   | [arg: string, options?: ArgumentOptions]
