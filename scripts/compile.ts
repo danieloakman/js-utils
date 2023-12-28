@@ -73,7 +73,7 @@ export async function compile(args: CompileArgs): Promise<Error | boolean> {
   const srcdir = join(import.meta.dir, '../src');
   for (const srcFile of srcFiles) {
     const expectedJsFile = relative(srcdir, srcFile.replace(/\.ts$/, '.js'));
-    if (!buildResult.outputs.some(v => v.path.endsWith(expectedJsFile))) {
+    if (!existsSync(expectedJsFile)) {
       await Bun.write(expectedJsFile, '');
       // return new Error(`Build did not contain ${expectedJsFile}`);
     }
