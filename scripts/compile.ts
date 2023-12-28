@@ -32,20 +32,20 @@ export async function compile(args: CompileArgs): Promise<Error | boolean> {
   // Build types only:
   // ok(await sh('bunx tsc -p tsconfig.types-only.json'));
 
-  // Build types and index.js with typescript first, This is mainly to create the type declaration files, but also to
-  // include the `index.js` which is sometimes not included.
-  // ok(await sh(`bunx tsc -p tsconfig.${args.format}.json --emitDeclarationOnly`));
-  ok(await sh(`bunx tsc -p tsconfig.${args.format}.json`));
-  for await (const { path, stats } of walkdir(join(import.meta.dir, '../'), { ignore: /node_modules/i })) {
-    if (!stats.isFile() || !path.endsWith('.js')) continue;
-    // Remove all js files except index.js:
-    if (!path.endsWith('index.js')) await rm(path);
-  }
+  // Build types and index.js with typescript first to create the declaration files:
+  ok(await sh(`bunx tsc -p tsconfig.${args.format}.json --emitDeclarationOnly`));
 
-  // Build
+  // Commented out as it's now all bundled into index.js instead of separate files:
+  // ok(await sh(`bunx tsc -p tsconfig.${args.format}.json`));
+  // for await (const { path, stats } of walkdir(join(import.meta.dir, '../'), { ignore: /node_modules/i })) {
+  //   if (!stats.isFile() || !path.endsWith('.js')) continue;
+  //   // Remove all js files except index.js:
+  //   if (!path.endsWith('index.js')) await rm(path);
+  // }
+
   const buildResult = await Bun.build({
     minify: false,
-    entrypoints: srcFiles,
+    entrypoints: [join(import.meta.dir, '../src/index.ts')],
     outdir: '.',
     splitting: true,
     external: ['arg-parse'],
