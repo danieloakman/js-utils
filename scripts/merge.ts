@@ -8,7 +8,7 @@ async function main() {
   const argsList: CompileArgs[] = [
     { target: 'node', format: 'cjs' },
     { target: 'browser', format: 'esm' },
-    { target: 'bun', format: 'esm' },
+    // { target: 'bun', format: 'esm' },
   ];
   try {
     for (const args of argsList) {
