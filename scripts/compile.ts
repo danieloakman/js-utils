@@ -1,12 +1,8 @@
 #! bun
-import { join, relative } from 'path';
-import { iife, ok, parseArgs, pipe, sh, matches, raise, stringSplice, toMatch } from '../src';
-import { readdirDeep, walkdir } from 'more-node-fs';
+import { join } from 'path';
+import { iife, ok, parseArgs } from '../src';
+import { readdirDeep } from 'more-node-fs';
 import { clean } from './clean';
-import { existsSync } from 'fs';
-import { filterMap, toArray } from 'iteragain-es';
-import { last } from 'lodash-es';
-import { rm } from 'fs/promises';
 import { build } from 'esbuild';
 import { dtsPlugin } from 'esbuild-plugin-d.ts';
 
