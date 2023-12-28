@@ -46,7 +46,7 @@ export async function compile(args: CompileArgs): Promise<Error | boolean> {
     treeShaking: true,
     splitting: args.format === 'esm',
     bundle: true,
-    external: ['argparse'],
+    // external: ['argparse'],
     define: {
       'Bun.env.RUNTIME': `'${args.target}'`,
     },
