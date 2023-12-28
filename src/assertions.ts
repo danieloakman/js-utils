@@ -9,7 +9,7 @@ export function assert(value: unknown, message?: string | Error): asserts value 
 
 export const throws: (block: () => unknown, message?: string | Error) => void =
   Bun.env.RUNTIME === 'browser'
-    ? () => raise("Can' use `throws` ")
+    ? () => raise("Can' use `throws`, not implemented in browser.")
     : (block, message) => {
         return require('assert').throws(block, message);
       };
