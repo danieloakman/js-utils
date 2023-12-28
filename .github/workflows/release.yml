@@ -33,11 +33,11 @@ jobs:
           bun lint
           bun test
 
-      - name: Compile to Bun runtime 🛠️
-        run: |
-          bun compile bun -f esm
-          npm pack
-          mv js-utils-[0-9]*.tgz bun.tgz
+      # - name: Compile to Bun runtime 🛠️
+      #   run: |
+      #     bun compile bun -f esm
+      #     npm pack
+      #     mv js-utils-[0-9]*.tgz bun.tgz
 
       - name: Compile to Node runtime 🛠️
         run: |
