@@ -1,33 +1,52 @@
 "use strict";
+var __defProp = Object.defineProperty;
+var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __export = (target, all) => {
+  for (var name in all)
+    __defProp(target, name, { get: all[name], enumerable: !0 });
+}, __copyProps = (to, from, except, desc) => {
+  if (from && typeof from == "object" || typeof from == "function")
+    for (let key of __getOwnPropNames(from))
+      !__hasOwnProp.call(to, key) && key !== except && __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+  return to;
+};
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: !0 }), mod);
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
+// src/functional.ts
+var functional_exports = {};
+__export(functional_exports, {
+  attempt: () => attempt,
+  constant: () => constant,
+  effect: () => effect,
+  identity: () => identity,
+  iife: () => iife,
+  isNullish: () => isNullish,
+  isObjectLike: () => isObjectLike,
+  isOk: () => isOk,
+  limitConcurrentCalls: () => limitConcurrentCalls,
+  multiComparator: () => multiComparator,
+  noop: () => noop,
+  ok: () => ok,
+  okOr: () => okOr,
+  once: () => once,
+  pipe: () => pipe,
+  raise: () => raise,
+  safeCall: () => safeCall,
+  sleep: () => sleep
 });
-exports.attempt = attempt;
-exports.iife = exports.identity = exports.effect = exports.constant = void 0;
-exports.isNullish = isNullish;
-exports.isObjectLike = isObjectLike;
-exports.isOk = isOk;
-exports.limitConcurrentCalls = limitConcurrentCalls;
-exports.multiComparator = multiComparator;
-exports.noop = void 0;
-exports.ok = ok;
-exports.once = exports.okOr = void 0;
-exports.pipe = pipe;
-exports.raise = raise;
-exports.safeCall = safeCall;
-exports.sleep = sleep;
-require("./chunk-8250b88d1c414ae5.js");
-// node_modules/argp
+module.exports = __toCommonJS(functional_exports);
 function pipe(initialValue, ...funcs) {
   let result = initialValue;
-  for (const func of funcs) result = func(result);
+  for (let func of funcs)
+    result = func(result);
   return result;
 }
 function limitConcurrentCalls(func, limit) {
-  const resolves = [];
+  let resolves = [];
   return async (...args) => {
-    if (resolves.length >= limit) await new Promise(resolve => resolves.push(resolve));
+    resolves.length >= limit && await new Promise((resolve) => resolves.push(resolve));
     try {
       return await func(...args);
     } finally {
@@ -36,78 +55,80 @@ function limitConcurrentCalls(func, limit) {
   };
 }
 function isObjectLike(value) {
-  return typeof value === "object" && value !== null;
+  return typeof value == "object" && value !== null;
 }
 function attempt(fn, ...args) {
   try {
-    const result = fn(...args);
-    return isObjectLike(result) && typeof result.catch === "function" ? result.catch(e => e) : result;
+    let result = fn(...args);
+    return isObjectLike(result) && typeof result.catch == "function" ? result.catch((e) => e) : result;
   } catch (err) {
     return err;
   }
 }
 function safeCall(fn, ...args) {
   try {
-    const result = fn(...args);
-    return isObjectLike(result) && typeof result.catch === "function" ? result.catch(() => null) : result;
-  } catch (_) {
+    let result = fn(...args);
+    return isObjectLike(result) && typeof result.catch == "function" ? result.catch(() => null) : result;
+  } catch {
     return null;
   }
 }
 function sleep(ms) {
-  return new Promise(resolve => setTimeout(() => resolve(ms), ms));
+  return new Promise((resolve) => setTimeout(() => resolve(ms), ms));
 }
+var iife = (fn) => fn(), identity = (v) => v, constant = (v) => () => v, noop = () => {
+}, effect = (fn) => (v) => (fn(v), v);
 function isNullish(value) {
-  return value == null || value == undefined;
+  return value == null || value == null;
 }
 function isOk(value) {
   return !isNullish(value) && !(value instanceof Error);
 }
 function ok(value) {
-  if (value instanceof Error) throw value;
-  if (isNullish(value)) throw new TypeError("Expected a non-nullish value.");
+  if (value instanceof Error)
+    throw value;
+  if (isNullish(value))
+    throw new TypeError("Expected a non-nullish value.");
   return value;
 }
+var okOr = (value, defaultValue) => value instanceof Error || isNullish(value) ? defaultValue : value;
 function raise(exception) {
-  throw typeof exception === "string" ? new Error(exception) : exception;
+  throw typeof exception == "string" ? new Error(exception) : exception;
 }
 function multiComparator(...comparators) {
   return (a, b) => {
-    let isBool = false;
-    for (const comparator of comparators) {
-      const result = comparator(a, b);
-      isBool = typeof result === "boolean";
-      if (result) return result;
+    let isBool = !1;
+    for (let comparator of comparators) {
+      let result = comparator(a, b);
+      if (isBool = typeof result == "boolean", result)
+        return result;
     }
-    return isBool ? false : 0;
+    return isBool ? !1 : 0;
   };
 }
-var iife = fn => fn();
-exports.iife = iife;
-var identity = v => v;
-exports.identity = identity;
-var constant = v => () => v;
-exports.constant = constant;
-var noop = () => {};
-exports.noop = noop;
-var effect = fn => v => {
-  fn(v);
-  return v;
+var once = (fn) => {
+  let called = !1, result;
+  return (...args) => called ? result : (called = !0, result = fn(...args));
 };
-exports.effect = effect;
-var okOr = (value, defaultValue) => {
-  if (value instanceof Error) return defaultValue;
-  if (isNullish(value)) return defaultValue;
-  return value;
-};
-exports.okOr = okOr;
-var once = fn => {
-  let called = false;
-  let result;
-  return (...args) => {
-    if (called) return result;
-    called = true;
-    return result = fn(...args);
-  };
-};
-exports.once = once;
+// Annotate the CommonJS export names for ESM import in node:
+0 && (module.exports = {
+  attempt,
+  constant,
+  effect,
+  identity,
+  iife,
+  isNullish,
+  isObjectLike,
+  isOk,
+  limitConcurrentCalls,
+  multiComparator,
+  noop,
+  ok,
+  okOr,
+  once,
+  pipe,
+  raise,
+  safeCall,
+  sleep
+});
+//# sourceMappingURL=functional.js.map

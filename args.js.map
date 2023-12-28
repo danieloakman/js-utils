@@ -1,0 +1,8 @@
+{
+  "version": 3,
+  "sources": ["src/args.ts"],
+  "sourceRoot": "./src",
+  "sourcesContent": ["import type { ArgumentParser, ArgumentOptions } from 'argparse';\nimport { raise } from './functional';\n\nexport type AddArgumentParams =\n  | [arg: string, options?: ArgumentOptions]\n  | [arg1: string, arg2: string, options?: ArgumentOptions]\n  | [arg1: string];\n\nexport const parseArgs: <T = unknown>(\n  constructorParams: ConstructorParameters<typeof ArgumentParser>[0],\n  ...args: AddArgumentParams[]\n) => T =\n  Bun.env.RUNTIME === 'node' || Bun.env.RUNTIME === 'bun'\n    ? (constructorParams, ...args) => {\n        // eslint-disable-next-line @typescript-eslint/no-var-requires\n        const parser = new (require('argparse').ArgumentParser)(constructorParams);\n        // @ts-ignore\n        for (const arg of args) parser.add_argument(...arg);\n        return parser.parse_args();\n      }\n    : () => raise(\"Can't parse args in browser.\");\n"],
+  "mappings": ";;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAQO,IAAM,YAKP,CAAC,sBAAsB,SAAS;AAE9B,MAAM,SAAS,IAAK,SAAQ,UAAU,GAAE,eAAgB,iBAAiB;AAEzE,WAAW,OAAO;AAAM,WAAO,aAAa,GAAG,GAAG;AAClD,SAAO,OAAO,WAAW;AAC3B;",
+  "names": []
+}
