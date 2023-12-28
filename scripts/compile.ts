@@ -44,7 +44,7 @@ export async function compile(args: CompileArgs): Promise<Error | boolean> {
   // Build
   const buildResult = await Bun.build({
     minify: false,
-    entrypoints: srcFiles as string[],
+    entrypoints: srcFiles,
     outdir: '.',
     splitting: true,
     external: ['arg-parse'],
