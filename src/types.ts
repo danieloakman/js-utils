@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 export interface Fn<Args extends any[] = any[], Return = any> {
   (...args: Args): Return;
 }
@@ -77,3 +78,25 @@ export type UnionToIntersection<U> = (U extends any ? (x: U) => void : never) ex
 
 /** Unions T with itself and with it wrapped in a Promise. */
 export type PromiseOrValue<T> = T | Promise<T>;
+
+export type StringTuple = readonly string[];
+
+/**
+ * Tail<['1', '2', '3']> = ['2', '3'].
+ */
+export type Tail<T extends StringTuple> = T extends readonly [infer Head, ...infer Rest] ? Rest : [];
+
+/**
+ * Join<['1', '2'], " - "> = '1 - 2'.
+ * Join<['1'], " - "> = '1'.
+ * Join<[], 'x'> = ''.
+ */
+export type StringJoin<T extends StringTuple, Separator extends string> = T extends readonly []
+	? ''
+	: T extends readonly [infer Head]
+		? Head
+		: `${T[0]}${Separator}${StringJoin<Tail<T>, Separator>}`;
+
+export type Concat<A extends any[], B extends any[]> = [...A, ...B];
+
+export type Pop<T extends any[]> = T extends [...infer A, infer B] ? A : [];
