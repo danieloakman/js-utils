@@ -60,6 +60,7 @@ export function pipe<A, B, C, D, E, F, G, H, I, J>(
   hFn: MonoFn<H, I>,
   iFn: MonoFn<I, J>,
 ): J;
+export function pipe(initialValue: unknown, ...funcs: MonoFn<unknown, unknown>[]): unknown;
 export function pipe(initialValue: unknown, ...funcs: MonoFn<unknown, unknown>[]): unknown {
   let result = initialValue;
   for (const func of funcs) result = func(result);
@@ -120,8 +121,8 @@ export function flow<A, B, C, D, E, F, G, H, I, J>(
   hFn: MonoFn<H, I>,
   iFn: MonoFn<I, J>,
 ): MonoFn<A, J>;
+export function flow(...funcs: MonoFn<unknown, unknown>[]): MonoFn<unknown, unknown>;
 export function flow(...funcs: MonoFn<unknown, unknown>[]): MonoFn<unknown, unknown> {
-  // @ts-ignore
   return (value: unknown) => pipe(value, ...funcs);
 }
 
