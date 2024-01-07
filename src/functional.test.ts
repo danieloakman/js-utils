@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'bun:test';
-import { attempt, once } from './functional';
+import { attempt, isObjectLike, multiComparator, not, once } from './functional';
 import { sleep } from 'bun';
 import { expectType } from '.';
 
@@ -36,5 +36,23 @@ describe('functional', () => {
     expect(called).toBe(1);
     expect(factorial(2, 2)).toBe(8);
     expect(called).toBe(1);
+  });
+
+  it('multiComparator', () => {
+    const arr = [3, 5, 2, 1, 4];
+    expect(arr.toSorted(multiComparator((a, b) => a - b))).toStrictEqual([1, 2, 3, 4, 5]);
+    expect(arr.toSorted(multiComparator((a, b) => b - a))).toStrictEqual([5, 4, 3, 2, 1]);
+    interface Foo {
+      bar: number;
+    }
+    const comp = not(
+      multiComparator<Foo, boolean>(
+        (a, b) => !(isObjectLike(a) && isObjectLike(b)),
+        (a, b) => !('bar' in a && 'bar' in b),
+        (a, b) => !(a.bar === b.bar),
+      ),
+    );
+    expect(comp({ bar: 1 }, { bar: 2 })).toBeFalse();
+    expect(comp({ bar: 1 }, { bar: 1 })).toBeTrue();
   });
 });
