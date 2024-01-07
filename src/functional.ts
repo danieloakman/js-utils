@@ -174,6 +174,8 @@ export function multiComparator<T, R extends number | boolean>(...comparators: C
   };
 }
 
+export const not = <T extends Fn>(fn: T) => (...args: Parameters<T>) => !fn(...args);
+
 /** Wraps `fn` so that all calls to `fn` will return the same **FIRST** result. */
 export const once = <T extends Fn>(fn: T): T => {
   let called = false;
