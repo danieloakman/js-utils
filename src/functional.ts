@@ -66,6 +66,65 @@ export function pipe(initialValue: unknown, ...funcs: MonoFn<unknown, unknown>[]
   return result;
 }
 
+export function flow<A, B>(aFn: MonoFn<A, B>): MonoFn<A, B>;
+export function flow<A, B, C>(aFn: MonoFn<A, B>, bFn: MonoFn<B, C>): MonoFn<A, C>;
+export function flow<A, B, C, D>(aFn: MonoFn<A, B>, bFn: MonoFn<B, C>, cFn: MonoFn<C, D>): MonoFn<A, D>;
+export function flow<A, B, C, D, E>(
+  aFn: MonoFn<A, B>,
+  bFn: MonoFn<B, C>,
+  cFn: MonoFn<C, D>,
+  dFn: MonoFn<D, E>,
+): MonoFn<A, E>;
+export function flow<A, B, C, D, E, F>(
+  aFn: MonoFn<A, B>,
+  bFn: MonoFn<B, C>,
+  cFn: MonoFn<C, D>,
+  dFn: MonoFn<D, E>,
+  eFn: MonoFn<E, F>,
+): MonoFn<A, F>;
+export function flow<A, B, C, D, E, F, G>(
+  aFn: MonoFn<A, B>,
+  bFn: MonoFn<B, C>,
+  cFn: MonoFn<C, D>,
+  dFn: MonoFn<D, E>,
+  eFn: MonoFn<E, F>,
+  fFn: MonoFn<F, G>,
+): MonoFn<A, G>;
+export function flow<A, B, C, D, E, F, G, H>(
+  aFn: MonoFn<A, B>,
+  bFn: MonoFn<B, C>,
+  cFn: MonoFn<C, D>,
+  dFn: MonoFn<D, E>,
+  eFn: MonoFn<E, F>,
+  fFn: MonoFn<F, G>,
+  gFn: MonoFn<G, H>,
+): MonoFn<A, H>;
+export function flow<A, B, C, D, E, F, G, H, I>(
+  aFn: MonoFn<A, B>,
+  bFn: MonoFn<B, C>,
+  cFn: MonoFn<C, D>,
+  dFn: MonoFn<D, E>,
+  eFn: MonoFn<E, F>,
+  fFn: MonoFn<F, G>,
+  gFn: MonoFn<G, H>,
+  hFn: MonoFn<H, I>,
+): MonoFn<A, I>;
+export function flow<A, B, C, D, E, F, G, H, I, J>(
+  aFn: MonoFn<A, B>,
+  bFn: MonoFn<B, C>,
+  cFn: MonoFn<C, D>,
+  dFn: MonoFn<D, E>,
+  eFn: MonoFn<E, F>,
+  fFn: MonoFn<F, G>,
+  gFn: MonoFn<G, H>,
+  hFn: MonoFn<H, I>,
+  iFn: MonoFn<I, J>,
+): MonoFn<A, J>;
+export function flow(...funcs: MonoFn<unknown, unknown>[]): MonoFn<unknown, unknown> {
+  // @ts-ignore
+  return (value: unknown) => pipe(value, ...funcs);
+}
+
 export function limitConcurrentCalls<T extends (...args: any[]) => Promise<any>>(func: T, limit: number): T {
   const resolves: ((...any: any[]) => void)[] = [];
 
