@@ -161,7 +161,7 @@ export function raise(exception: string | Error): never {
   throw typeof exception === 'string' ? new Error(exception) : exception;
 }
 
-// TODO: fill jsdoc
+/** Combines any number of comparators into a single comparator. Can be used for sorting or equality. */
 export function multiComparator<T, R extends number | boolean>(...comparators: Comparator<T, R>[]): Comparator<T, R> {
   return (a: T, b: T) => {
     let isBool = false;
@@ -174,6 +174,7 @@ export function multiComparator<T, R extends number | boolean>(...comparators: C
   };
 }
 
+/** Wraps `!fn` as `!fn`. */
 export const not = <T extends Fn>(fn: T) => (...args: Parameters<T>) => !fn(...args);
 
 /** Wraps `fn` so that all calls to `fn` will return the same **FIRST** result. */
