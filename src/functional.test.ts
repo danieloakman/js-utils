@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'bun:test';
-import { attempt, isObjectLike, multiComparator, not, once } from './functional';
+import { attempt, flow, isObjectLike, multiComparator, not, once } from './functional';
 import { sleep } from 'bun';
 import { expectType } from '.';
 
@@ -54,5 +54,11 @@ describe('functional', () => {
     );
     expect(comp({ bar: 1 }, { bar: 2 })).toBeFalse();
     expect(comp({ bar: 1 }, { bar: 1 })).toBeTrue();
+  });
+
+  it('flow', () => {
+    const fn = flow((v: number) => v.toString(), v => v + '0', v => parseFloat(v));
+    expect(fn(1)).toBe(10);
+    expect(fn(2)).toBe(20);
   });
 });
