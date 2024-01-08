@@ -233,7 +233,7 @@ export function multiComparator<T, R extends number | boolean>(...comparators: C
   };
 }
 
-/** Wraps `!fn` as `!fn`. */
+/** Wraps `fn` as `!fn`. */
 export const not = <T extends Fn>(fn: T) => (...args: Parameters<T>) => !fn(...args);
 
 /** Wraps `fn` so that all calls to `fn` will return the same **FIRST** result. */
