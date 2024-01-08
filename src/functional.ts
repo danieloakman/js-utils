@@ -209,14 +209,18 @@ export function ok<T>(value: T): Ok<T> {
   return value as Ok<T>;
 }
 
-// TODO: fill jsdoc
+/** Checks if `value` is nullish or an error, if it is then `defaultValue` is returned. Otherwise `value` is returned. */
 export const okOr = <T, U>(value: T, defaultValue: U): Ok<T> | U => {
-  if (value instanceof Error) return defaultValue;
-  if (isNullish(value)) return defaultValue;
-  return value as Ok<T>;
+  return value instanceof Error || isNullish(value) ? defaultValue : (value as Ok<T>);
 };
 
-// TODO: fill jsdoc
+/**
+ * Throws an error or error message. `throw new Error('...')` can't be used as an expression, but this can. So this
+ * function opens some neat possibilities.
+ * @example
+ * const foo = someNullishValue ?? raise('foo is nullish');
+ * const str = possiblyEmptyString || raise('str is empty');
+ */
 export function raise(exception: string | Error): never {
   throw typeof exception === 'string' ? new Error(exception) : exception;
 }
@@ -234,8 +238,11 @@ export function multiComparator<T, R extends number | boolean>(...comparators: C
   };
 }
 
-/** Wraps `!fn` as `!fn`. */
-export const not = <T extends Fn>(fn: T) => (...args: Parameters<T>) => !fn(...args);
+/** Wraps `fn` as `!fn`. */
+export const not =
+  <T extends Fn>(fn: T) =>
+  (...args: Parameters<T>) =>
+    !fn(...args);
 
 /** Wraps `fn` so that all calls to `fn` will return the same **FIRST** result. */
 export const once = <T extends Fn>(fn: T): T => {
