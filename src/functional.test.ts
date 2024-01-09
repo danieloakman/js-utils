@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'bun:test';
-import { attempt, flow, isObjectLike, multiComparator, not, once, tryCatch } from './functional';
+import { attempt, flow, isObjectLike, multiComparator, not, once, toAsyncFn } from './functional';
 import { sleep } from 'bun';
 import { expectType } from '.';
 
@@ -57,35 +57,59 @@ describe('functional', () => {
   });
 
   it('flow', () => {
-    const fn = flow((v: number) => v.toString(), v => v + '0', v => parseFloat(v));
+    const fn = flow(
+      (v: number) => v.toString(),
+      v => v + '0',
+      v => parseFloat(v),
+    );
     expect(fn(1)).toBe(10);
     expect(fn(2)).toBe(20);
   });
 
-  it('tryCatch', async () => {
-    {
-      let finCalled = false;
-      const fn = tryCatch(
-        (n: number): number => {
-          if (n > 1) throw new Error('n > 1');
-          return n;
-        },
-        { then: n => n * 2, err: () => 'err', fin: () => (finCalled = true) },
-      );
-      expect(fn(1)).toBe(2);
-      expect(fn(2)).toBe('err');
-      expect(fn(-1)).toBe(-2);
-      expect(finCalled).toBeTrue();
-    }
-    {
-      let finCalled = false;
-      const fn = tryCatch(async (n: number) => {
-        await sleep(n);
-        if (n > 1) throw new Error('n > 1');
-        return n;
-      }, { then: n => n * 2, err: () => 'err', fin: () => (finCalled = true) });
-      expect(await fn(1)).toBe(2);
-      expect(finCalled).toBeTrue();
-    }
+  it('toAsyncFn', async () => {
+    const fn = toAsyncFn((n: number) => {
+      const result = n * 2;
+      if (result > 100) throw new Error('result > 100');
+      return result;
+    });
+    expect(await fn(1)).toBe(2);
+    fn(2)
+      .then(expectType<number>)
+      .then(v => expect(v).toBe(4));
+    expect(await fn(51).catch(() => 'err')).toBe('err');
+    let finallyWasCalled = false;
+    expect(await fn(40).finally(() => (finallyWasCalled = true))).toBe(80);
+    expect(finallyWasCalled).toBeTrue();
+    
   });
+
+  // it('tryCatch', async () => {
+  //   {
+  //     let finCalled = false;
+  //     const fn = tryCatch(
+  //       (n: number): number => {
+  //         if (n > 1) throw new Error('n > 1');
+  //         return n;
+  //       },
+  //       { then: n => n * 2, err: () => 'err', fin: () => (finCalled = true) },
+  //     );
+  //     expect(fn(1)).toBe(2);
+  //     expect(fn(2)).toBe('err');
+  //     expect(fn(-1)).toBe(-2);
+  //     expect(finCalled).toBeTrue();
+  //   }
+  //   {
+  //     let finCalled = false;
+  //     const fn = tryCatch(
+  //       async (n: number) => {
+  //         await sleep(n);
+  //         if (n > 1) throw new Error('n > 1');
+  //         return n;
+  //       },
+  //       { then: n => n * 2, err: () => 'err', fin: () => (finCalled = true) },
+  //     );
+  //     expect(await fn(1)).toBe(2);
+  //     expect(finCalled).toBeTrue();
+  //   }
+  // });
 });
