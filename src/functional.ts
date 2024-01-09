@@ -1,4 +1,4 @@
-import { Comparator, Fn, MonoFn, Ok } from './types';
+import { Comparator, Fn, MonoFn, Ok, AwaitedOnce } from './types';
 
 export function pipe<A, B>(a: A, aFn: MonoFn<A, B>): B;
 export function pipe<A, B, C>(a: A, aFn: MonoFn<A, B>, bFn: MonoFn<B, C>): C;
@@ -260,9 +260,9 @@ export const once = <T extends Fn>(fn: T): T => {
  * are more convenient than `try`/`catch`/`finally`. Obviously this is not appropriate for functions that are already
  * async, or that can be made async easily, i.e. a callback or some other anonymous function defined inline.
  */
-export function toAsyncFn<T extends Fn>(fn: T): (...args: Parameters<T>) => Promise<ReturnType<T>> {
+export function toAsyncFn<T extends Fn>(fn: T): (...args: Parameters<T>) => Promise<AwaitedOnce<ReturnType<T>>> {
   // @ts-ignore
-  return async (...args: Parameters<T>) => await fn.call(this, ...args);
+  return async (...args: Parameters<T>) => await fn(...args);
 }
 
 // export interface TryCatch {

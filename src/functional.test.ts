@@ -67,20 +67,32 @@ describe('functional', () => {
   });
 
   it('toAsyncFn', async () => {
-    const fn = toAsyncFn((n: number) => {
-      const result = n * 2;
-      if (result > 100) throw new Error('result > 100');
-      return result;
-    });
-    expect(await fn(1)).toBe(2);
-    fn(2)
-      .then(expectType<number>)
-      .then(v => expect(v).toBe(4));
-    expect(await fn(51).catch(() => 'err')).toBe('err');
-    let finallyWasCalled = false;
-    expect(await fn(40).finally(() => (finallyWasCalled = true))).toBe(80);
-    expect(finallyWasCalled).toBeTrue();
-    
+    {
+      const fn = toAsyncFn((n: number) => {
+        const result = n * 2;
+        if (result > 100) throw new Error('result > 100');
+        return result;
+      });
+      expect(await fn(1)).toBe(2);
+      fn(2)
+        .then(expectType<number>)
+        .then(v => expect(v).toBe(4));
+      expect(await fn(51).catch(() => 'err')).toBe('err');
+      let finallyWasCalled = false;
+      expect(await fn(40).finally(() => (finallyWasCalled = true))).toBe(80);
+      expect(finallyWasCalled).toBeTrue();
+    }
+    {
+      class A {
+        constructor(public n: number) {}
+        async fn() {
+          return this.n * 2;
+        }
+      }
+      const a = new A(5);
+      const fn = toAsyncFn(a.fn.bind(a));
+      expect(await fn()).toBe(10);
+    }
   });
 
   // it('tryCatch', async () => {
