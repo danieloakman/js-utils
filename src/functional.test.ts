@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'bun:test';
-import { attempt, flow, isObjectLike, multiComparator, not, once } from './functional';
+import { attempt, flow, isObjectLike, multiComparator, not, once, tryCatch } from './functional';
 import { sleep } from 'bun';
 import { expectType } from '.';
 
@@ -60,5 +60,32 @@ describe('functional', () => {
     const fn = flow((v: number) => v.toString(), v => v + '0', v => parseFloat(v));
     expect(fn(1)).toBe(10);
     expect(fn(2)).toBe(20);
+  });
+
+  it('tryCatch', async () => {
+    {
+      let finCalled = false;
+      const fn = tryCatch(
+        (n: number): number => {
+          if (n > 1) throw new Error('n > 1');
+          return n;
+        },
+        { then: n => n * 2, err: () => 'err', fin: () => (finCalled = true) },
+      );
+      expect(fn(1)).toBe(2);
+      expect(fn(2)).toBe('err');
+      expect(fn(-1)).toBe(-2);
+      expect(finCalled).toBeTrue();
+    }
+    {
+      let finCalled = false;
+      const fn = tryCatch(async (n: number) => {
+        await sleep(n);
+        if (n > 1) throw new Error('n > 1');
+        return n;
+      }, { then: n => n * 2, err: () => 'err', fin: () => (finCalled = true) });
+      expect(await fn(1)).toBe(2);
+      expect(finCalled).toBeTrue();
+    }
   });
 });

@@ -254,3 +254,52 @@ export const once = <T extends Fn>(fn: T): T => {
     return (result = fn(...args));
   }) as T;
 };
+
+/**
+ * @description Wraps any function into an async one. Useful for when the `Promise` API methods
+ * (`catch`, `finally`, `then`) are more convenient than `try`/`catch`/`finally`.
+ */
+export const toAsyncFn =
+  <T extends Fn>(fn: T): ((...args: Parameters<T>) => Promise<ReturnType<T>>) =>
+  async (...args: Parameters<T>) =>
+    await fn(...args);
+
+export interface TryCatch {
+  <T extends Fn>(fn: T, options: { fin: () => unknown }): T;
+  <T extends Fn, R>(fn: T, options: { then: (result: ReturnType<T>) => R; fin?: () => unknown }): (
+    ...args: Parameters<T>
+  ) => R;
+  <T extends Fn, E>(fn: T, options: { err: (error: Error) => E; fin?: () => unknown }): (
+    ...args: Parameters<T>
+  ) => ReturnType<T> | E;
+  <T extends Fn, R, E>(
+    fn: T,
+    options: { then: (result: ReturnType<T>) => R; err: (error: Error) => E; fin?: () => unknown },
+  ): (...args: Parameters<T>) => R | E;
+}
+
+export const tryCatch: TryCatch = (fn: Fn, options: Record<string, Fn | undefined>) => {
+  return ((...args: any[]) => {
+    const fin = once(options.fin ?? noop);
+    const err = once(options.err ?? identity);
+    try {
+      const result = fn(...args);
+      if (result instanceof Promise) {
+        return result
+          .then(v => {
+            if (options.then) return options.then(v);
+            return v;
+          })
+          .catch(err)
+          .finally(fin);
+      }
+      if (options.then) return options.then(result);
+      return result;
+    } catch (error) {
+      if (!(error instanceof Error) || typeof options.err !== 'function') throw error;
+      return options.err(error);
+    } finally {
+      fin();
+    }
+  }) as any;
+};
