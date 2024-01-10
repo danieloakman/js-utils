@@ -261,7 +261,6 @@ export const once = <T extends Fn>(fn: T): T => {
  * async, or that can be made async easily, i.e. a callback or some other anonymous function defined inline.
  */
 export function toAsyncFn<T extends Fn>(fn: T): (...args: Parameters<T>) => Promise<AwaitedOnce<ReturnType<T>>> {
-  // @ts-ignore
   return async (...args: Parameters<T>) => await fn(...args);
 }
 
