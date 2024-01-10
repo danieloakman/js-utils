@@ -1,6 +1,5 @@
 import { describe, it, expect } from 'bun:test';
-import { attempt, flow, isObjectLike, multiComparator, not, once, toAsyncFn } from './functional';
-import { sleep } from 'bun';
+import { attempt, flow, isObjectLike, multiComparator, not, once, toAsyncFn, sleep } from './functional';
 import { expectType } from '.';
 
 describe('functional', () => {
@@ -92,6 +91,13 @@ describe('functional', () => {
       const a = new A(5);
       const fn = toAsyncFn(a.fn.bind(a));
       expect(await fn()).toBe(10);
+    }
+    {
+      const s = toAsyncFn(sleep);
+      expect(await s(1)).toBe(1);
+      s(2)
+        .then(expectType<number>)
+        .then(v => expect(v).toBe(2));
     }
   });
 
