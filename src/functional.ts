@@ -1,4 +1,4 @@
-import { Comparator, Fn, MonoFn, Ok } from './types';
+import { Comparator, Fn, MonoFn, Ok, AwaitedOnce } from './types';
 
 export function pipe<A, B>(a: A, aFn: MonoFn<A, B>): B;
 export function pipe<A, B, C>(a: A, aFn: MonoFn<A, B>, bFn: MonoFn<B, C>): C;
@@ -60,6 +60,7 @@ export function pipe<A, B, C, D, E, F, G, H, I, J>(
   hFn: MonoFn<H, I>,
   iFn: MonoFn<I, J>,
 ): J;
+export function pipe(initialValue: unknown, ...funcs: MonoFn<unknown, unknown>[]): unknown;
 export function pipe(initialValue: unknown, ...funcs: MonoFn<unknown, unknown>[]): unknown {
   let result = initialValue;
   for (const func of funcs) result = func(result);
@@ -120,8 +121,8 @@ export function flow<A, B, C, D, E, F, G, H, I, J>(
   hFn: MonoFn<H, I>,
   iFn: MonoFn<I, J>,
 ): MonoFn<A, J>;
+export function flow(...funcs: MonoFn<unknown, unknown>[]): MonoFn<unknown, unknown>;
 export function flow(...funcs: MonoFn<unknown, unknown>[]): MonoFn<unknown, unknown> {
-  // @ts-ignore
   return (value: unknown) => pipe(value, ...funcs);
 }
 
@@ -253,3 +254,53 @@ export const once = <T extends Fn>(fn: T): T => {
     return (result = fn(...args));
   }) as T;
 };
+
+/**
+ * @description Wraps any function into an async one. Useful for when the `Promise` API methods (`catch`, `finally`, `then`)
+ * are more convenient than `try`/`catch`/`finally`. Obviously this is not appropriate for functions that are already
+ * async, or that can be made async easily, i.e. a callback or some other anonymous function defined inline.
+ */
+export function toAsyncFn<T extends Fn>(fn: T): (...args: Parameters<T>) => Promise<AwaitedOnce<ReturnType<T>>> {
+  // @ts-ignore
+  return async (...args: Parameters<T>) => await fn(...args);
+}
+
+// export interface TryCatch {
+//   <T extends Fn>(fn: T, options: { fin: () => unknown }): T;
+//   <T extends Fn, R>(fn: T, options: { then: (result: ReturnType<T>) => R; fin?: () => unknown }): (
+//     ...args: Parameters<T>
+//   ) => R;
+//   <T extends Fn, E>(fn: T, options: { err: (error: Error) => E; fin?: () => unknown }): (
+//     ...args: Parameters<T>
+//   ) => ReturnType<T> | E;
+//   <T extends Fn, R, E>(
+//     fn: T,
+//     options: { then: (result: ReturnType<T>) => R; err: (error: Error) => E; fin?: () => unknown },
+//   ): (...args: Parameters<T>) => R | E;
+// }
+
+// export const tryCatch: TryCatch = (fn: Fn, options: Record<string, Fn | undefined>) => {
+//   return ((...args: any[]) => {
+//     const fin = once(options.fin ?? noop);
+//     const err = once(options.err ?? identity);
+//     try {
+//       const result = fn(...args);
+//       if (result instanceof Promise) {
+//         return result
+//           .then(v => {
+//             if (options.then) return options.then(v);
+//             return v;
+//           })
+//           .catch(err)
+//           .finally(fin);
+//       }
+//       if (options.then) return options.then(result);
+//       return result;
+//     } catch (error) {
+//       if (!(error instanceof Error) || typeof options.err !== 'function') throw error;
+//       return options.err(error);
+//     } finally {
+//       fin();
+//     }
+//   }) as any;
+// };
