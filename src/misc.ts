@@ -19,11 +19,16 @@ export function nodeOnly<T extends Fn>(fn: T): T {
 export const importSync = (name: string) => require(name);
 
 /**
+ * @description
+ * **NODE ONLY**
  * Declares and runs a main function if the entry point to the program is `module`. This is esstentially the same as
- * python's `if __name__ == '__main__'` block.
- * @param module If on node, then this will be passed in as `module`. If on `bun` or `browser` then pass in
- * `import.meta.path`, i.e. the program's entry poing as an absolute path.
+ * python's `if __name__ == '__main__'` block. If on Bun runtime, use `if (import.meta.main) app()` instead.
+ * @param module Always pass in the global variable: `module`.
  * @param mainFn The main function to run.
+ * @example
+ * main(module, async () => {
+ *  // do stuff
+ * });
  */
 export const main: (module: any, mainFn: () => Promise<void>) => Promise<void> =
   Bun.env.RUNTIME === 'node'
@@ -31,11 +36,11 @@ export const main: (module: any, mainFn: () => Promise<void>) => Promise<void> =
         // @ts-ignore
         if (require?.main === module) mainFn();
       }
-    : Bun.env.RUNTIME === 'bun'
-    ? async (module, mainFn) => {
-        // TODO: fix this for bun
-        if (module === Bun.main) mainFn();
-      }
+    // : Bun.env.RUNTIME === 'bun'
+    // ? async (module, mainFn) => {
+    //     // TODO: fix this for bun
+    //     if (module === Bun.main) mainFn();
+    //   }
     : // TODO: browser may be able to work with bun's way of doing things, so perhaps this can be removed.
       (..._: any[]) => raise('Cannot have a main function in this runtime environment.');
 
