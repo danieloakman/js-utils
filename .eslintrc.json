@@ -18,6 +18,7 @@
     "no-undef": "error",
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "@typescript-eslint/no-non-null-assertion": "off", // This is perfectly fine to use when you know you want an assertion
     "@typescript-eslint/member-ordering": "error",
     "no-duplicate-imports": "error",
     "no-else-return": "error"
