@@ -263,10 +263,9 @@ export interface MemoizeOptions<T extends Fn> {
 }
 
 /** Wraps calls to `fn` with checks to an internal cache. */
-export const memoize = <T extends Fn>(
-  fn: T,
-  { resolver = (...args) => coerceHash(args).toString(), cache = new Map() }: MemoizeOptions<ReturnType<T>>,
-): T => {
+export const memoize = <T extends Fn>(fn: T, options: MemoizeOptions<T> = {}): T => {
+  const resolver = options.resolver ?? ((...args: Parameters<T>) => coerceHash(args).toString());
+  const cache = options.cache ?? new Map<string, ReturnType<T>>();
   return ((...args: Parameters<T>) => {
     const key = resolver(...args);
     if (cache.has(key)) return cache.get(key);
