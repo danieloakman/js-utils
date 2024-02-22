@@ -1,5 +1,16 @@
 import { describe, it, expect } from 'bun:test';
-import { attempt, flow, isObjectLike, multiComparator, not, once, toAsyncFn, sleep, raise } from './functional';
+import {
+  attempt,
+  flow,
+  isObjectLike,
+  multiComparator,
+  not,
+  once,
+  toAsyncFn,
+  sleep,
+  raise,
+  memoize,
+} from './functional';
 import { Nullish, expectType } from '.';
 
 describe('functional', () => {
@@ -35,6 +46,28 @@ describe('functional', () => {
     expect(called).toBe(1);
     expect(factorial(2, 2)).toBe(8);
     expect(called).toBe(1);
+  });
+
+  it('memoize', async () => {
+    {
+      const cache = new Map<string, number>();
+      const factorial = memoize(
+        (n: number, t: number) => {
+          let result = n;
+          for (let i = 0; i < t; i++) result *= n;
+          return result;
+        },
+        { cache },
+      );
+      expect([factorial(10, 10), factorial(10, 10)]).toEqual([100000000000, 100000000000]);
+      expect(cache.size).toBe(1);
+    }
+    {
+      const cache = new Map<string, Promise<number>>();
+      const memSleep = memoize(sleep, { cache });
+      expect([await memSleep(1), await memSleep(1)]).toEqual([1, 1]);
+      expect(cache.size).toBe(1);
+    }
   });
 
   it('multiComparator', () => {
@@ -102,7 +135,7 @@ describe('functional', () => {
   });
 
   it('raise', async () => {
-    const fn = (n: Nullish<number>) => (n ?? raise('n is nullish')) > 10 ? raise(`${n} > 10`) : n;
+    const fn = (n: Nullish<number>) => ((n ?? raise('n is nullish')) > 10 ? raise(`${n} > 10`) : n);
     expect(() => fn(11)).toThrow();
     expect(() => fn(10)).not.toThrow();
     expect(() => fn(null)).toThrow();
