@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'bun:test';
-import { attempt, flow, isObjectLike, multiComparator, not, once, toAsyncFn, sleep } from './functional';
-import { expectType } from '.';
+import { attempt, flow, isObjectLike, multiComparator, not, once, toAsyncFn, sleep, raise } from './functional';
+import { Nullish, expectType } from '.';
 
 describe('functional', () => {
   it('attempt', async () => {
@@ -99,6 +99,14 @@ describe('functional', () => {
         .then(expectType<number>)
         .then(v => expect(v).toBe(2));
     }
+  });
+
+  it('raise', async () => {
+    const fn = (n: Nullish<number>) => (n ?? raise('n is nullish')) > 10 ? raise(`${n} > 10`) : n;
+    expect(() => fn(11)).toThrow();
+    expect(() => fn(10)).not.toThrow();
+    expect(() => fn(null)).toThrow();
+    expect(() => fn(undefined)).toThrow();
   });
 
   // it('tryCatch', async () => {
