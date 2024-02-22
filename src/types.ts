@@ -46,6 +46,14 @@ export interface DataCache<T> {
   keys(): AsyncIterableIterator<string>;
 }
 
+/** For implementing simple string -> T maps. This is just a subset of a `Map<string, T>`.  */
+export interface SimpleMap<T> {
+  get(key: string): Nullish<T>;
+  set(key: string, value: T): this;
+  delete(key: string): boolean;
+  has(key: string): boolean;
+}
+
 export interface Comparator<T, R extends number | boolean> {
   (a: T, b: T): R;
 }
