@@ -19,7 +19,7 @@ My assortment of common utils that I've grown tired of copy pasting to every rep
 
 `pnpm add https://github.com/danieloakman/js-utils/releases/download/vx.x.x/node.tgz`
 
-`pnpm add https://github.com/danieloakman/js-utils/releases/latest/download/browser.tgz`
+`pnpm add https://github.com/danieloakman/js-utils/releases/latest/download/node.tgz`
 
 #### From Github branches
 
