@@ -1,4 +1,5 @@
-import { Comparator, Fn, MonoFn, Ok, AwaitedOnce } from './types';
+import { coerceHash } from './string';
+import { Comparator, Fn, MonoFn, Ok, AwaitedOnce, SimpleMap } from './types';
 
 export function pipe<A, B>(a: A, aFn: MonoFn<A, B>): B;
 export function pipe<A, B, C>(a: A, aFn: MonoFn<A, B>, bFn: MonoFn<B, C>): C;
@@ -252,6 +253,27 @@ export const once = <T extends Fn>(fn: T): T => {
     if (called) return result;
     called = true;
     return (result = fn(...args));
+  }) as T;
+};
+
+export interface MemoizeOptions<T extends Fn> {
+  /** This is used to create the key for a given set of parameters. */
+  resolver?: (...args: Parameters<T>) => string;
+  cache?: SimpleMap<ReturnType<T>>;
+}
+
+/** Wraps calls to `fn` with checks to an internal cache. */
+export const memoize = <T extends Fn>(
+  fn: T,
+  { resolver = (...args) => coerceHash(args).toString(), cache = new Map() }: MemoizeOptions<ReturnType<T>>,
+): T => {
+  return ((...args: Parameters<T>) => {
+    const key = resolver(...args);
+    if (cache.has(key)) return cache.get(key);
+    const result = fn(...args);
+    // if (result instanceof Promise) return result.then(effect(v => cache.set(key, v)));
+    cache.set(key, result);
+    return result;
   }) as T;
 };
 
