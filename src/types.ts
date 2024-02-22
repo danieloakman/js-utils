@@ -54,6 +54,22 @@ export interface SimpleMap<T> {
   has(key: string): boolean;
 }
 
+export abstract class Singleton {
+  protected static _instance: any;
+
+  /** Cannot directly instantiate this class, use the static `instance` method instead. */
+  protected constructor() {}
+
+  /**
+   * Use this to access the only initialisable instance for this class. Note you must use a return
+   * type when you override this, otherwise you'll get return type `any`.
+   */
+  public static instance(): any {
+    return this._instance;
+  }
+}
+
+
 export interface Comparator<T, R extends number | boolean> {
   (a: T, b: T): R;
 }
