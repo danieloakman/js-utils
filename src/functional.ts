@@ -152,7 +152,7 @@ export function attempt<T extends Fn>(fn: T, ...args: Parameters<T>): ReturnType
 export function attempt<T extends Fn>(fn: T, ...args: Parameters<T>): any {
   try {
     const result = fn(...args);
-    return isObjectLike(result) && typeof result.catch === 'function' ? result.catch((e: Error) => e) : result;
+    return isObjectLike(result) && typeof result['catch'] === 'function' ? result['catch']((e: Error) => e) : result;
   } catch (err) {
     return err as Error;
   }
@@ -161,7 +161,7 @@ export function attempt<T extends Fn>(fn: T, ...args: Parameters<T>): any {
 export function safeCall<T extends Fn>(fn: T, ...args: Parameters<T>): ReturnType<T> | null {
   try {
     const result = fn(...args);
-    return isObjectLike(result) && typeof result.catch === 'function' ? result.catch(() => null) : result;
+    return isObjectLike(result) && typeof result['catch'] === 'function' ? result['catch'](() => null) : result;
   } catch (_) {
     return null;
   }

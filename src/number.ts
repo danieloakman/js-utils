@@ -1,3 +1,5 @@
+import { reduce, zip } from "iteragain-es";
+
 /** Multiply some degrees by this to get the radian conversion. */
 export const RADIANS_MULT = Math.PI / 180;
 
@@ -23,7 +25,7 @@ export function toDegrees(radians: number) {
 }
 
 export function manhattanDistance(a: number[], b: number[]): number {
-  return a.reduce((sum, v, i) => sum + Math.abs(v - b[i]), 0);
+  return reduce(zip(a, b), (sum, [a, b]) => sum + Math.abs(a - b), 0);
 }
 
 /** Perform linear interpolation between `a` and `b` with `t`. */

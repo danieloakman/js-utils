@@ -1,4 +1,4 @@
-import { enumerate } from 'iteragain-es';
+import { enumerate, filterMap, toArray } from 'iteragain-es';
 import { isObjectLike, safeCall } from './functional';
 import { ObjectWithValueAtPath, Split, Comparator } from './types';
 
@@ -18,7 +18,7 @@ export function groupBy<T>(arr: T[], ...keys: KeyItentifier<T>[]) {
       map[k] = (map[k] ?? ([] as any[])).concat(value);
     }
   }
-  return results.length < 2 ? results[0][1] : results.map(([_, map]) => map);
+  return results.length < 2 ? (results[0]?.[1] ?? {}) : results.map(([_, map]) => map);
 }
 
 /** Safely parses a JSON string. If an error occurs, then null is returned. */
@@ -168,6 +168,7 @@ export function isPartiallyLike<T extends Record<PropertyKey, unknown> | unknown
 }
 
 export function findItemsFrom<T extends object>(needles: Partial<T>[], haystack: T[]): [found: T[], notFound: T[]] {
+  // TODO: This could probably be refactored to use `tee` and return two iterators.
   needles = needles.slice();
   const found: number[] = [];
   const notFound: number[] = [];
@@ -181,5 +182,5 @@ export function findItemsFrom<T extends object>(needles: Partial<T>[], haystack:
     }
     notFound.push(i);
   }
-  return [found.map(i => haystack[i]), notFound.map(i => haystack[i])];
+  return [toArray(filterMap(found, i => haystack[i])), toArray(filterMap(notFound, i => haystack[i]))];
 }

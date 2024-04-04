@@ -45,7 +45,9 @@ export class BinarySearch<T> {
     let closestDiff: number | null = null;
     for (let i = index - 1; i <= index + 1; i++) {
       if (i < 0 || i >= this.array.length) continue;
-      const diff = Math.abs(this.comparator(element, this.array[i]));
+      const other = this.array[i];
+      if (!other) continue;
+      const diff = Math.abs(this.comparator(element, other));
       if (!closestDiff || diff < closestDiff) {
         closestDiff = diff;
         closestIndex = i;
@@ -58,7 +60,7 @@ export class BinarySearch<T> {
    * @param index corresponding index in the input array.
    * @returns The element at index.
    */
-  at(index: number): T {
+  at(index: number): T | undefined {
     return this.array[index];
   }
 
@@ -71,7 +73,9 @@ export class BinarySearch<T> {
     let index: number;
     do {
       index = Math.floor((left + right) / 2);
-      const diff = this.comparator(element, this.array[index]);
+      const other = this.array[index];
+      if (!other) break;
+      const diff = this.comparator(element, other);
       if (diff > 0) {
         left = index + 1;
       } else if (diff < 0) {

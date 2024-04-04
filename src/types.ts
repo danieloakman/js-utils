@@ -108,7 +108,7 @@ export type StringTuple = readonly string[];
 /**
  * Tail<['1', '2', '3']> = ['2', '3'].
  */
-export type Tail<T extends StringTuple> = T extends readonly [infer Head, ...infer Rest] ? Rest : [];
+export type Tail<T extends StringTuple> = T extends readonly [infer _Head, ...infer Rest] ? Rest : [];
 
 /**
  * Join<['1', '2'], " - "> = '1 - 2'.
@@ -123,4 +123,4 @@ export type StringJoin<T extends StringTuple, Separator extends string> = T exte
 
 export type Concat<A extends any[], B extends any[]> = [...A, ...B];
 
-export type Pop<T extends any[]> = T extends [...infer A, infer B] ? A : [];
+export type Pop<T extends any[]> = T extends [...infer A, infer _B] ? A : [];

@@ -2,11 +2,11 @@ import { attempt, iife, raise } from './functional';
 import { Fn } from './types';
 
 /**
- * If Bun.env.RUNTIME is node compatible, then `fn` is returned as is, otherwise a function that raises an exception is
+ * If Bun.env['RUNTIME'] is node compatible, then `fn` is returned as is, otherwise a function that raises an exception is
  * returned.
  */
 export function nodeOnly<T extends Fn>(fn: T): T {
-  if (!(Bun.env.RUNTIME === 'node' || Bun.env.RUNTIME === 'bun'))
+  if (!(Bun.env['RUNTIME'] === 'node' || Bun.env['RUNTIME'] === 'bun'))
     return ((..._: any[]) =>
       raise('This function is only available in Node compatible run times (e.g. Node, Bun).')) as any;
   return fn;
@@ -31,12 +31,12 @@ export const importSync = (name: string) => require(name);
  * });
  */
 export const main: (module: any, mainFn: () => Promise<void>) => Promise<void> =
-  Bun.env.RUNTIME === 'node'
+  Bun.env['RUNTIME'] === 'node'
     ? async (module, mainFn) => {
         // @ts-ignore
         if (require?.main === module) mainFn();
       }
-    // : Bun.env.RUNTIME === 'bun'
+    // : Bun.env['RUNTIME'] === 'bun'
     // ? async (module, mainFn) => {
     //     // TODO: fix this for bun
     //     if (module === Bun.main) mainFn();
@@ -49,7 +49,7 @@ export const main: (module: any, mainFn: () => Promise<void>) => Promise<void> =
  * If the command fails, then an error is returned, otherwise true is returned.
  */
 export const sh: (...commands: string[]) => Promise<Error | boolean> =
-  Bun.env.RUNTIME === 'browser'
+  Bun.env['RUNTIME'] === 'browser'
     ? () => raise('Cannot run shell commands in browser.')
     : (...commands: string[]) =>
         iife(({ spawn }: typeof import('child_process') = importSync('child_process')) => {
@@ -72,7 +72,7 @@ export const sh: (...commands: string[]) => Promise<Error | boolean> =
  * returned.
  */
 export const exec: (...commands: string[]) => Promise<Error | string> =
-  Bun.env.RUNTIME === 'browser'
+  Bun.env['RUNTIME'] === 'browser'
     ? () => raise('Cannot run shell commands in browser.')
     : (...commands: string[]) =>
         iife(({ spawn }: typeof import('child_process') = importSync('child_process')) => {
@@ -98,12 +98,12 @@ export const exec: (...commands: string[]) => Promise<Error | string> =
 
 /** Returns true if node is debugging. */
 export const isInDebug =
-  Bun.env.RUNTIME !== 'browser'
+  Bun.env['RUNTIME'] !== 'browser'
     ? () => typeof require('inspector').url() !== 'undefined'
     : () => raise('Not implemented for browser.');
 
 export const question =
-  Bun.env.RUNTIME !== 'browser'
+  Bun.env['RUNTIME'] !== 'browser'
     ? async (questionStr: string, defaultAnswer: string | null | undefined = undefined): Promise<string> => {
         if (isInDebug()) return defaultAnswer || '';
         const readline = await import('readline');
