@@ -49,7 +49,7 @@ export async function compile(args: CompileArgs): Promise<Error | boolean> {
     // external: ['argparse'],
     define: {
       'Bun.env.RUNTIME': `'${args.target}'`,
-      'Bun.env.[\'RUNTIME\']': `'${args.target}'`,
+      // 'Bun.env[\'RUNTIME\']': `'${args.target}'`,
     },
     tsconfig,
     plugins: [dtsPlugin({ tsconfig })],

@@ -1,4 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+
+declare module "bun" {
+  interface Env {
+    RUNTIME: string;
+  }
+}
 export interface Fn<Args extends any[] = any[], Return = any> {
   (...args: Args): Return;
 }

@@ -8,7 +8,7 @@ export function assert(value: unknown, message?: string | Error): asserts value 
 }
 
 export const throws: (block: () => unknown, message?: string | Error) => void =
-  Bun.env['RUNTIME'] === 'browser'
+  Bun.env.RUNTIME === 'browser'
     ? () => raise("Can' use `throws`, not implemented in browser.")
     : (block, message) => {
         return require('assert').throws(block, message);
@@ -22,7 +22,7 @@ export const expectType = <T>(value: T) => value;
 
 /** Wrapper for `deepStrictEqual` that asserts at the type level that `actual` and `expected` are the same type. */
 export const equal: <T>(actual: T, expected: T, message?: string | Error) => boolean =
-  Bun.env['RUNTIME'] === 'browser'
+  Bun.env.RUNTIME === 'browser'
     ? () => raise("Can't use `equal`, not implemented in browser.")
     : (actual, expected, message) => {
         return require('assert').deepStrictEqual(actual, expected, message);
