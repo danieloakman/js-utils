@@ -1,3 +1,4 @@
+#! bun
 import { exec, ok, sh } from '../src';
 import { clean } from './clean';
 import { CompileArgs, compile } from './compile';
@@ -29,4 +30,4 @@ async function main() {
   }
 }
 
-if (Bun.main === import.meta.path) main();
+if (import.meta.main) main();

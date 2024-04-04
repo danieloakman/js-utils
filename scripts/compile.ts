@@ -151,7 +151,7 @@ export async function compile(args: CompileArgs): Promise<Error | boolean> {
   return true;
 }
 
-if (Bun.main === import.meta.path) {
+if (import.meta.main) {
   const args: { target: 'node' | 'browser' | 'bun'; format: 'esm' | 'cjs' } = parseArgs(
     { description: 'Bundle using Bun and create declaration files with `tsc`.' },
     [

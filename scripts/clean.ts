@@ -1,3 +1,4 @@
+#! bun
 /** Brute force way to make sure all compiled ts files are removed. `tsc --build --clean` didn't always work as intended. */
 
 import { walkdir } from 'more-node-fs';
@@ -9,5 +10,4 @@ export async function clean() {
     if (stats.isFile() && /(\.d\.ts|\.js|\.map)$/.test(path)) unlink(path);
 }
 
-// main(import.meta.path, async () => clean())
-if (import.meta.path === Bun.main) clean();
+if (import.meta.main) clean();
