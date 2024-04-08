@@ -1,7 +1,2 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
-# Run prettier on staged files:
 bunx pretty-quick --staged
-# Then lint staged files:
-bunx lint-staged
+bunx eslint --cache --fix
