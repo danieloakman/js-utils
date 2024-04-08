@@ -48,12 +48,8 @@
       "eslint --cache --fix"
     ]
   },
-  "main": "index.js",
-  "types": "index.d.ts",
   "files": [
-    "*.d.ts",
-    "*.js",
-    "*.js.map"
+    "dist/**/*"
   ],
   "exports": {
     "default": "./dist/node/index.js",

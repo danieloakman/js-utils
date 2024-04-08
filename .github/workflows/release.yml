@@ -4,7 +4,7 @@ on:
   push:
     # branches: [master, main]
     tags:
-      - "v*"
+      - 'v*'
   workflow_dispatch:
 
 jobs:
@@ -33,29 +33,14 @@ jobs:
           bun lint
           bun test
 
-      # - name: Compile to Bun runtime 🛠️
-      #   run: |
-      #     bun compile bun -f esm
-      #     npm pack
-      #     mv js-utils-[0-9]*.tgz bun.tgz
-
-      - name: Compile to Node runtime 🛠️
+      - name: Compile/Build 🛠️
         run: |
-          bun compile node -f cjs
+          bun compile
           npm pack
-          mv js-utils-[0-9]*.tgz node.tgz
-
-      - name: Compile to Browser runtime 🛠️
-        run: |
-          bun compile browser -f esm
-          npm pack
-          mv js-utils-[0-9]*.tgz browser.tgz
 
       - name: Release
         uses: softprops/action-gh-release@v1
         # if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            bun.tgz
-            node.tgz
-            browser.tgz
+            js-utils-[0-9]*.tgz
