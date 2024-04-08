@@ -2,7 +2,7 @@
 import { join } from 'path';
 import { iife, ok } from '../src';
 import { readdirDeep } from 'more-node-fs';
-import { build } from 'esbuild';
+import { build as esbuild } from 'esbuild';
 import { dtsPlugin } from 'esbuild-plugin-d.ts';
 import { $ } from 'bun';
 
@@ -16,12 +16,12 @@ export const esmToCjs = iife(
       )?.code,
 );
 
-export interface CompileArgs {
+export interface BuildArgs {
   target: 'node' | 'browser' | 'bun';
   format: 'esm' | 'cjs';
 }
 
-export async function compile(args: CompileArgs): Promise<Error | boolean> {
+export async function build(args: BuildArgs): Promise<Error | boolean> {
   const [srcFiles] = await Promise.all([
     readdirDeep(join(import.meta.dir, '../src'), { ignore: /\.test\.ts$/ }).then(({ files }) => files),
   ]);
@@ -30,7 +30,7 @@ export async function compile(args: CompileArgs): Promise<Error | boolean> {
 
   const tsconfig = join(import.meta.dir, `../tsconfig.${args.format}.json`);
 
-  const buildResult = await build({
+  const buildResult = await esbuild({
     // entryPoints: [join(import.meta.dir, '../src/index.ts')],
     entryPoints: srcFiles,
     outdir: `./dist/${args.target}`,
@@ -155,7 +155,7 @@ if (import.meta.main) {
   for (const args of [
     { target: 'node', format: 'cjs' },
     { target: 'browser', format: 'esm' },
-  ] as CompileArgs[]) {
-    ok(await compile(args));
+  ] as BuildArgs[]) {
+    ok(await build(args));
   }
 }
