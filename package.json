@@ -51,6 +51,8 @@
   "files": [
     "dist/**/*"
   ],
+  "main": "./dist/node/index.js",
+  "types": "./dist/node/index.d.ts",
   "exports": {
     "default": "./dist/node/index.js",
     "node": "./dist/node/index.js",
