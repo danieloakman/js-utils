@@ -1,10 +1,10 @@
 #! bun
 import { join } from 'path';
-import { iife, ok, parseArgs } from '../src';
+import { iife, ok } from '../src';
 import { readdirDeep } from 'more-node-fs';
-import { clean } from './clean';
 import { build } from 'esbuild';
 import { dtsPlugin } from 'esbuild-plugin-d.ts';
+import { $ } from 'bun';
 
 export const esmToCjs = iife(
   ({ transformSync } = require('@babel/core')) =>
@@ -24,7 +24,6 @@ export interface CompileArgs {
 export async function compile(args: CompileArgs): Promise<Error | boolean> {
   const [srcFiles] = await Promise.all([
     readdirDeep(join(import.meta.dir, '../src'), { ignore: /\.test\.ts$/ }).then(({ files }) => files),
-    clean(),
   ]);
 
   if (args.target === 'bun') return new Error('Bun target is no longer supported, use browser instead.');
@@ -34,7 +33,7 @@ export async function compile(args: CompileArgs): Promise<Error | boolean> {
   const buildResult = await build({
     // entryPoints: [join(import.meta.dir, '../src/index.ts')],
     entryPoints: srcFiles,
-    outdir: '.',
+    outdir: `./dist/${args.target}`,
     sourceRoot: './src',
     sourcemap: 'linked',
     // minify: true,
@@ -49,7 +48,6 @@ export async function compile(args: CompileArgs): Promise<Error | boolean> {
     // external: ['argparse'],
     define: {
       'Bun.env.RUNTIME': `'${args.target}'`,
-      // 'Bun.env[\'RUNTIME\']': `'${args.target}'`,
     },
     tsconfig,
     plugins: [dtsPlugin({ tsconfig })],
@@ -152,22 +150,12 @@ export async function compile(args: CompileArgs): Promise<Error | boolean> {
 }
 
 if (import.meta.main) {
-  const args: { target: 'node' | 'browser' | 'bun'; format: 'esm' | 'cjs' } = parseArgs(
-    { description: 'Bundle using Bun and create declaration files with `tsc`.' },
-    [
-      'target',
-      {
-        choices: ['node', 'browser', 'bun'],
-      },
-    ],
-    [
-      '--format',
-      '-f',
-      {
-        choices: ['cjs', 'esm'],
-        default: 'esm',
-      },
-    ],
-  );
-  ok(await compile(args));
+  await $`rm -rf dist`;
+
+  for (const args of [
+    { target: 'node', format: 'cjs' },
+    { target: 'browser', format: 'esm' },
+  ] as CompileArgs[]) {
+    ok(await compile(args));
+  }
 }

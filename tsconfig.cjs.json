@@ -2,7 +2,8 @@
   "extends": "./tsconfig.esm.json",
   "compilerOptions": {
     "module": "commonjs",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "outDir": "./dist/cjs"
   },
   "include": ["./src"],
   "exclude": ["./scripts", "node_modules", "test", "dist", "benchmark", "**/*.test.ts"]
