@@ -185,3 +185,21 @@ export function findItemsFrom<T extends object>(needles: Partial<T>[], haystack:
   }
   return [toArray(filterMap(found, i => haystack[i])), toArray(filterMap(notFound, i => haystack[i]))];
 }
+
+export function omit<T extends object, K extends keyof T>(obj: T, keys: K[]): Omit<T, K>;
+export function omit<T extends object, K extends keyof T>(obj: T, ...keys: K[]): Omit<T, K>;
+export function omit<T extends object, K extends keyof T>(obj: T, ...keys: K[] | [K[]]): Omit<T, K> {
+  const _keys = (Array.isArray(keys[0]) ? keys[0] : keys) as K[];
+  const copy = { ...obj };
+  for (const key of _keys) delete copy[key];
+  return copy;
+}
+
+export function pick<T extends object, K extends keyof T>(obj: T, keys: K[]): Pick<T, K>;
+export function pick<T extends object, K extends keyof T>(obj: T, ...keys: K[]): Pick<T, K>;
+export function pick<T extends object, K extends keyof T>(obj: T, ...keys: K[] | [K[]]): Pick<T, K> {
+  const _keys = (Array.isArray(keys[0]) ? keys[0] : keys) as K[];
+  const copy = {} as Pick<T, K>;
+  for (const key of _keys) copy[key] = obj[key];
+  return copy;
+}
