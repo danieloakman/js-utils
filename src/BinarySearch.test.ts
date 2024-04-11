@@ -1,7 +1,7 @@
 import { expectType } from '.';
 import { ok as assert, deepStrictEqual as equal } from 'assert';
 import { describe, it } from 'bun:test';
-import { forEach, shuffle } from 'iteragain-es';
+import { forEach, shuffle } from 'iteragain';
 
 import BinarySearch from './BinarySearch';
 import { pipe } from './functional';

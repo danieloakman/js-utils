@@ -1,4 +1,4 @@
-import { enumerate, filterMap, toArray } from 'iteragain-es';
+import { enumerate, filterMap, toArray } from 'iteragain';
 
 import { isObjectLike, safeCall } from './functional';
 import { Comparator, ObjectWithValueAtPath, Split } from './types';

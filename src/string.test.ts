@@ -1,6 +1,6 @@
 import { randInteger } from '.';
 import { describe, expect, it } from 'bun:test';
-import { iter, range } from 'iteragain-es';
+import { iter, range } from 'iteragain';
 
 import { coerceHash, fastHash, hashWithLength } from './string';
 
