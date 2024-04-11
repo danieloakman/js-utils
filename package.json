@@ -33,11 +33,11 @@
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "husky": "^9.0.11",
-    "iteragain-es": "^3.18.4",
+    "iteragain": "^3.19.0",
     "more-node-fs": "^2.0.2",
     "prettier": "^3.2.5",
     "pretty-quick": "^4.0.0",
-    "typescript": "^5.4.4",
+    "typescript": "^5.4.5",
     "uglify-js": "^3.17.4"
   },
   "description": "A collection of useful JavaScript utilities that I can't be stuffed copying across repos anymore.",
