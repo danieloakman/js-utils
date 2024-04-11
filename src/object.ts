@@ -1,6 +1,7 @@
 import { enumerate, filterMap, toArray } from 'iteragain-es';
+
 import { isObjectLike, safeCall } from './functional';
-import { ObjectWithValueAtPath, Split, Comparator } from './types';
+import { Comparator, ObjectWithValueAtPath, Split } from './types';
 
 export type KeyItentifier<T> = string | ((item: T) => string);
 
@@ -18,7 +19,7 @@ export function groupBy<T>(arr: T[], ...keys: KeyItentifier<T>[]) {
       map[k] = (map[k] ?? ([] as any[])).concat(value);
     }
   }
-  return results.length < 2 ? (results[0]?.[1] ?? {}) : results.map(([_, map]) => map);
+  return results.length < 2 ? results[0]?.[1] ?? {} : results.map(([_, map]) => map);
 }
 
 /** Safely parses a JSON string. If an error occurs, then null is returned. */

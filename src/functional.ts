@@ -1,5 +1,5 @@
 import { coerceHash } from './string';
-import { Comparator, Fn, MonoFn, Ok, AwaitedOnce, SimpleMap } from './types';
+import { AwaitedOnce, Comparator, Fn, MonoFn, Ok, SimpleMap } from './types';
 
 export function pipe<A, B>(a: A, aFn: MonoFn<A, B>): B;
 export function pipe<A, B, C>(a: A, aFn: MonoFn<A, B>, bFn: MonoFn<B, C>): C;

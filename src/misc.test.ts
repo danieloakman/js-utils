@@ -1,8 +1,8 @@
+import { assert, exec, ok, sh } from '.';
 import { describe, it } from 'bun:test';
-import { sh, assert, ok, exec } from '.';
+import { readFile } from 'fs/promises';
 import { tmpdir } from 'os';
 import { join } from 'path';
-import { readFile } from 'fs/promises';
 
 describe('misc', () => {
   it('exec', async () => {

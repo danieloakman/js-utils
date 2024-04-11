@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'bun:test';
-import { expectType, isPartiallyLike, propIs, sortByKeys, findItemsFrom } from '.';
+import { expectType, findItemsFrom, isPartiallyLike, propIs, sortByKeys } from '.';
+import { describe, expect, it } from 'bun:test';
 
 describe('object', () => {
   it('propIs', async () => {

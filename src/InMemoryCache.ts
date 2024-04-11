@@ -1,5 +1,5 @@
-import type { DataCache, Nullish } from './types';
 import { safeJSONParse } from './object';
+import type { DataCache, Nullish } from './types';
 
 export class InMemoryCache implements DataCache<unknown> {
   protected readonly map = new Map<string, string>();

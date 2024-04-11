@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-declare module "bun" {
+declare module 'bun' {
   interface Env {
     RUNTIME: string;
   }
@@ -75,7 +75,6 @@ export abstract class Singleton {
   }
 }
 
-
 export interface Comparator<T, R extends number | boolean> {
   (a: T, b: T): R;
 }
@@ -86,10 +85,10 @@ export type AwaitedOnce<T> = T extends Promise<infer U> ? U : T;
 export type Split<S extends string, Sep extends string> = string extends S
   ? string[]
   : S extends ''
-  ? []
-  : S extends `${infer T}${Sep}${infer U}`
-  ? [T, ...Split<U, Sep>]
-  : [S];
+    ? []
+    : S extends `${infer T}${Sep}${infer U}`
+      ? [T, ...Split<U, Sep>]
+      : [S];
 
 export type ObjectWithValueAtPath<Path extends string[], Value> = Path extends [infer First, ...infer Rest]
   ? First extends PropertyKey
@@ -122,10 +121,10 @@ export type Tail<T extends StringTuple> = T extends readonly [infer _Head, ...in
  * Join<[], 'x'> = ''.
  */
 export type StringJoin<T extends StringTuple, Separator extends string> = T extends readonly []
-	? ''
-	: T extends readonly [infer Head]
-		? Head
-		: `${T[0]}${Separator}${StringJoin<Tail<T>, Separator>}`;
+  ? ''
+  : T extends readonly [infer Head]
+    ? Head
+    : `${T[0]}${Separator}${StringJoin<Tail<T>, Separator>}`;
 
 export type Concat<A extends any[], B extends any[]> = [...A, ...B];
 

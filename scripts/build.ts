@@ -1,10 +1,10 @@
 #! bun
-import { join } from 'path';
 import { iife, ok } from '../src';
-import { readdirDeep } from 'more-node-fs';
+import { $ } from 'bun';
 import { build as esbuild } from 'esbuild';
 import { dtsPlugin } from 'esbuild-plugin-d.ts';
-import { $ } from 'bun';
+import { readdirDeep } from 'more-node-fs';
+import { join } from 'path';
 
 export const esmToCjs = iife(
   ({ transformSync } = require('@babel/core')) =>

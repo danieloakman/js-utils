@@ -1,7 +1,8 @@
-import { describe, it, expect } from 'bun:test';
-import { iter, range } from 'iteragain-es';
-import { coerceHash, fastHash, hashWithLength } from './string';
 import { randInteger } from '.';
+import { describe, expect, it } from 'bun:test';
+import { iter, range } from 'iteragain-es';
+
+import { coerceHash, fastHash, hashWithLength } from './string';
 
 describe('string', () => {
   it('fastHash', () => {

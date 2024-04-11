@@ -1,10 +1,11 @@
-import BinarySearch from './BinarySearch';
-import { ok as assert, deepStrictEqual as equal } from 'assert';
-import { randInteger } from './number';
-import { describe, it } from 'bun:test';
-import { pipe } from './functional';
-import { shuffle, forEach } from 'iteragain-es';
 import { expectType } from '.';
+import { ok as assert, deepStrictEqual as equal } from 'assert';
+import { describe, it } from 'bun:test';
+import { forEach, shuffle } from 'iteragain-es';
+
+import BinarySearch from './BinarySearch';
+import { pipe } from './functional';
+import { randInteger } from './number';
 
 // function time (func) {
 //     const start = new Date();

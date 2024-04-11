@@ -1,17 +1,18 @@
-import { describe, it, expect } from 'bun:test';
+import { Nullish, expectType } from '.';
+import { describe, expect, it } from 'bun:test';
+
 import {
   attempt,
   flow,
   isObjectLike,
+  memoize,
   multiComparator,
   not,
   once,
-  toAsyncFn,
-  sleep,
   raise,
-  memoize,
+  sleep,
+  toAsyncFn,
 } from './functional';
-import { Nullish, expectType } from '.';
 
 describe('functional', () => {
   it('attempt', async () => {

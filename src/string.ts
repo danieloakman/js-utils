@@ -1,6 +1,6 @@
-import { Nullish } from './types';
 import { isObjectLike } from './functional';
 import { sortByKeys } from './object';
+import { Nullish } from './types';
 
 /**
  * @see https://stackoverflow.com/a/52171480 For source.

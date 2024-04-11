@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'bun:test';
 import { manhattanDistance, roundTo } from '.';
+import { describe, expect, it } from 'bun:test';
 
 describe('number', () => {
   it('roundTo', () => {
