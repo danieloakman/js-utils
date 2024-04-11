@@ -200,6 +200,9 @@ export function pick<T extends object, K extends keyof T>(obj: T, ...keys: K[]):
 export function pick<T extends object, K extends keyof T>(obj: T, ...keys: K[] | [K[]]): Pick<T, K> {
   const _keys = (Array.isArray(keys[0]) ? keys[0] : keys) as K[];
   const copy = {} as Pick<T, K>;
-  for (const key of _keys) copy[key] = obj[key];
+  for (const key of _keys) {
+    const value = obj[key];
+    if (value != undefined) copy[key] = value;
+  }
   return copy;
 }

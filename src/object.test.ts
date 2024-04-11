@@ -1,4 +1,4 @@
-import { expectType, findItemsFrom, isPartiallyLike, propIs, sortByKeys } from '.';
+import { expectType, findItemsFrom, isPartiallyLike, omit, pick, propIs, sortByKeys } from '.';
 import { describe, expect, it } from 'bun:test';
 
 describe('object', () => {
@@ -85,6 +85,18 @@ describe('object', () => {
     yes([{ a: 1, b: ['1', '2'] }], [{ a: 1, b: ['1', '2'] }], [[{ a: 1, b: ['1', '2'] }], []]);
   });
 
-  it.todo('omit', () => {});
-  it.todo('pick', () => {});
+  it('omit', () => {
+    expect(omit({ a: 1 }, 'a')).toStrictEqual({});
+    expect(omit({ a: 1, b: 2 }, 'a')).toStrictEqual({ b: 2 });
+    expect(omit({ a: 1, b: 2 }, 'a', 'b')).toStrictEqual({});
+    // @ts-expect-error
+    expect(omit({ a: 1, b: { c: 2 } }, 'c')).toStrictEqual({ a: 1, b: { c: 2 } });
+  });
+  it('pick', () => {
+    expect(pick({ a: 1 }, 'a')).toStrictEqual({ a: 1 });
+    expect(pick({ a: 1, b: 2 }, 'a')).toStrictEqual({ a: 1 });
+    expect(pick({ a: 1, b: 2 }, 'a', 'b')).toStrictEqual({ a: 1, b: 2 });
+    // @ts-expect-error
+    expect(pick({ a: 1, b: { c: 2 } }, 'c')).toStrictEqual({});
+  });
 });
