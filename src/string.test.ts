@@ -47,4 +47,8 @@ describe('string', () => {
     yes({ a: 1 }, fastHash(JSON.stringify({ a: 1 })));
     expect(coerceHash([1, 2, 3])).toBeGreaterThan(10000);
   });
+
+  // it.todo('uniqueId', () => {
+  //   expect(uniqueId()).toBe('0');
+  // });
 });
