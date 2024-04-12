@@ -18,9 +18,6 @@
     "postversion": "git push --follow-tags",
     "prepare": "husky"
   },
-  "peerDependencies": {
-    "iteragain": "^4"
-  },
   "devDependencies": {
     "@babel/core": "^7.24.4",
     "@babel/plugin-transform-modules-commonjs": "^7.24.1",
@@ -39,6 +36,8 @@
     "husky": "^9.0.11",
     "iteragain": "^4.0.1",
     "more-node-fs": "^2.0.2",
+    "@types/lodash-es": "^4.17.12",
+    "lodash-es": "^4.17.21",
     "prettier": "^3.2.5",
     "pretty-quick": "^4.0.0",
     "typescript": "^5.4.5",

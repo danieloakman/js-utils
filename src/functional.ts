@@ -1,6 +1,8 @@
 import { coerceHash } from './string';
 import { AwaitedOnce, Comparator, Fn, MonoFn, Ok, SimpleMap } from './types';
 
+export { debounce, throttle } from 'lodash-es';
+
 export function pipe<A, B>(a: A, aFn: MonoFn<A, B>): B;
 export function pipe<A, B, C>(a: A, aFn: MonoFn<A, B>, bFn: MonoFn<B, C>): C;
 export function pipe<A, B, C, D>(a: A, aFn: MonoFn<A, B>, bFn: MonoFn<B, C>, cFn: MonoFn<C, D>): D;
