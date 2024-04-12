@@ -50,8 +50,15 @@
   "types": "./dist/node/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/types/index.d.ts",
       "node": "./dist/node/index.js",
       "default": "./dist/browser/index.js"
-    }
+    },
+    "./*": {
+      "types": "./dist/types/*.d.ts",
+      "node": "./dist/node/*.js",
+      "default": "./dist/browser/*.js"
+    },
+    "./package.json": "./package.json"
   }
 }

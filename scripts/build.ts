@@ -3,6 +3,7 @@ import { iife, ok } from '../src';
 import { $ } from 'bun';
 import { build as esbuild } from 'esbuild';
 import { dtsPlugin } from 'esbuild-plugin-d.ts';
+import { iter } from 'iteragain';
 import { readdirDeep } from 'more-node-fs';
 import { join } from 'path';
 
@@ -152,10 +153,11 @@ export async function build(args: BuildArgs): Promise<Error | boolean> {
 if (import.meta.main) {
   await $`rm -rf dist`;
 
-  for (const args of [
+  await iter([
     { target: 'node', format: 'cjs' },
     { target: 'browser', format: 'esm' },
-  ] as BuildArgs[]) {
-    ok(await build(args));
-  }
+  ] as BuildArgs[])
+    .map(args => build(args).then(ok))
+    .concat([iife(() => $`tsc -p tsconfig.types.json`)])
+    .promiseAll();
 }

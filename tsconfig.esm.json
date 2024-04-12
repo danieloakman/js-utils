@@ -10,7 +10,5 @@
     "sourceMap": false,
     "outDir": "./dist/esm",
     "rootDir": "./src"
-  },
-  "include": ["./src"],
-  "exclude": ["./scripts", "node_modules", "test", "dist", "benchmark", "**/*.test.ts"]
+  }
 }

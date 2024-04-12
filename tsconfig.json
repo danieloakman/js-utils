@@ -23,5 +23,7 @@
     "noUnusedParameters": true,
     "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true
-  }
+  },
+  "include": ["./src"],
+  "exclude": ["./scripts", "node_modules", "test", "dist", "benchmark", "**/*.test.ts"]
 }
