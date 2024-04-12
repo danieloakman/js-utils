@@ -1,4 +1,4 @@
-import { iife, isObjectLike } from './functional';
+import { isObjectLike } from './functional';
 import { sortByKeys } from './object';
 import { Nullish } from './types';
 
@@ -117,17 +117,15 @@ export function stringSplice(str: string, index: number, count = 1, add = '') {
   return str.slice(0, index) + add + str.slice(index + count);
 }
 
-// export const uniqueId = iife(() => {
-//   const empty = Symbol('empty');
-//   const prefixMap: Record<PropertyKey, number> = {};
-//   return (prefix?: string): string => {
-//     if (prefix) {
-//       const n = prefixMap[prefix] ?? 0;
-//       prefixMap[prefix] = n + 1;
-//       return `${prefix}${n}`;
-//     }
-//     const n = prefixMap[empty] ?? 0;
-//     prefixMap[empty] = n + 1;
-//     return n.toString();
-//   };
-// });
+const emptyPrefix = Symbol('empty');
+const prefixMap: Record<PropertyKey, number> = {};
+export const uniqueId = (prefix?: string): string => {
+  if (prefix) {
+    const n = prefixMap[prefix] ?? 0;
+    prefixMap[prefix] = n + 1;
+    return `${prefix}${n}`;
+  }
+  const n = prefixMap[emptyPrefix] ?? 0;
+  prefixMap[emptyPrefix] = n + 1;
+  return n.toString();
+};

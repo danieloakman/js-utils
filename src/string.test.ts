@@ -2,7 +2,7 @@ import { randInteger } from '.';
 import { describe, expect, it } from 'bun:test';
 import { iter, range } from 'iteragain';
 
-import { coerceHash, fastHash, hashWithLength } from './string';
+import { coerceHash, fastHash, hashWithLength, uniqueId } from './string';
 
 describe('string', () => {
   it('fastHash', () => {
@@ -48,7 +48,9 @@ describe('string', () => {
     expect(coerceHash([1, 2, 3])).toBeGreaterThan(10000);
   });
 
-  // it.todo('uniqueId', () => {
-  //   expect(uniqueId()).toBe('0');
-  // });
+  it('uniqueId', () => {
+    expect(uniqueId()).toBe('0');
+    expect(uniqueId()).toBe('1');
+    expect(uniqueId('test-')).toBe('test-0');
+  });
 });
