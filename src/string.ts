@@ -119,7 +119,7 @@ export function stringSplice(str: string, index: number, count = 1, add = '') {
 
 const emptyPrefix = Symbol('empty');
 const prefixMap: Record<PropertyKey, number> = {};
-export const uniqueId = (prefix?: string): string => {
+export const uniqueId = (prefix?: string | number): string => {
   if (prefix) {
     const n = prefixMap[prefix] ?? 0;
     prefixMap[prefix] = n + 1;

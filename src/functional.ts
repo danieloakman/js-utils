@@ -215,6 +215,8 @@ export const okOr = <T, U>(value: T, defaultValue: U): Ok<T> | U => {
   return value instanceof Error || isNullish(value) ? defaultValue : (value as Ok<T>);
 };
 
+export const isError = (value: unknown): value is Error => value instanceof Error;
+
 /**
  * Throws an error or error message. `throw new Error('...')` can't be used as an expression, but this can. So this
  * function opens some neat possibilities.

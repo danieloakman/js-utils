@@ -4,6 +4,7 @@ import { describe, expect, it } from 'bun:test';
 import {
   attempt,
   flow,
+  isError,
   isObjectLike,
   memoize,
   multiComparator,
@@ -133,6 +134,18 @@ describe('functional', () => {
         .then(expectType<number>)
         .then(v => expect(v).toBe(2));
     }
+  });
+
+  it('isError', () => {
+    expect(isError(new Error())).toBeTrue();
+    expect(isError(new TypeError())).toBeTrue();
+    expect(isError(new SyntaxError())).toBeTrue();
+    expect(isError(new RangeError())).toBeTrue();
+    expect(isError(new URIError())).toBeTrue();
+    expect(isError(new EvalError())).toBeTrue();
+    expect(isError(new ReferenceError())).toBeTrue();
+    expect(isError(new EvalError())).toBeTrue();
+    expect(isError(new Error('error'))).toBeTrue();
   });
 
   it('raise', async () => {
