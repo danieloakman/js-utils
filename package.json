@@ -48,17 +48,19 @@
   "files": [
     "dist/**/*"
   ],
-  "main": "./dist/node/index.js",
-  "types": "./dist/node/index.d.ts",
+  "main": "./dist/node-cjs/index.js",
+  "types": "./dist/node-cjs/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/types/index.d.ts",
-      "node": "./dist/node/index.js",
+      "require": "./dist/node-cjs/index.js",
+      "node": "./dist/node-esm/index.js",
       "default": "./dist/browser/index.js"
     },
     "./*": {
       "types": "./dist/types/*.d.ts",
-      "node": "./dist/node/*.js",
+      "require": "./dist/node-cjs/*.js",
+      "node": "./dist/node-esm/*.js",
       "default": "./dist/browser/*.js"
     },
     "./package.json": "./package.json"

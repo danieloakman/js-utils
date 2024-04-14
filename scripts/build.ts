@@ -20,6 +20,7 @@ export const esmToCjs = iife(
 export interface BuildArgs {
   target: 'node' | 'browser' | 'bun';
   format: 'esm' | 'cjs';
+  outdir: string;
 }
 
 export async function build(args: BuildArgs): Promise<Error | boolean> {
@@ -34,7 +35,7 @@ export async function build(args: BuildArgs): Promise<Error | boolean> {
   const buildResult = await esbuild({
     // entryPoints: [join(import.meta.dir, '../src/index.ts')],
     entryPoints: srcFiles,
-    outdir: `./dist/${args.target}`,
+    outdir: `./dist/${args.outdir}`,
     sourceRoot: './src',
     sourcemap: 'linked',
     // minify: true,
@@ -154,9 +155,10 @@ if (import.meta.main) {
   await $`rm -rf dist`;
 
   await iter([
-    { target: 'node', format: 'cjs' },
-    { target: 'browser', format: 'esm' },
-  ] as BuildArgs[])
+    { target: 'node', format: 'esm', outdir: 'node-esm' },
+    { target: 'browser', format: 'esm', outdir: 'browser' },
+    { target: 'node', format: 'cjs', outdir: 'node-cjs' },
+  ] satisfies BuildArgs[])
     .map(args => build(args).then(ok))
     .concat([iife(() => $`tsc -p tsconfig.types.json`)])
     .promiseAll();
