@@ -61,7 +61,6 @@
       "node": "./dist/node-cjs/*.js",
       "default": "./dist/browser/*.js"
     },
-    "node-esm": "./dist/node-esm/index.js",
     "./package.json": "./package.json"
   }
 }

@@ -157,7 +157,7 @@ if (import.meta.main) {
   await iter([
     { target: 'node', format: 'cjs', outdir: 'node-cjs' },
     { target: 'browser', format: 'esm', outdir: 'browser' },
-    { target: 'node', format: 'esm', outdir: 'node-esm' },
+    // { target: 'node', format: 'esm', outdir: 'node-esm' },
   ] satisfies BuildArgs[])
     .map(args => build(args).then(ok))
     .concat([iife(() => $`tsc -p tsconfig.types.json`)])
