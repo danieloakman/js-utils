@@ -2,10 +2,8 @@ name: Release
 
 on:
   push:
-    # branches: [master, main]
     tags:
       - 'v*'
-  workflow_dispatch:
 
 jobs:
   release:
@@ -17,7 +15,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - uses: oven-sh/setup-bun@v1
         with:
