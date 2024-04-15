@@ -53,16 +53,15 @@
   "exports": {
     ".": {
       "types": "./dist/types/index.d.ts",
-      "require": "./dist/node-cjs/index.js",
-      "node": "./dist/node-esm/index.js",
+      "node": "./dist/node-cjs/index.js",
       "default": "./dist/browser/index.js"
     },
     "./*": {
       "types": "./dist/types/*.d.ts",
-      "require": "./dist/node-cjs/*.js",
-      "node": "./dist/node-esm/*.js",
+      "node": "./dist/node-cjs/*.js",
       "default": "./dist/browser/*.js"
     },
+    "node-esm": "./dist/node-esm/index.js",
     "./package.json": "./package.json"
   }
 }
