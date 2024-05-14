@@ -221,13 +221,15 @@ export const isError = (value: unknown): value is Error => value instanceof Erro
 
 /**
  * Throws an error or error message. `throw new Error('...')` can't be used as an expression, but this can. So this
- * function opens some neat possibilities.
+ * function opens some neat possibilities. Can also be used to combine more than one errors into an AggregateError.
  * @example
  * const foo = someNullishValue ?? raise('foo is nullish');
  * const str = possiblyEmptyString || raise('str is empty');
  */
-export function raise(exception: string | Error): never {
-  throw typeof exception === 'string' ? new Error(exception) : exception;
+export function raise(...exceptions: [string] | Error[]): never {
+  if (exceptions.length === 1)
+    throw typeof exceptions[0] === 'string' ? new Error(exceptions[0] as string) : exceptions[0];
+  throw new AggregateError(exceptions);
 }
 
 /** Combines any number of comparators into a single comparator. Can be used for sorting or equality. */
