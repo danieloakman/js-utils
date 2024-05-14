@@ -1,4 +1,4 @@
-import { Nullish, expectType } from '.';
+import { Nullish, expectType, randInteger } from '.';
 import { describe, expect, it } from 'bun:test';
 
 import {
@@ -47,6 +47,16 @@ describe('functional', () => {
     expect(factorial(2, 2)).toBe(8);
     expect(called).toBe(1);
     expect(factorial(2, 2)).toBe(8);
+    expect(called).toBe(1);
+  });
+
+  it('once async', async () => {
+    let called = 0;
+    const sleepOnce = once(async (ms: number) => {
+      called++;
+      return sleep(ms);
+    });
+    await Promise.all(Array.from({ length: randInteger(2, 100) }, () => sleepOnce(1)));
     expect(called).toBe(1);
   });
 
