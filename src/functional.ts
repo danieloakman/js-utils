@@ -146,6 +146,7 @@ export function isObjectLike(value: unknown): value is Record<PropertyKey, unkno
   return typeof value === 'object' && value !== null;
 }
 
+export function attempt<T extends Fn<any[], never>>(fn: T, ...args: Parameters<T>): Error;
 export function attempt<T extends Fn<any[], Promise<any>>>(
   fn: T,
   ...args: Parameters<T>

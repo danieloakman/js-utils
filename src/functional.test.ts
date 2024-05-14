@@ -164,6 +164,14 @@ describe('functional', () => {
     expect(() => fn(10)).not.toThrow();
     expect(() => fn(null)).toThrow();
     expect(() => fn(undefined)).toThrow();
+
+    const e = attempt(() => raise(new Error('1'), new Error('2')));
+    console.log(e);
+    expect(e).toBeInstanceOf(Error);
+
+    // @ts-expect-error
+    const e2 = attempt(() => raise('1', '2'));
+    expect(e2).toBeInstanceOf(Error);
   });
 
   // it('tryCatch', async () => {
