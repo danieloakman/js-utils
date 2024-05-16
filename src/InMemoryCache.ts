@@ -1,8 +1,12 @@
 import { safeJSONParse } from './object';
 import type { DataCache, Nullish } from './types';
 
-export class InMemoryCache implements DataCache<unknown> {
+export class InMemoryCache<T = unknown> implements DataCache<T> {
   protected readonly map = new Map<string, string>();
+
+  get size() {
+    return Promise.resolve(this.map.size);
+  }
 
   async get<T = unknown>(key: string): Promise<Nullish<T>> {
     const value = this.map.get(key);

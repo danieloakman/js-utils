@@ -50,6 +50,7 @@ export interface DataCache<T> {
   has(key: string): Promise<boolean>;
   clear(): Promise<boolean>;
   keys(): AsyncIterableIterator<string>;
+  get size(): Promise<number>;
 }
 
 /** For implementing simple string -> T maps. This is just a subset of a `Map<string, T>`.  */
