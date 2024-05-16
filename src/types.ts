@@ -44,13 +44,13 @@ export interface Stack<T> {
 
 /** For implementing asynchronous maps/caches. */
 export interface DataCache<T> {
+  get size(): Promise<number>;
   get<U = T>(key: string): Promise<Nullish<U>>;
   delete(key: string): Promise<boolean>;
   set(key: string, value: string | T): Promise<boolean>;
   has(key: string): Promise<boolean>;
   clear(): Promise<boolean>;
   keys(): AsyncIterableIterator<string>;
-  get size(): Promise<number>;
 }
 
 /** For implementing simple string -> T maps. This is just a subset of a `Map<string, T>`.  */
