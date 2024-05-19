@@ -1,9 +1,9 @@
-import { expectType, findItemsFrom, isPartiallyLike, propIs, sortByKeys } from '.';
+import { assert, expectType, findItemsFrom, isPartiallyLike, propIs, sortByKeys } from '.';
 import { describe, expect, it } from 'bun:test';
 
 describe('object', () => {
   it('propIs', async () => {
-    const unknown: unknown = {};
+    const unknown: unknown = { code: 200 };
     if (propIs(unknown, 'a', 'string')) expectType<string>(unknown.a);
     if (propIs(unknown, 'b', 'number')) expectType<number>(unknown.b);
     if (propIs(unknown, 'c', 'boolean')) expectType<boolean>(unknown.c);
@@ -17,6 +17,11 @@ describe('object', () => {
     if (propIs(unknown, 'k', 'array')) expectType<unknown[]>(unknown.k);
     if (propIs(unknown, 'a.b', 'string')) expectType<string>(unknown.a.b);
     if (propIs(unknown, 'a.b.c.d.e.f.g.h.i.j.k', 'string')) expectType<string>(unknown.a.b.c.d.e.f.g.h.i.j.k);
+    if (propIs(unknown, 'code', 200)) {
+      expectType<200>(unknown.code);
+      assert(unknown.code === 200, 'code is not 200');
+    }
+    if (propIs(unknown, 'strArr', 'string[]')) expectType<string[]>(unknown.strArr);
     const obj = { a: { b: [{ c: 'hi' }] } };
     expect(propIs(obj, 'a.b.0.c', 'string')).toBeTrue();
   });

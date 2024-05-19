@@ -39,6 +39,11 @@ export function propIs<T, Key extends string>(
   key: Key,
   type: 'number',
 ): obj is T & ObjectWithValueAtPath<Split<Key, '.'>, number>;
+export function propIs<T, Key extends string, N extends number>(
+  obj: T,
+  key: Key,
+  type: N,
+): obj is T & ObjectWithValueAtPath<Split<Key, '.'>, N>;
 export function propIs<T, Key extends string>(
   obj: T,
   key: Key,
@@ -110,7 +115,8 @@ export function propIs<T, Key extends string>(
     | 'nullish'
     | 'record'
     | 'array'
-    | 'string[]',
+    | 'string[]'
+    | number,
 ): boolean {
   if (!key.length) return false;
   let currentObj: unknown = obj;
@@ -123,6 +129,7 @@ export function propIs<T, Key extends string>(
   if (type === 'record') return typeof currentObj === 'object' && currentObj !== null;
   if (type === 'array') return Array.isArray(currentObj);
   if (type === 'string[]') return Array.isArray(currentObj) && currentObj.every(v => typeof v === 'string');
+  if (typeof type === 'number') return currentObj === type;
   return typeof currentObj === type;
 }
 
