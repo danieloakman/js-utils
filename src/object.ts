@@ -26,7 +26,7 @@ export function groupBy<T>(arr: T[], ...keys: KeyItentifier<T>[]) {
 
 /** Safely parses a JSON string. If an error occurs, then null is returned. */
 export function safeJSONParse<T = unknown>(...args: Parameters<typeof JSON.parse>): T | null {
-  return safeCall(JSON.parse, ...args);
+  return safeCall(JSON.parse, ...args) as T | null;
 }
 
 export function propIs<T, Key extends string>(

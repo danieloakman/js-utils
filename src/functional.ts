@@ -1,5 +1,5 @@
 import { coerceHash } from './string';
-import { AwaitedOnce, Comparator, Fn, MonoFn, Ok, SimpleMap } from './types';
+import { AwaitedOnce, Comparator, Fn, MonoFn, Ok, Result, SimpleMap } from './types';
 
 export { debounce, throttle } from 'lodash-es';
 
@@ -146,22 +146,41 @@ export function isObjectLike(value: unknown): value is Record<PropertyKey, unkno
   return typeof value === 'object' && value !== null;
 }
 
+/** Calls `fn` and returns it's result as is, or if it throws an error it will return it as a value. */
 export function attempt<T extends Fn<any[], never>>(fn: T, ...args: Parameters<T>): Error;
 export function attempt<T extends Fn<any[], Promise<any>>>(
   fn: T,
   ...args: Parameters<T>
-): Promise<Awaited<ReturnType<T>> | Error>;
-export function attempt<T extends Fn>(fn: T, ...args: Parameters<T>): ReturnType<T> | Error;
-export function attempt<T extends Fn>(fn: T, ...args: Parameters<T>): any {
+): Promise<Awaited<Result<ReturnType<T>>>>;
+export function attempt<T extends Fn>(fn: T, ...args: Parameters<T>): Result<ReturnType<T>>;
+export function attempt<T extends Fn>(fn: T, ...args: Parameters<T>): unknown {
   try {
-    const result = fn(...args);
+    const result = fn.call(fn, ...args);
     return isObjectLike(result) && typeof result['catch'] === 'function' ? result['catch']((e: Error) => e) : result;
   } catch (err) {
     return err as Error;
   }
 }
 
-export function safeCall<T extends Fn>(fn: T, ...args: Parameters<T>): ReturnType<T> | null {
+/** Wraps `fn` with an attempt call. So the resulting wrapped function's return type is a `Result` (unioned with Error). */
+export function tryResult<T extends Fn<any[], never>>(fn: T): (...args: Parameters<T>) => Error;
+export function tryResult<T extends Fn<any[], Promise<any>>>(
+  fn: T,
+): (...args: Parameters<T>) => Promise<Result<Awaited<ReturnType<T>>>>;
+export function tryResult<T extends Fn>(fn: T): (...args: Parameters<T>) => Result<ReturnType<T>>;
+export function tryResult(fn: Fn): Fn {
+  return (...args: unknown[]) => {
+    return attempt(fn, ...args);
+  };
+}
+
+export function safeCall<T extends Fn<any[], never>>(fn: T, ...args: Parameters<T>): null;
+export function safeCall<T extends Fn<any[], Promise<any>>>(
+  fn: T,
+  ...args: Parameters<T>
+): Promise<Awaited<ReturnType<T>> | null>;
+export function safeCall<T extends Fn>(fn: T, ...args: Parameters<T>): ReturnType<T> | null;
+export function safeCall<T extends Fn>(fn: T, ...args: Parameters<T>): unknown {
   try {
     const result = fn(...args);
     return isObjectLike(result) && typeof result['catch'] === 'function' ? result['catch'](() => null) : result;
@@ -293,43 +312,3 @@ export function toAsyncFn<T extends Fn>(fn: T): (...args: Parameters<T>) => Prom
   if (fn.constructor.name === 'AsyncFunction') return fn;
   return async (...args: Parameters<T>) => await fn(...args);
 }
-
-// export interface TryCatch {
-//   <T extends Fn>(fn: T, options: { fin: () => unknown }): T;
-//   <T extends Fn, R>(fn: T, options: { then: (result: ReturnType<T>) => R; fin?: () => unknown }): (
-//     ...args: Parameters<T>
-//   ) => R;
-//   <T extends Fn, E>(fn: T, options: { err: (error: Error) => E; fin?: () => unknown }): (
-//     ...args: Parameters<T>
-//   ) => ReturnType<T> | E;
-//   <T extends Fn, R, E>(
-//     fn: T,
-//     options: { then: (result: ReturnType<T>) => R; err: (error: Error) => E; fin?: () => unknown },
-//   ): (...args: Parameters<T>) => R | E;
-// }
-
-// export const tryCatch: TryCatch = (fn: Fn, options: Record<string, Fn | undefined>) => {
-//   return ((...args: any[]) => {
-//     const fin = once(options.fin ?? noop);
-//     const err = once(options.err ?? identity);
-//     try {
-//       const result = fn(...args);
-//       if (result instanceof Promise) {
-//         return result
-//           .then(v => {
-//             if (options.then) return options.then(v);
-//             return v;
-//           })
-//           .catch(err)
-//           .finally(fin);
-//       }
-//       if (options.then) return options.then(result);
-//       return result;
-//     } catch (error) {
-//       if (!(error instanceof Error) || typeof options.err !== 'function') throw error;
-//       return options.err(error);
-//     } finally {
-//       fin();
-//     }
-//   }) as any;
-// };

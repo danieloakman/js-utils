@@ -11,8 +11,10 @@ import {
   not,
   once,
   raise,
+  safeCall,
   sleep,
   toAsyncFn,
+  tryResult,
 } from './functional';
 
 describe('functional', () => {
@@ -34,6 +36,36 @@ describe('functional', () => {
       expect(await attempt(fn, 1).then(expectType<number | Error>)).toBe(1);
       expect(await attempt(fn, 2).then(expectType<number | Error>)).toBeInstanceOf(Error);
     }
+    {
+      class A {
+        constructor(public n: number) {}
+        fn() {
+          if (this.n > 1) throw new Error('n > 1');
+          return this.n;
+        }
+      }
+      const a = new A(0);
+      expect(attempt(a.fn.bind(a) as () => number)).toBe(0);
+      a.n = 2;
+      expect(attempt(a.fn.bind(a) as () => number)).toBeInstanceOf(Error);
+    }
+  });
+
+  it('safeCall', async () => {
+    const fnSync = (n: number) => {
+      if (n > 1) throw new Error('n > 1');
+      return n;
+    };
+    expect(safeCall(fnSync, 1)).toBe(1);
+    expect(safeCall(fnSync, 2)).toBeNull();
+
+    const fnAsync = async (n: number) => {
+      await sleep(n);
+      if (n > 1) throw new Error('n > 1');
+      return n;
+    };
+    expect(await safeCall(fnAsync, 1)).toBe(1);
+    expect(await safeCall(fnAsync, 2)).toBeNull();
   });
 
   it('once', async () => {
@@ -166,7 +198,6 @@ describe('functional', () => {
     expect(() => fn(undefined)).toThrow();
 
     const e = attempt(() => raise(new Error('1'), new Error('2')));
-    console.log(e);
     expect(e).toBeInstanceOf(Error);
 
     // @ts-expect-error
@@ -203,4 +234,18 @@ describe('functional', () => {
   //     expect(finCalled).toBeTrue();
   //   }
   // });
+
+  it('tryResult', async () => {
+    const fnSync = tryResult((n: number) => (n > 1 ? raise('n > 1') : n));
+    expect(fnSync(1)).toBe(1);
+    expect(fnSync(2)).toBeInstanceOf(Error);
+
+    const fnAsync = tryResult(async (n: number) => {
+      await sleep(n);
+      if (n > 1) throw new Error('n > 1');
+      return n;
+    });
+    expect(await fnAsync(1)).toBe(1);
+    expect(await fnAsync(2)).toBeInstanceOf(Error);
+  });
 });
