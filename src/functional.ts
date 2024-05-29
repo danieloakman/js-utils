@@ -163,11 +163,11 @@ export function attempt<T extends Fn>(fn: T, ...args: Parameters<T>): unknown {
 }
 
 /** Wraps `fn` with an attempt call. So the resulting wrapped function's return type is a `Result` (unioned with Error). */
-export function tryResult<T extends Fn<any[], never>>(fn: T): (...args: Parameters<T>) => Error;
-export function tryResult<T extends Fn<any[], Promise<any>>>(
+export function tryResult<T extends (...args: any[]) => never>(fn: T): (...args: Parameters<T>) => Error;
+export function tryResult<T extends (...args: any[]) => Promise<any>>(
   fn: T,
 ): (...args: Parameters<T>) => Promise<Result<Awaited<ReturnType<T>>>>;
-export function tryResult<T extends Fn>(fn: T): (...args: Parameters<T>) => Result<ReturnType<T>>;
+export function tryResult<T extends (...args: any[]) => any>(fn: T): (...args: Parameters<T>) => Result<ReturnType<T>>;
 export function tryResult(fn: Fn): Fn {
   return (...args: unknown[]) => {
     return attempt(fn, ...args);
@@ -311,4 +311,21 @@ export function toAsyncFn<T extends Fn>(fn: T): (...args: Parameters<T>) => Prom
   // Check if already an async function:
   if (fn.constructor.name === 'AsyncFunction') return fn;
   return async (...args: Parameters<T>) => await fn(...args);
+}
+
+// TODO: may need to change `Fn` usage to just `(...args: any[]) => any`, as it get's confused with Fn and MonoFn.
+export function addTimeout<T extends Fn<any[], Promise<unknown>>>(
+  fn: T,
+  timeoutMs: number,
+): (...args: Parameters<T>) => Promise<Result<Awaited<ReturnType<T>>>> {
+  return (async (...args: Parameters<T>) => {
+    let timeout: any = null;
+
+    return Promise.race([
+      new Promise(resolve => {
+        timeout = setTimeout(() => resolve(new Error(`${fn.name} timed out after ${timeoutMs}ms`)), timeoutMs);
+      }),
+      fn(...args).finally(() => clearTimeout(timeout)),
+    ]);
+  }) as any;
 }

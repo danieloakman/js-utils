@@ -1,7 +1,8 @@
-import { Nullish, expectType, randInteger } from '.';
+import { Fn, MonoFn, Nullish, Result, expectType, randInteger } from '.';
 import { describe, expect, it } from 'bun:test';
 
 import {
+  addTimeout,
   attempt,
   flow,
   isError,
@@ -205,36 +206,6 @@ describe('functional', () => {
     expect(e2).toBeInstanceOf(Error);
   });
 
-  // it('tryCatch', async () => {
-  //   {
-  //     let finCalled = false;
-  //     const fn = tryCatch(
-  //       (n: number): number => {
-  //         if (n > 1) throw new Error('n > 1');
-  //         return n;
-  //       },
-  //       { then: n => n * 2, err: () => 'err', fin: () => (finCalled = true) },
-  //     );
-  //     expect(fn(1)).toBe(2);
-  //     expect(fn(2)).toBe('err');
-  //     expect(fn(-1)).toBe(-2);
-  //     expect(finCalled).toBeTrue();
-  //   }
-  //   {
-  //     let finCalled = false;
-  //     const fn = tryCatch(
-  //       async (n: number) => {
-  //         await sleep(n);
-  //         if (n > 1) throw new Error('n > 1');
-  //         return n;
-  //       },
-  //       { then: n => n * 2, err: () => 'err', fin: () => (finCalled = true) },
-  //     );
-  //     expect(await fn(1)).toBe(2);
-  //     expect(finCalled).toBeTrue();
-  //   }
-  // });
-
   it('tryResult', async () => {
     const fnSync = tryResult((n: number) => (n > 1 ? raise('n > 1') : n));
     expect(fnSync(1)).toBe(1);
@@ -247,5 +218,12 @@ describe('functional', () => {
     });
     expect(await fnAsync(1)).toBe(1);
     expect(await fnAsync(2)).toBeInstanceOf(Error);
+  });
+
+  it('addTimeout', async () => {
+    const fn = addTimeout(sleep, 100);
+    expect(await fn(1)).toBe(1);
+    expect(await fn(50)).toBe(50);
+    expect(await fn(200)).toBeInstanceOf(Error);
   });
 });
