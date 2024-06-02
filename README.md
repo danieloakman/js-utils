@@ -1,3 +1,5 @@
+[![Test](https://github.com/danieloakman/js-utils/actions/workflows/test.yml/badge.svg)](https://github.com/danieloakman/js-utils/actions/workflows/test.yml) [![Release](https://github.com/danieloakman/js-utils/actions/workflows/release.yml/badge.svg)](https://github.com/danieloakman/js-utils/actions/workflows/release.yml)
+
 # js-utils
 
 My assortment of common utils that I've grown tired of copy pasting to every repo I create.
