@@ -8,6 +8,8 @@ describe('misc', () => {
   it('exec', async () => {
     assert(ok(await exec('echo "hello world"')).includes('world'));
     assert(/\d+\.\d+\.\d+/.test(ok(await exec('bun -v'))));
+    process.env.SOME_VAR = 'some_value';
+    assert(ok(await exec('echo $SOME_VAR')).includes('some_value'));
   });
 
   it('sh', async () => {
