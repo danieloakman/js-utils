@@ -1,4 +1,4 @@
-import { Fn, MonoFn, Nullish, Result, expectType, randInteger } from '.';
+import { Nullish, expectType, randInteger } from '.';
 import { describe, expect, it } from 'bun:test';
 
 import {
