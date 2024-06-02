@@ -100,12 +100,12 @@ export const exec: (...commands: string[]) => Promise<Error | string> =
  * Executes a shell command and returns the stdout and stderr as a string. If the command fails, then an error is
  * returned.
  */
-export const execSync: (...commands: string[]) => Result<string> =
+export const execSync: (command: string) => Result<string> =
   Bun.env.RUNTIME === 'browser'
     ? () => raise('Cannot run shell commands in browser.')
-    : (...commands: string[]) =>
+    : (command: string) =>
         iife(({ execSync }: typeof import('child_process') = importSync('child_process')) =>
-          attempt(() => execSync(commands.join(' '), { encoding: 'utf-8', env: process.env, shell: true as any })),
+          attempt(() => execSync(command, { encoding: 'utf-8', env: process.env, shell: true as any })),
         );
 
 /** Returns true if node is debugging. */

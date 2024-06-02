@@ -1,10 +1,8 @@
-import { assert, exec, execSync, ok, sh } from '.';
+import { assert, exec, execSync, ok, pipe, sh } from '.';
 import { describe, expect, it } from 'bun:test';
 import { readFile } from 'fs/promises';
 import { tmpdir } from 'os';
 import { join } from 'path';
-
-import { pipe } from './functional';
 
 describe('misc', () => {
   it('exec', async () => {
@@ -26,5 +24,7 @@ describe('misc', () => {
     expect(pipe(execSync('bun -v'), ok)).toMatch(/\d+\.\d+\.\d+/);
     expect(pipe(execSync('echo $SHELL'), ok)).toInclude(process.env.SHELL!);
     expect(execSync('a_command_that_does_not_exist')).toBeInstanceOf(Error);
+    process.env.SOME_VAR = 'some_value';
+    expect(pipe(execSync('echo $SOME_VAR'), ok)).toInclude('some_value');
   });
 });
