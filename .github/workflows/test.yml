@@ -5,6 +5,7 @@ on:
     branches:
       - main
     paths:
+      # TODO: figure out why this is still letting changes to the README.md through
       - 'src/**'
       - 'package.json'
       - 'bun.lockb'
