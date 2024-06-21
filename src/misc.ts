@@ -56,7 +56,7 @@ export const sh: (...commands: string[]) => Promise<Error | boolean> =
           const fullCommand = commands.join('\n');
 
           return new Promise(resolve => {
-            const s = attempt(() => spawn(fullCommand, { shell: true, stdio: 'inherit' }));
+            const s = attempt(() => spawn(fullCommand, { shell: true, stdio: 'inherit', env: { ...process.env } }));
             if (s instanceof Error) return resolve(s);
 
             s.on('close', code => {
@@ -79,7 +79,7 @@ export const exec: (...commands: string[]) => Promise<Error | string> =
           const fullCommand = commands.join('\n');
 
           return new Promise(resolve => {
-            const s = attempt(() => spawn(fullCommand, { shell: true }));
+            const s = attempt(() => spawn(fullCommand, { shell: true, env: { ...process.env } }));
             if (s instanceof Error) return resolve(s);
             let data = '';
             const handleData = (chunk: Buffer) => {
