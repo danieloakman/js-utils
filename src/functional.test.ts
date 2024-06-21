@@ -50,6 +50,12 @@ describe('functional', () => {
       a.n = 2;
       expect(attempt(a.fn.bind(a) as () => number)).toBeInstanceOf(Error);
     }
+    {
+      const e = attempt(() => {
+        throw new Error('error');
+      });
+      expect(e).toBeInstanceOf(Error);
+    }
   });
 
   it('safeCall', async () => {

@@ -19,6 +19,7 @@ describe('misc', () => {
     assert((await readFile(tmpfile, 'utf-8')).includes('world'));
     ok(await sh(`rm ${tmpfile}`));
     ok(await sh('echo hi', 'echo there', 'echo world!'));
+    ok(await sh('echo $SHELL'));
   });
 
   it('execSync', () => {
