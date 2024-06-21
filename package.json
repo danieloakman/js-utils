@@ -34,11 +34,13 @@
   "exports": {
     ".": {
       "types": "./dist/types/index.d.ts",
+      "bun": "./dist/bun/index.js",
       "node": "./dist/node-cjs/index.js",
       "default": "./dist/browser/index.js"
     },
     "./*": {
       "types": "./dist/types/*.d.ts",
+      "bun": "./dist/bun/*.js",
       "node": "./dist/node-cjs/*.js",
       "default": "./dist/browser/*.js"
     },
