@@ -35,12 +35,14 @@
     ".": {
       "types": "./dist/types/index.d.ts",
       "bun": "./dist/bun/index.js",
+      "react-native": "./dist/browser/index.js",
       "node": "./dist/node-cjs/index.js",
       "default": "./dist/browser/index.js"
     },
     "./*": {
       "types": "./dist/types/*.d.ts",
       "bun": "./dist/bun/*.js",
+      "react-native": "./dist/browser/*.js",
       "node": "./dist/node-cjs/*.js",
       "default": "./dist/browser/*.js"
     },
