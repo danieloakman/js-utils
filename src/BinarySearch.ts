@@ -6,13 +6,15 @@ export class BinarySearch<T> {
   /**
    * Binary search through an array of numbers, or with a custom comparator and any type.
    */
-  // constructor(array: number[], options?: { comparator?: Comparator<number> }); // For T numbers it's optional, otherwise required.
-  // constructor(array: T[], options: { comparator: Comparator<T> });
   constructor(array: T[], options: { comparator?: Comparator<T, number> } = {}) {
     if (array.length < 2) throw new Error('Array must be of at least length 2.');
 
     this.array = array;
     this.comparator = options.comparator || this.comparator;
+  }
+
+  get length() {
+    return this.array.length;
   }
 
   /**
