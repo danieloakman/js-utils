@@ -15,5 +15,6 @@
   "singleQuote": true,
   "tabWidth": 2,
   "trailingComma": "all",
-  "useTabs": false
+  "useTabs": false,
+  "overrides": [{ "files": ["**/*.ts"], "options": { "parser": "babel-ts" } }]
 }
