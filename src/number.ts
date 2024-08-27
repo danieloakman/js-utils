@@ -59,3 +59,7 @@ export function safeParseFloat(str: string): number | null {
 export function clamp(n: number, min: number, max: number) {
   return Math.min(max, Math.max(min, n));
 }
+
+export function isBetween(n: number, min: number, max: number) {
+  return n >= min && n <= max;
+}
