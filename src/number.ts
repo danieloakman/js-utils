@@ -55,3 +55,7 @@ export function safeParseFloat(str: string): number | null {
   const n = parseFloat(str);
   return isNaN(n) ? null : n;
 }
+
+export function clamp(n: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, n));
+}
