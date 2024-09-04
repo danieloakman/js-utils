@@ -56,6 +56,14 @@ describe('functional', () => {
       });
       expect(e).toBeInstanceOf(Error);
     }
+    {
+      expect(await attempt(Promise.resolve(1))).toBe(1);
+      expect(await attempt(Promise.reject(new Error('error')))).toBeInstanceOf(Error);
+    }
+    {
+      // @ts-expect-error Cannot pass an error to `attempt`
+      expect(() => attempt(new Error('error'))).toThrow();
+    }
   });
 
   it('safeCall', async () => {

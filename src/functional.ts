@@ -146,20 +146,32 @@ export function isObjectLike(value: unknown): value is Record<PropertyKey, unkno
   return typeof value === 'object' && value !== null;
 }
 
-/** Calls `fn` and returns it's result as is, or if it throws an error it will return it as a value. */
-export function attempt<T extends Fn<any[], never>>(fn: T, ...args: Parameters<T>): Error;
-export function attempt<T extends Fn<any[], Promise<any>>>(
+/** Calls `fn` and returns its result as is, or if it throws an error it will return it as a value. */
+export function attempt<T extends (...args: any[]) => never, E extends Error = Error>(
   fn: T,
   ...args: Parameters<T>
-): Promise<Awaited<Result<ReturnType<T>>>>;
-export function attempt<T extends Fn>(fn: T, ...args: Parameters<T>): Result<ReturnType<T>>;
-export function attempt<T extends Fn>(fn: T, ...args: Parameters<T>): unknown {
-  try {
-    const result = fn.call(fn, ...args);
-    return isObjectLike(result) && typeof result['catch'] === 'function' ? result['catch']((e: Error) => e) : result;
-  } catch (err) {
-    return err as Error;
+): Result<never, E>;
+export function attempt<T extends (...args: any[]) => Promise<unknown>, E extends Error = Error>(
+  fn: T,
+  ...args: Parameters<T>
+): Promise<Awaited<Result<ReturnType<T>, E>>>;
+export function attempt<T extends (...args: any[]) => unknown, E extends Error = Error>(
+  fn: T,
+  ...args: Parameters<T>
+): Result<ReturnType<T>, E>;
+export function attempt<T, E extends Error = Error>(promise: Promise<T>): Promise<Result<T, E>>;
+export function attempt(arg: unknown, ...rest: unknown[]): unknown {
+  if (arg instanceof Promise) return arg.then(identity).catch(identity<Error>);
+  if (typeof arg === 'function') {
+    try {
+      const result = arg.call(arg, ...rest);
+      if (result instanceof Promise) return attempt(result);
+      return result;
+    } catch (error) {
+      return error;
+    }
   }
+  throw new Error('Cannot convert arg to result');
 }
 
 /** Wraps `fn` with an attempt call. So the resulting wrapped function's return type is a `Result` (unioned with Error). */
