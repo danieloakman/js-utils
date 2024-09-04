@@ -17,7 +17,7 @@ export interface MonoFn<A, B = A> {
   (a: A): B;
 }
 
-export type Result<T> = T | Error;
+export type Result<T, E extends Error = Error> = T | E;
 
 /** Contains either T, null or undefined. */
 export type Nullish<T> = T | null | undefined;
