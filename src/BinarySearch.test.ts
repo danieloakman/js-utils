@@ -61,4 +61,20 @@ describe('BinarySearchService', () => {
       );
     }
   });
+
+  it('insert', () => {
+    const bs = new BinarySearch([1, 5, 9, 13, 17, 21, 25]);
+    bs.insert(2);
+    equal(bs.indexOf(2), 1);
+    bs.insert(3);
+    equal(bs.indexOf(3), 2);
+    bs.insert(4);
+    equal(bs.indexOf(4), 3);
+    bs.insert(6);
+    equal(bs.indexOf(6), 5);
+    bs.insert(7);
+    equal(bs.indexOf(7), 6);
+    bs.insert(25);
+    equal(bs.indexOf(25), 11);
+  });
 });

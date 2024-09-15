@@ -66,6 +66,11 @@ export class BinarySearch<T> {
     return this.array[index];
   }
 
+  insert(element: T): this {
+    this.array.splice(this.closestIndexOf(element) + 1, 0, element);
+    return this;
+  }
+
   protected comparator: (a: T, b: T) => number = (a, b) => (a as number) - (b as number);
 
   /** Applies the binary search algorithm and returns the index  */
