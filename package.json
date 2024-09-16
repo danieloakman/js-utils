@@ -71,5 +71,8 @@
     "postversion": "git push --follow-tags",
     "prepare": "husky"
   },
-  "types": "./dist/node-cjs/index.d.ts"
+  "types": "./dist/node-cjs/index.d.ts",
+  "dependencies": {
+    "dayjs": "^1.11.13"
+  }
 }
