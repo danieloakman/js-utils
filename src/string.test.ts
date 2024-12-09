@@ -2,7 +2,7 @@ import { randInteger } from '.';
 import { describe, expect, it } from 'bun:test';
 import { iter, range } from 'iteragain';
 
-import { coerceHash, fastHash, hashWithLength, uniqueId } from './string';
+import { coerceHash, fastHash, hashWithLength, txt, uniqueId } from './string';
 
 describe('string', () => {
   it('fastHash', () => {
@@ -52,5 +52,16 @@ describe('string', () => {
     expect(uniqueId()).toBe('0');
     expect(uniqueId()).toBe('1');
     expect(uniqueId('test-')).toBe('test-0');
+  });
+
+  it('txt', () => {
+    expect(txt`asd ${1}`).toBe('asd 1');
+    expect(txt`asd ${1}
+    asd ${2}`).toBe('asd 1\nasd 2');
+    expect(txt`
+    something:
+      1: 1
+      2: 2
+    `).toBe(`something:\n1: 1\n2: 2`);
   });
 });

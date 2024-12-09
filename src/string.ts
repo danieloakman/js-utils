@@ -1,3 +1,4 @@
+import { iter } from 'iteragain';
 import { isObjectLike } from './functional';
 import { sortByKeys } from './object';
 import { Nullish } from './types';
@@ -131,4 +132,22 @@ export const uniqueId = (prefix?: string | number): string => {
   const n = prefixMap[emptyPrefix] ?? 0;
   prefixMap[emptyPrefix] = n + 1;
   return n.toString();
+};
+
+const cleanLines = (str: string) =>
+  str
+    .split('\n')
+    .map(line => line.trimStart())
+    .join('\n');
+/**
+ * Trims the leading whitespace from every line in the given
+ * string, and trims the start and end of the whole string.
+ */
+export const txt = (s: TemplateStringsArray, ...args: unknown[]): string => {
+  if (!args.length) args = [''];
+  return iter(s)
+    .zip(args)
+    .map(([part, arg]) => cleanLines(part) + arg)
+    .join('')
+    .trim();
 };
