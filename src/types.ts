@@ -45,7 +45,7 @@ export interface Stack<T> {
 /** For implementing asynchronous maps/caches. */
 export interface DataCache<T> {
   get size(): Promise<number>;
-  get<U = T>(key: string): Promise<Nullish<U>>;
+  get(key: string): Promise<Nullish<T>>;
   delete(key: string): Promise<boolean>;
   set(key: string, value: string | T): Promise<boolean>;
   has(key: string): Promise<boolean>;

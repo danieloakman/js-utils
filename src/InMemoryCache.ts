@@ -8,7 +8,7 @@ export class InMemoryCache<T = unknown> implements DataCache<T> {
     return Promise.resolve(this.map.size);
   }
 
-  async get<T = unknown>(key: string): Promise<Nullish<T>> {
+  async get(key: string): Promise<Nullish<T>> {
     const value = this.map.get(key);
     return safeJSONParse(value ?? '');
   }
