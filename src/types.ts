@@ -47,10 +47,12 @@ export interface DataCache<T> {
   get size(): Promise<number>;
   get(key: string): Promise<Nullish<T>>;
   delete(key: string): Promise<boolean>;
-  set(key: string, value: string | T): Promise<boolean>;
+  set(key: string, value: T): Promise<boolean>;
   has(key: string): Promise<boolean>;
   clear(): Promise<boolean>;
   keys(): AsyncIterableIterator<string>;
+  /** Proxies this cache so that it can easily be used to store a different type. */
+  proxy<U>(options: { get: (value: T) => U; set: (value: U) => T }): DataCache<U>;
 }
 
 /** For implementing simple string -> T maps. This is just a subset of a `Map<string, T>`.  */
