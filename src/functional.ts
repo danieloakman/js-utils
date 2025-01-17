@@ -229,7 +229,7 @@ export function isNullish(value: unknown): value is null | undefined {
   return value == null || value == undefined;
 }
 
-export function isOk<T>(value: T): value is Ok<T> {
+export function isOk<T extends Result>(value: T): value is Ok<T> {
   return !isNullish(value) && !(value instanceof Error);
 }
 

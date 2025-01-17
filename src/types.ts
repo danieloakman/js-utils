@@ -17,16 +17,17 @@ export interface MonoFn<A, B = A> {
   (a: A): B;
 }
 
-export type Result<T, E extends Error = Error> = T | E;
+export type Ok<T> = { data: T };
+
+export type Err<E extends Error> = { error: E };
+
+export type Result<T = unknown, E extends Error = Error> = Ok<T> | Err<E>;
 
 /** Contains either T, null or undefined. */
 export type Nullish<T> = T | null | undefined;
 
 /** Contains either T, null, undefined or Error. */
 export type NullishResult<T> = Result<Nullish<T>>;
-
-/** Unwraps/extracts the wrapped value `T` from a union with undefined, null or error. */
-export type Ok<T> = Exclude<T, Error | null | undefined>;
 
 export interface Queue<T> {
   length: number;
