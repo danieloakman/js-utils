@@ -341,3 +341,12 @@ export function addTimeout<T extends Fn<any[], Promise<unknown>>>(
     ]);
   }) as any;
 }
+
+/**
+ * Converts a class constructor into a function. This omits the need to use `new` to create an instance of the class.
+ */
+export const classToFn = <T extends new (...args: any[]) => any>(
+  klass: T,
+): ((...args: ConstructorParameters<T>) => InstanceType<T>) => {
+  return (...args: ConstructorParameters<T>) => new klass(...args);
+};

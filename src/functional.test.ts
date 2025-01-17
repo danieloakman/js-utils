@@ -16,6 +16,7 @@ import {
   sleep,
   toAsyncFn,
   tryResult,
+  classToFn,
 } from './functional';
 
 describe('functional', () => {
@@ -239,5 +240,14 @@ describe('functional', () => {
     expect(await fn(1)).toBe(1);
     expect(await fn(50)).toBe(50);
     expect(await fn(200)).toBeInstanceOf(Error);
+  });
+
+  it('classToFn', () => {
+    class A {
+      constructor(public n: number) {}
+    }
+    const a = classToFn(A);
+    expect(a(1)).toBeInstanceOf(A);
+    expect(a(1).n).toBe(1);
   });
 });
