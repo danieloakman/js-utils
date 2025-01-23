@@ -19,6 +19,11 @@ export interface MonoFn<A, B = A> {
 
 export type Result<T, E extends Error = Error> = T | E;
 
+export type AsyncResult<T, E extends Error = Error> =
+  | { status: 'loading' }
+  | { status: 'error'; error: E }
+  | { status: 'success'; value: T };
+
 /** Contains either T, null or undefined. */
 export type Nullish<T> = T | null | undefined;
 
