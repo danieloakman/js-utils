@@ -73,7 +73,7 @@ export function propIs<T, Key extends string>(
   obj: T,
   key: Key,
   type: 'function',
-): obj is T & ObjectWithValueAtPath<Split<Key, '.'>, () => any>;
+): obj is T & ObjectWithValueAtPath<Split<Key, '.'>, (...args: any[]) => unknown>;
 export function propIs<T, Key extends string>(
   obj: T,
   key: Key,
