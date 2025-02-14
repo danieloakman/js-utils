@@ -2,9 +2,9 @@ import { safeJSONParse } from './object';
 import type { DataCache, Nullish } from './types';
 
 export class InMemoryCache<T = unknown> implements DataCache<T> {
-  protected readonly map = new Map<string, string>();
+  protected readonly map: Map<string, string> = new Map<string, string>();
 
-  get size() {
+  get size(): Promise<number> {
     return Promise.resolve(this.map.size);
   }
 
@@ -31,7 +31,7 @@ export class InMemoryCache<T = unknown> implements DataCache<T> {
     return true;
   }
 
-  async *keys() {
+  async *keys(): AsyncIterableIterator<string> {
     yield* this.map.keys();
   }
 }
