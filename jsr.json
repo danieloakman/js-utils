@@ -1,0 +1,5 @@
+{
+  "name": "@danoaky/js-utils",
+  "version": "0.20.0",
+  "exports": "./src/index.ts"
+}
