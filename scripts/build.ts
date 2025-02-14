@@ -45,7 +45,7 @@ export async function build(args: BuildArgs): Promise<Error | boolean> {
       root: './src',
       splitting: true,
       define: {
-        'Bun.env.RUNTIME': `'${args.target}'`,
+        "Bun.env['RUNTIME']": `'${args.target}'`,
       },
     });
     if (!buildResult.success) {
@@ -93,7 +93,7 @@ export async function build(args: BuildArgs): Promise<Error | boolean> {
       bundle: true,
       // external: ['argparse'],
       define: {
-        'Bun.env.RUNTIME': `'${args.target}'`,
+        "Bun.env['RUNTIME']": `'${args.target}'`,
       },
       tsconfig,
       plugins: [dtsPlugin({ tsconfig })],
@@ -134,7 +134,7 @@ export async function build(args: BuildArgs): Promise<Error | boolean> {
   //   root: './src',
   //   // sourcemap: 'external',
   //   define: {
-  //     'Bun.env.RUNTIME': `'${args.target}'`,
+  //     'Bun.env[\'RUNTIME\']': `'${args.target}'`,
   //     'parseArgs': '() => { throw new Error("Can\'t parse args in browser.") }',
   //   },
   // });
