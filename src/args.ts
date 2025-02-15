@@ -11,7 +11,7 @@ export const parseArgs: <T = unknown>(
   constructorParams: ConstructorParameters<typeof ArgumentParser>[0],
   ...args: AddArgumentParams[]
 ) => T =
-  Bun.env['RUNTIME'] === 'node' || Bun.env['RUNTIME'] === 'bun'
+  Bun.env.RUNTIME === 'node' || Bun.env.RUNTIME === 'bun'
     ? (constructorParams, ...args) => {
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         const parser = new (require('argparse').ArgumentParser)(constructorParams);

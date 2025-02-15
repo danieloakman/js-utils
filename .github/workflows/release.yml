@@ -70,24 +70,25 @@ jobs:
           files: |
             package.tgz
 
-  release-jsr:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+  # Can't publish to JSR as they publish TS files, but we have a build/bundle step...
+  # release-jsr:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
 
-      - uses: oven-sh/setup-bun@v1
-        with:
-          bun-version: latest
+  #     - uses: oven-sh/setup-bun@v1
+  #       with:
+  #         bun-version: latest
 
-      - name: Download Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: build-artifacts
+  #     - name: Download Artifacts
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: build-artifacts
 
-      - name: Install Dependencies 📥
-        run: |
-          bun install
+  #     - name: Install Dependencies 📥
+  #       run: |
+  #         bun install
 
-      - name: Publish to JSR
-        run: npx jsr publish
+  #       - name: Publish to JSR
+  #         run: npx jsr publish

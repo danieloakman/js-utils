@@ -2,11 +2,11 @@ import { alwaysRaise, attempt, constant, iife } from './functional';
 import { Fn, Result } from './types';
 
 /**
- * If Bun.env['RUNTIME'] is node compatible, then `fn` is returned as is, otherwise a function that raises an exception is
+ * If Bun.env.RUNTIME is node compatible, then `fn` is returned as is, otherwise a function that raises an exception is
  * returned.
  */
 export function nodeOnly<T extends Fn>(fn: T): T {
-  if (!(Bun.env['RUNTIME'] === 'node' || Bun.env['RUNTIME'] === 'bun'))
+  if (!(Bun.env.RUNTIME === 'node' || Bun.env.RUNTIME === 'bun'))
     return alwaysRaise('This function is only available in Node compatible run times (e.g. Node, Bun).') as any;
   return fn;
 }
@@ -30,12 +30,12 @@ export const importSync: (name: string) => any = (name: string) => require(name)
  * });
  */
 export const main: (module: any, mainFn: () => Promise<void>) => Promise<void> =
-  Bun.env['RUNTIME'] === 'node'
+  Bun.env.RUNTIME === 'node'
     ? async (module, mainFn) => {
         // @ts-ignore
         if (require?.main === module) mainFn();
       }
-    : // : Bun.env['RUNTIME'] === 'bun'
+    : // : Bun.env.RUNTIME === 'bun'
       // ? async (module, mainFn) => {
       //     // TODO: fix this for bun
       //     if (module === Bun.main) mainFn();
@@ -48,7 +48,7 @@ export const main: (module: any, mainFn: () => Promise<void>) => Promise<void> =
  * If the command fails, then an error is returned, otherwise true is returned.
  */
 export const sh: (...commands: string[]) => Promise<Error | boolean> =
-  Bun.env['RUNTIME'] === 'browser'
+  Bun.env.RUNTIME === 'browser'
     ? alwaysRaise('Cannot run shell commands in browser.')
     : (...commands: string[]) =>
         iife(({ spawn }: typeof import('child_process') = importSync('child_process')) => {
@@ -71,7 +71,7 @@ export const sh: (...commands: string[]) => Promise<Error | boolean> =
  * returned.
  */
 export const exec: (...commands: string[]) => Promise<Error | string> =
-  Bun.env['RUNTIME'] === 'browser'
+  Bun.env.RUNTIME === 'browser'
     ? alwaysRaise('Cannot run shell commands in browser.')
     : (...commands: string[]) =>
         iife(({ spawn }: typeof import('child_process') = importSync('child_process')) => {
@@ -100,7 +100,7 @@ export const exec: (...commands: string[]) => Promise<Error | string> =
  * returned.
  */
 export const execSync: (command: string) => Result<string> =
-  Bun.env['RUNTIME'] === 'browser'
+  Bun.env.RUNTIME === 'browser'
     ? alwaysRaise('Cannot run shell commands in browser.')
     : (command: string) =>
         iife(({ execSync }: typeof import('child_process') = importSync('child_process')) =>
@@ -109,12 +109,12 @@ export const execSync: (command: string) => Result<string> =
 
 /** Returns true if node is debugging. */
 export const isInDebug: () => boolean =
-  Bun.env['RUNTIME'] !== 'browser'
+  Bun.env.RUNTIME !== 'browser'
     ? () => typeof require('inspector').url() !== 'undefined'
     : alwaysRaise('Not implemented for browser.');
 
 export const question: (questionStr: string, defaultAnswer?: string | null | undefined) => Promise<string> =
-  Bun.env['RUNTIME'] !== 'browser'
+  Bun.env.RUNTIME !== 'browser'
     ? async (questionStr, defaultAnswer?) => {
         if (isInDebug()) return defaultAnswer || '';
         const readline = await import('readline');
@@ -134,7 +134,7 @@ export const question: (questionStr: string, defaultAnswer?: string | null | und
 /** Returns an iterable of all local IP addresses. */
 export function* localIPs(): IterableIterator<{ name: string; address: string }> {
   const networkInterfaces =
-    Bun.env['RUNTIME'] === 'browser' ? constant([]) : (require('os') as typeof import('os')).networkInterfaces;
+    Bun.env.RUNTIME === 'browser' ? constant([]) : (require('os') as typeof import('os')).networkInterfaces;
   for (const [name, nets] of Object.entries(networkInterfaces())) {
     for (const net of nets ?? []) {
       // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
