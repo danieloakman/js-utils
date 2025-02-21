@@ -115,7 +115,7 @@ export function toMatch(value: Nullish<RegExpExecArray | RegExpMatchArray>): Nul
  * @param count Optional, number of characters in str to remove (default: 1).
  * @param add Optional, the string to append at index.
  */
-export function stringSplice(str: string, index: number, count = 1, add = '') {
+export function stringSplice(str: string, index: number, count = 1, add = ''): string {
   if (index < 0 || count < 0) throw new Error('index and count parameters cannot be less than zero');
 
   return str.slice(0, index) + add + str.slice(index + count);

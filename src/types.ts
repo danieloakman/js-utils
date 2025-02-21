@@ -1,10 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-declare module 'bun' {
-  interface Env {
-    RUNTIME: string;
-  }
-}
 export interface Fn<Args extends any[] = any[], Return = any> {
   (...args: Args): Return;
 }
@@ -22,6 +17,11 @@ export type Ok<T> = { data: T };
 export type Err<E extends Error> = { error: E };
 
 export type Result<T = unknown, E extends Error = Error> = Ok<T> | Err<E>;
+
+export type AsyncResult<T, E extends Error = Error> =
+  | { status: 'loading' }
+  | { status: 'error'; error: E }
+  | { status: 'success'; value: T };
 
 /** Contains either T, null or undefined. */
 export type Nullish<T> = T | null | undefined;

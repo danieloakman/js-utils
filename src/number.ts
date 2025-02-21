@@ -11,7 +11,7 @@ export const DEGREES_MULT = 180 / Math.PI;
  * @param {number} degrees Can be positive or negative.
  * @returns The degrees parameter converted to radians.
  */
-export function toRadians(degrees: number) {
+export function toRadians(degrees: number): number {
   return degrees * RADIANS_MULT;
 }
 
@@ -20,7 +20,7 @@ export function toRadians(degrees: number) {
  * @param {number} radians Can be positive or negative.
  * @returns The radians parameter converted to degrees.
  */
-export function toDegrees(radians: number) {
+export function toDegrees(radians: number): number {
   return radians * DEGREES_MULT;
 }
 
@@ -29,19 +29,19 @@ export function manhattanDistance(a: number[], b: number[]): number {
 }
 
 /** Perform linear interpolation between `a` and `b` with `t`. */
-export function lerp(a: number, b: number, t: number) {
+export function lerp(a: number, b: number, t: number): number {
   return a + (b - a) * t;
 }
 
-export function randInteger(min: number, max: number) {
+export function randInteger(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-export function randFloat(min: number, max: number) {
+export function randFloat(min: number, max: number): number {
   return Math.random() * (max - min) + min;
 }
 
-export function roundTo(n: number, places: number) {
+export function roundTo(n: number, places: number): number {
   const mult = Math.pow(10, places);
   return Math.round(n * mult) / mult;
 }
@@ -56,10 +56,10 @@ export function safeParseFloat(str: string): number | null {
   return isNaN(n) ? null : n;
 }
 
-export function clamp(n: number, min: number, max: number) {
+export function clamp(n: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, n));
 }
 
-export function isBetween(n: number, min: number, max: number) {
+export function isBetween(n: number, min: number, max: number): boolean {
   return n >= min && n <= max;
 }

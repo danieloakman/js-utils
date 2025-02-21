@@ -205,7 +205,7 @@ export function sleep(ms: number): Promise<number> {
   return new Promise(resolve => setTimeout(() => resolve(ms), ms));
 }
 
-export const iife = <T>(fn: () => T) => fn();
+export const iife = <T>(fn: () => T): T => fn();
 
 export const identity = <T>(v: T) => v;
 
@@ -219,8 +219,8 @@ export const noop = () => {};
 
 /** Perform a side effect but still return `v` unchanged. */
 export const effect =
-  <T>(fn: (v: T) => any) =>
-  (v: T) => {
+  <T extends (...args: any[]) => unknown>(fn: T) =>
+  (v: T): T => {
     fn(v);
     return v;
   };
@@ -264,6 +264,11 @@ export function raise(...exceptions: [string] | Error[]): never {
   throw new AggregateError(exceptions);
 }
 
+/** Returns a function that will always raise an error. */
+export function alwaysRaise(...exceptions: [string] | Error[]): () => never {
+  return () => raise(...exceptions);
+}
+
 /** Combines any number of comparators into a single comparator. Can be used for sorting or equality. */
 export function multiComparator<T, R extends number | boolean>(...comparators: Comparator<T, R>[]): Comparator<T, R> {
   return (a: T, b: T) => {
@@ -280,7 +285,7 @@ export function multiComparator<T, R extends number | boolean>(...comparators: C
 /** Wraps `fn` as `!fn`. */
 export const not =
   <T extends Fn>(fn: T) =>
-  (...args: Parameters<T>) =>
+  (...args: Parameters<T>): boolean =>
     !fn(...args);
 
 /** Wraps `fn` so that all calls to `fn` will return the same **FIRST** result. */

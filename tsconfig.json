@@ -2,6 +2,7 @@
   "compilerOptions": {
     "moduleResolution": "bundler",
     "noEmit": true,
+    "types": ["./types.d.ts", "bun"],
 
     // Enable latest features
     "lib": ["ESNext"],
