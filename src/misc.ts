@@ -1,4 +1,4 @@
-import { attempt, constant, iife, raise } from './functional';
+import { alwaysRaise, attempt, constant, iife } from './functional';
 import { Fn, Result } from './types';
 
 /**
@@ -7,8 +7,7 @@ import { Fn, Result } from './types';
  */
 export function nodeOnly<T extends Fn>(fn: T): T {
   if (!(Bun.env.RUNTIME === 'node' || Bun.env.RUNTIME === 'bun'))
-    return ((..._: any[]) =>
-      raise('This function is only available in Node compatible run times (e.g. Node, Bun).')) as any;
+    return alwaysRaise('This function is only available in Node compatible run times (e.g. Node, Bun).') as any;
   return fn;
 }
 
@@ -16,7 +15,7 @@ export function nodeOnly<T extends Fn>(fn: T): T {
  * Alias for `require`. This also acts as a way to circumvent bundle checking of node modules when the target isn't
  * node compatible.
  */
-export const importSync = (name: string) => require(name);
+export const importSync: (name: string) => any = (name: string) => require(name);
 
 /**
  * @description
@@ -42,7 +41,7 @@ export const main: (module: any, mainFn: () => Promise<void>) => Promise<void> =
       //     if (module === Bun.main) mainFn();
       //   }
       // TODO: browser may be able to work with bun's way of doing things, so perhaps this can be removed.
-      (..._: any[]) => raise('Cannot have a main function in this runtime environment.');
+      alwaysRaise('Cannot have a main function in this runtime environment.');
 
 /**
  * Runs a shell command with stdio set to inherit. This means all stdio is shared with the current process.
@@ -50,7 +49,7 @@ export const main: (module: any, mainFn: () => Promise<void>) => Promise<void> =
  */
 export const sh: (...commands: string[]) => Promise<Error | boolean> =
   Bun.env.RUNTIME === 'browser'
-    ? () => raise('Cannot run shell commands in browser.')
+    ? alwaysRaise('Cannot run shell commands in browser.')
     : (...commands: string[]) =>
         iife(({ spawn }: typeof import('child_process') = importSync('child_process')) => {
           const fullCommand = commands.join('\n');
@@ -73,7 +72,7 @@ export const sh: (...commands: string[]) => Promise<Error | boolean> =
  */
 export const exec: (...commands: string[]) => Promise<Error | string> =
   Bun.env.RUNTIME === 'browser'
-    ? () => raise('Cannot run shell commands in browser.')
+    ? alwaysRaise('Cannot run shell commands in browser.')
     : (...commands: string[]) =>
         iife(({ spawn }: typeof import('child_process') = importSync('child_process')) => {
           const fullCommand = commands.join('\n');
@@ -102,21 +101,21 @@ export const exec: (...commands: string[]) => Promise<Error | string> =
  */
 export const execSync: (command: string) => Result<string> =
   Bun.env.RUNTIME === 'browser'
-    ? () => raise('Cannot run shell commands in browser.')
+    ? alwaysRaise('Cannot run shell commands in browser.')
     : (command: string) =>
         iife(({ execSync }: typeof import('child_process') = importSync('child_process')) =>
           attempt(() => execSync(command, { encoding: 'utf-8', env: process.env, shell: true as any })),
         );
 
 /** Returns true if node is debugging. */
-export const isInDebug =
+export const isInDebug: () => boolean =
   Bun.env.RUNTIME !== 'browser'
     ? () => typeof require('inspector').url() !== 'undefined'
-    : () => raise('Not implemented for browser.');
+    : alwaysRaise('Not implemented for browser.');
 
-export const question =
+export const question: (questionStr: string, defaultAnswer?: string | null | undefined) => Promise<string> =
   Bun.env.RUNTIME !== 'browser'
-    ? async (questionStr: string, defaultAnswer: string | null | undefined = undefined): Promise<string> => {
+    ? async (questionStr, defaultAnswer?) => {
         if (isInDebug()) return defaultAnswer || '';
         const readline = await import('readline');
         const r1 = readline.createInterface({
@@ -130,7 +129,7 @@ export const question =
           }),
         );
       }
-    : () => raise('Cannot ask questions in browser.');
+    : alwaysRaise('Cannot ask questions in browser.');
 
 /** Returns an iterable of all local IP addresses. */
 export function* localIPs(): IterableIterator<{ name: string; address: string }> {

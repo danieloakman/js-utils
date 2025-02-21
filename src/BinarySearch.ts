@@ -13,7 +13,7 @@ export class BinarySearch<T> {
     this.comparator = options.comparator || this.comparator;
   }
 
-  get length() {
+  get length(): number {
     return this.array.length;
   }
 

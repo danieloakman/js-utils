@@ -38,7 +38,6 @@ export async function build(args: BuildArgs): Promise<Error | boolean> {
       entrypoints: srcFiles,
       outdir,
       sourcemap: 'external',
-      // @ts-expect-error Just let bun handle the error if it's not a valid target.
       format: args.format,
       target: args.target,
       minify: true,
@@ -134,7 +133,7 @@ export async function build(args: BuildArgs): Promise<Error | boolean> {
   //   root: './src',
   //   // sourcemap: 'external',
   //   define: {
-  //     'Bun.env.RUNTIME': `'${args.target}'`,
+  //     'Bun.env[\'RUNTIME\']': `'${args.target}'`,
   //     'parseArgs': '() => { throw new Error("Can\'t parse args in browser.") }',
   //   },
   // });
