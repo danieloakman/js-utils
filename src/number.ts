@@ -46,6 +46,21 @@ export function roundTo(n: number, places: number): number {
   return Math.round(n * mult) / mult;
 }
 
+/**
+ * @description Rounds `n` to the nearest factor of `f`.
+ * @example roundToNearest(1.2345, 0.1) => 1.2
+ * @example roundToNearest(1.2345, 0.01) => 1.23
+ * @example roundToNearest(50, 30) => 60
+ * @example roundToNearest(100, 30) => 90
+ * @example roundToNearest(100, 40) => 80
+ */
+export function roundToNearest(n: number, f: number): number {
+  const result = Math.round(n / f) * f;
+  // Handle floating point precision issues by rounding to a reasonable number of decimal places
+  const decimals = Math.max((f.toString().split('.')[1] || '').length, (n.toString().split('.')[1] || '').length);
+  return Number(result.toFixed(decimals));
+}
+
 export function safeParseInt(str: string): number | null {
   const n = parseInt(str);
   return isNaN(n) ? null : n;
