@@ -150,7 +150,7 @@ export function isObjectLike(value: unknown): value is Record<PropertyKey, unkno
 export function attempt<T extends (...args: any[]) => never, E extends Error = Error>(
   fn: T,
   ...args: Parameters<T>
-): Result<never, E>;
+): Result.Error<E>;
 export function attempt<T extends (...args: any[]) => Promise<unknown>, E extends Error = Error>(
   fn: T,
   ...args: Parameters<T>

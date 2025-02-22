@@ -1,5 +1,5 @@
 #! bun
-import { iife, ok } from '../src';
+import { attempt, Fn, ok, Result } from '../src';
 import { $ } from 'bun';
 import { build as esbuild } from 'esbuild';
 import { dtsPlugin } from 'esbuild-plugin-d.ts';
@@ -7,16 +7,19 @@ import { copyFile } from 'fs/promises';
 import { globIterateSync } from 'glob';
 import { iter } from 'iteragain';
 import { join, relative } from 'path';
+import { transformSync } from '@babel/core';
 
-export const esmToCjs = iife(
-  ({ transformSync } = require('@babel/core')) =>
-    (code: string): string =>
-      ok(
-        transformSync(code, {
-          plugins: ['@babel/plugin-transform-modules-commonjs'],
-        }),
-      )?.code,
-);
+export const esmToCjs = (code: string): string => {
+  return ok(
+    // @ts-expect-error
+    attempt(() =>
+      (transformSync as Fn)(code, {
+        plugins: ['@babel/plugin-transform-modules-commonjs'],
+      }),
+    ),
+    // @ts-expect-error
+  )?.code;
+};
 
 export interface BuildArgs {
   target: 'node' | 'browser' | 'bun';
@@ -24,7 +27,7 @@ export interface BuildArgs {
   outdir: string;
 }
 
-export async function build(args: BuildArgs): Promise<Error | boolean> {
+export async function build(args: BuildArgs): Promise<Result<boolean>> {
   const srcFiles = iter(globIterateSync(join(import.meta.dir, '../src/**/*.ts')))
     .filter(path => !path.endsWith('test.ts'))
     .toArray();
@@ -49,7 +52,7 @@ export async function build(args: BuildArgs): Promise<Error | boolean> {
     });
     if (!buildResult.success) {
       console.error(buildResult.logs.map(v => v.message).join('\n'));
-      return new Error(`Build for ${args.outdir} failed.`);
+      return Result.Error(new Error(`Build for ${args.outdir} failed.`));
     }
     if (buildResult.logs.length) {
       let level: 'warn' | 'log' | 'error' | 'debug' = 'log';
@@ -100,7 +103,7 @@ export async function build(args: BuildArgs): Promise<Error | boolean> {
 
     if (buildResult.errors.length) {
       console.error(buildResult.errors);
-      return new Error(`Build for ${args.outdir} failed.`);
+      return Result.Error(new Error(`Build for ${args.outdir} failed.`));
     }
     if (buildResult.warnings.length) console.warn(buildResult.warnings);
   }
@@ -192,7 +195,7 @@ export async function build(args: BuildArgs): Promise<Error | boolean> {
   //   }
   // }
 
-  return true;
+  return Result.Ok(true);
 }
 
 if (import.meta.main) {
