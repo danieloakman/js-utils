@@ -18,6 +18,7 @@ import {
   tryResult,
   classToFn,
 } from './functional';
+import Result from './result';
 
 describe('functional', () => {
   it('attempt', async () => {
@@ -26,8 +27,8 @@ describe('functional', () => {
         if (n > 1) throw new Error('n > 1');
         return n;
       };
-      expect(attempt(fn, 1)).toBe(1);
-      expect(attempt(fn, 2)).toBeInstanceOf(Error);
+      expect(attempt(fn, 1)).toStrictEqual(Result.Ok(1));
+      expect(attempt(fn, 2).error).toBeInstanceOf(Error);
     }
     {
       const fn = async (n: number) => {
@@ -35,8 +36,12 @@ describe('functional', () => {
         if (n > 1) throw new Error('n > 1');
         return n;
       };
-      expect(await attempt(fn, 1).then(expectType<number | Error>)).toBe(1);
-      expect(await attempt(fn, 2).then(expectType<number | Error>)).toBeInstanceOf(Error);
+      expect(await attempt(fn, 1).then(expectType<Result<number>>)).toStrictEqual(Result.Ok(1));
+      expect(
+        await attempt(fn, 2)
+          .then(expectType<Result<number>>)
+          .then(e => e.error),
+      ).toBeInstanceOf(Error);
     }
     {
       class A {
@@ -47,19 +52,19 @@ describe('functional', () => {
         }
       }
       const a = new A(0);
-      expect(attempt(a.fn.bind(a) as () => number)).toBe(0);
+      expect(attempt(a.fn.bind(a) as () => number)).toStrictEqual(Result.Ok(0));
       a.n = 2;
-      expect(attempt(a.fn.bind(a) as () => number)).toBeInstanceOf(Error);
+      expect(attempt(a.fn.bind(a) as () => number).error).toBeInstanceOf(Error);
     }
     {
       const e = attempt(() => {
         throw new Error('error');
       });
-      expect(e).toBeInstanceOf(Error);
+      expect(e.error).toBeInstanceOf(Error);
     }
     {
-      expect(await attempt(Promise.resolve(1))).toBe(1);
-      expect(await attempt(Promise.reject(new Error('error')))).toBeInstanceOf(Error);
+      expect(await attempt(Promise.resolve(1))).toStrictEqual(Result.Ok(1));
+      expect(await attempt(Promise.reject(new Error('error'))).then(e => e.error)).toBeInstanceOf(Error);
     }
     {
       // @ts-expect-error Cannot pass an error to `attempt`
@@ -214,32 +219,32 @@ describe('functional', () => {
     expect(() => fn(undefined)).toThrow();
 
     const e = attempt(() => raise(new Error('1'), new Error('2')));
-    expect(e).toBeInstanceOf(Error);
+    expect(e.error).toBeInstanceOf(Error);
 
     // @ts-expect-error
     const e2 = attempt(() => raise('1', '2'));
-    expect(e2).toBeInstanceOf(Error);
+    expect(e2.error).toBeInstanceOf(Error);
   });
 
   it('tryResult', async () => {
     const fnSync = tryResult((n: number) => (n > 1 ? raise('n > 1') : n));
-    expect(fnSync(1)).toBe(1);
-    expect(fnSync(2)).toBeInstanceOf(Error);
+    expect(fnSync(1)).toStrictEqual(Result.Ok(1));
+    expect(fnSync(2).error).toBeInstanceOf(Error);
 
     const fnAsync = tryResult(async (n: number) => {
       await sleep(n);
       if (n > 1) throw new Error('n > 1');
       return n;
     });
-    expect(await fnAsync(1)).toBe(1);
-    expect(await fnAsync(2)).toBeInstanceOf(Error);
+    expect(await fnAsync(1)).toStrictEqual(Result.Ok(1));
+    expect(await fnAsync(2).then(e => e.error)).toBeInstanceOf(Error);
   });
 
   it('addTimeout', async () => {
     const fn = addTimeout(sleep, 100);
-    expect(await fn(1)).toBe(1);
-    expect(await fn(50)).toBe(50);
-    expect(await fn(200)).toBeInstanceOf(Error);
+    expect(await fn(1)).toStrictEqual(Result.Ok(1));
+    expect(await fn(50)).toStrictEqual(Result.Ok(50));
+    expect(await fn(200).then(e => e.error)).toBeInstanceOf(Error);
   });
 
   it('classToFn', () => {

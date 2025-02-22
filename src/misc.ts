@@ -1,5 +1,6 @@
 import { alwaysRaise, attempt, constant, iife } from './functional';
-import { Fn, Result } from './types';
+import { Fn } from './types';
+import Result from './result';
 
 /**
  * If Bun.env.RUNTIME is node compatible, then `fn` is returned as is, otherwise a function that raises an exception is
@@ -47,7 +48,7 @@ export const main: (module: any, mainFn: () => Promise<void>) => Promise<void> =
  * Runs a shell command with stdio set to inherit. This means all stdio is shared with the current process.
  * If the command fails, then an error is returned, otherwise true is returned.
  */
-export const sh: (...commands: string[]) => Promise<Error | boolean> =
+export const sh: (...commands: string[]) => Promise<Result<boolean>> =
   Bun.env.RUNTIME === 'browser'
     ? alwaysRaise('Cannot run shell commands in browser.')
     : (...commands: string[]) =>
@@ -55,14 +56,18 @@ export const sh: (...commands: string[]) => Promise<Error | boolean> =
           const fullCommand = commands.join('\n');
 
           return new Promise(resolve => {
-            const s = attempt(() => spawn(fullCommand, { shell: true, stdio: 'inherit', env: { ...process.env } }));
-            if (s instanceof Error) return resolve(s);
+            const {
+              status,
+              data: s,
+              error,
+            } = attempt(() => spawn(fullCommand, { shell: true, stdio: 'inherit', env: { ...process.env } }));
+            if (status === 'error') return resolve(Result.Error(error));
 
             s.on('close', code => {
-              if (code) resolve(new Error(`Command "${fullCommand}" exited with code ${code}`));
-              else resolve(true);
+              if (code) resolve(Result.Error(new Error(`Command "${fullCommand}" exited with code ${code}`)));
+              else resolve(Result.Ok(true));
             });
-            s.on('error', err => resolve(err));
+            s.on('error', err => resolve(Result.Error(err)));
           });
         });
 
@@ -70,7 +75,7 @@ export const sh: (...commands: string[]) => Promise<Error | boolean> =
  * Executes a shell command and returns the stdout and stderr as a string. If the command fails, then an error is
  * returned.
  */
-export const exec: (...commands: string[]) => Promise<Error | string> =
+export const exec: (...commands: string[]) => Promise<Result<string>> =
   Bun.env.RUNTIME === 'browser'
     ? alwaysRaise('Cannot run shell commands in browser.')
     : (...commands: string[]) =>
@@ -78,8 +83,8 @@ export const exec: (...commands: string[]) => Promise<Error | string> =
           const fullCommand = commands.join('\n');
 
           return new Promise(resolve => {
-            const s = attempt(() => spawn(fullCommand, { shell: true, env: { ...process.env } }));
-            if (s instanceof Error) return resolve(s);
+            const { data: s, error } = attempt(() => spawn(fullCommand, { shell: true, env: { ...process.env } }));
+            if (error) return resolve(Result.Error(error));
             let data = '';
             const handleData = (chunk: Buffer) => {
               const str = chunk.toString();
@@ -88,10 +93,10 @@ export const exec: (...commands: string[]) => Promise<Error | string> =
             s.stdout?.on('data', handleData);
             s.stderr?.on('data', handleData);
             s.on('close', code => {
-              if (code) resolve(new Error(`Command "${fullCommand}" exited with code ${code}`));
-              else resolve(data);
+              if (code) resolve(Result.Error(new Error(`Command "${fullCommand}" exited with code ${code}`)));
+              else resolve(Result.Ok(data));
             });
-            s.on('error', err => resolve(err));
+            s.on('error', err => resolve(Result.Error(err)));
           });
         });
 

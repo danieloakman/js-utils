@@ -8,5 +8,6 @@ export * from './InMemoryCache';
 export * from './misc';
 export * from './number';
 export * from './object';
+export * from './result';
 export * from './string';
 export * from './types';

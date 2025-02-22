@@ -1,6 +1,6 @@
 import { coerceHash } from './string';
-import { AwaitedOnce, Comparator, Fn, MonoFn, Ok, Result, SimpleMap } from './types';
-
+import { AwaitedOnce, Comparator, Fn, MonoFn, SimpleMap } from './types';
+import Result from './result';
 export { debounce, throttle } from 'lodash-es';
 
 export function pipe<A, B>(a: A, aFn: MonoFn<A, B>): B;
@@ -154,28 +154,28 @@ export function attempt<T extends (...args: any[]) => never, E extends Error = E
 export function attempt<T extends (...args: any[]) => Promise<unknown>, E extends Error = Error>(
   fn: T,
   ...args: Parameters<T>
-): Promise<Awaited<Result<ReturnType<T>, E>>>;
+): Promise<Result<Awaited<ReturnType<T>>, E>>;
 export function attempt<T extends (...args: any[]) => unknown, E extends Error = Error>(
   fn: T,
   ...args: Parameters<T>
 ): Result<ReturnType<T>, E>;
 export function attempt<T, E extends Error = Error>(promise: Promise<T>): Promise<Result<T, E>>;
 export function attempt(arg: unknown, ...rest: unknown[]): unknown {
-  if (arg instanceof Promise) return arg.then(identity).catch(identity<Error>);
+  if (arg instanceof Promise) return arg.then(Result.Ok).catch(Result.Error);
   if (typeof arg === 'function') {
     try {
       const result = arg.call(arg, ...rest);
-      if (result instanceof Promise) return attempt(result);
-      return result;
+      if (result instanceof Promise) return result.then(Result.Ok).catch(Result.Error);
+      return Result.Ok(result);
     } catch (error) {
-      return error;
+      return Result.Error(error as object);
     }
   }
   throw new Error('Cannot convert arg to result');
 }
 
-/** Wraps `fn` with an attempt call. So the resulting wrapped function's return type is a `Result` (unioned with Error). */
-export function tryResult<T extends (...args: any[]) => never>(fn: T): (...args: Parameters<T>) => Error;
+/** Wraps `fn` with an attempt call. So the resulting wrapped function's return type is a `Result`. */
+export function tryResult<T extends (...args: any[]) => never>(fn: T): (...args: Parameters<T>) => Result.Error;
 export function tryResult<T extends (...args: any[]) => Promise<any>>(
   fn: T,
 ): (...args: Parameters<T>) => Promise<Result<Awaited<ReturnType<T>>>>;
@@ -229,24 +229,20 @@ export function isNullish(value: unknown): value is null | undefined {
   return value == null || value == undefined;
 }
 
-export function isOk<T>(value: T): value is Ok<T> {
-  return !isNullish(value) && !(value instanceof Error);
-}
-
 /**
  * @description Checks if `value` is not nullish or an error and returns it. This is analogous to the `unwrap` method in
  * Rust or any other Result implementation. Its use is for when you don't need or care to handle a non-ok value.
  * @throws {TypeError} Throws if `value` is an error or nullish.
  */
-export function ok<T>(value: T): Ok<T> {
-  if (value instanceof Error) throw value;
-  if (isNullish(value)) throw new TypeError('Expected a non-nullish value.');
-  return value as Ok<T>;
+export function ok<T>({ data, error }: Result<T>): NonNullable<T> {
+  if (error) throw error;
+  if (isNullish(data)) throw new TypeError('Expected a non-nullish value.');
+  return data as NonNullable<T>;
 }
 
 /** Checks if `value` is nullish or an error, if it is then `defaultValue` is returned. Otherwise `value` is returned. */
-export const okOr = <T, U>(value: T, defaultValue: U): Ok<T> | U => {
-  return value instanceof Error || isNullish(value) ? defaultValue : (value as Ok<T>);
+export const okOr = <T, U>({ status, data }: Result<T>, defaultValue: U): T | U => {
+  return status === 'success' ? data : defaultValue;
 };
 
 export const isError = (value: unknown): value is Error => value instanceof Error;
@@ -340,9 +336,15 @@ export function addTimeout<T extends Fn<any[], Promise<unknown>>>(
 
     return Promise.race([
       new Promise(resolve => {
-        timeout = setTimeout(() => resolve(new Error(`${fn.name} timed out after ${timeoutMs}ms`)), timeoutMs);
+        timeout = setTimeout(
+          () => resolve({ status: 'error', error: new Error(`${fn.name} timed out after ${timeoutMs}ms`) }),
+          timeoutMs,
+        );
       }),
-      fn(...args).finally(() => clearTimeout(timeout)),
+      fn(...args)
+        .then(Result.Ok)
+        .catch(Result.Error)
+        .finally(() => clearTimeout(timeout)),
     ]);
   }) as any;
 }
