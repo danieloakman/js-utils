@@ -1,6 +1,6 @@
 {
   "name": "js-utils",
-  "version": "0.22.5",
+  "version": "0.22.6",
   "author": "Daniel Oakman",
   "main": "./dist/node-cjs/index.js",
   "devDependencies": {
