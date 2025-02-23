@@ -72,6 +72,7 @@ jobs:
         with:
           files: |
             package.tgz
+          token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
 
   # Can't publish to JSR as they publish TS files, but we have a build/bundle step...
   # release-jsr:
