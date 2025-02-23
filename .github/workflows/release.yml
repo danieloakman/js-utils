@@ -72,7 +72,6 @@ jobs:
         with:
           files: |
             package.tgz
-            # CHANGELOG.md
 
   # Can't publish to JSR as they publish TS files, but we have a build/bundle step...
   # release-jsr:
