@@ -40,7 +40,6 @@ jobs:
           name: build-artifacts
           path: |
             dist
-            CHANGELOG.md
 
   release-github:
     needs: build
