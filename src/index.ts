@@ -11,3 +11,4 @@ export * from './object';
 export * from './result';
 export * from './string';
 export * from './types';
+export * from './vector2';
