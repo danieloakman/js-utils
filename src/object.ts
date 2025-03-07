@@ -19,7 +19,7 @@ export function groupBy<T>(arr: T[], ...keys: KeyItentifier<T>[]) {
       map[k] = (map[k] ?? ([] as any[])).concat(value);
     }
   }
-  return results.length < 2 ? results[0]?.[1] ?? {} : results.map(([_, map]) => map);
+  return results.length < 2 ? (results[0]?.[1] ?? {}) : results.map(([_, map]) => map);
 }
 
 /** Safely parses a JSON string. If an error occurs, then null is returned. */
@@ -195,6 +195,7 @@ export function findItemsFrom<T extends object>(needles: Partial<T>[], haystack:
 
 export function omit<T extends object, K extends keyof T>(obj: T, keys: K[]): Omit<T, K>;
 export function omit<T extends object, K extends keyof T>(obj: T, ...keys: K[]): Omit<T, K>;
+export function omit<T extends object>(obj: T, keys: string[]): T; // Allow any key, but don't get type safety
 export function omit<T extends object, K extends keyof T>(obj: T, ...keys: K[] | [K[]]): Omit<T, K> {
   const _keys = (Array.isArray(keys[0]) ? keys[0] : keys) as K[];
   const copy = { ...obj };
@@ -204,6 +205,7 @@ export function omit<T extends object, K extends keyof T>(obj: T, ...keys: K[] |
 
 export function pick<T extends object, K extends keyof T>(obj: T, keys: K[]): Pick<T, K>;
 export function pick<T extends object, K extends keyof T>(obj: T, ...keys: K[]): Pick<T, K>;
+export function pick<T extends object>(obj: T, keys: string[]): T; // Allow any key, but don't get type safety
 export function pick<T extends object, K extends keyof T>(obj: T, ...keys: K[] | [K[]]): Pick<T, K> {
   const _keys = (Array.isArray(keys[0]) ? keys[0] : keys) as K[];
   const copy = {} as Pick<T, K>;
