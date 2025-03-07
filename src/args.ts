@@ -1,16 +1,10 @@
-import type { ArgumentOptions, ArgumentParser } from 'argparse';
+import { alwaysRaise } from './functional';
 
-import { raise } from './functional';
+/** @deprecated Just import the `meow` package instead, as it's type safe. This will be removed soon. */
+export type AddArgumentParams = unknown;
 
-export type AddArgumentParams =
-  | [arg: string, options?: ArgumentOptions]
-  | [arg1: string, arg2: string, options?: ArgumentOptions]
-  | [arg1: string];
-
-export const parseArgs: <T = unknown>(
-  constructorParams: ConstructorParameters<typeof ArgumentParser>[0],
-  ...args: AddArgumentParams[]
-) => T =
+/** @deprecated Just import the `meow` package instead, as it's type safe. This will be removed soon. */
+export const parseArgs: <T = unknown>(constructorParams: unknown, ...args: AddArgumentParams[]) => T =
   Bun.env.RUNTIME === 'node' || Bun.env.RUNTIME === 'bun'
     ? (constructorParams, ...args) => {
         // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -19,4 +13,4 @@ export const parseArgs: <T = unknown>(
         for (const arg of args) parser.add_argument(...arg);
         return parser.parse_args();
       }
-    : () => raise("Can't parse args in browser.");
+    : alwaysRaise("Can't parse args in browser.");
