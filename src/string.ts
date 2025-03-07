@@ -4,7 +4,7 @@ import { sortByKeys } from './object';
 import { Nullish } from './types';
 
 // Export lodash string type functions:
-export { deburr, truncate, capitalize } from 'lodash-es';
+export { deburr, truncate, capitalize } from 'moderndash';
 
 /**
  * @see https://stackoverflow.com/a/52171480 For source.
