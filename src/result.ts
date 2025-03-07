@@ -6,9 +6,14 @@ export declare namespace Result {
 
 export type Result<T = object, E extends Error = Error> = Result.Ok<T> | Result.Error<E>;
 
+interface CreateError {
+  <E extends object>(error: E): Result.Error<E>;
+  (...args: ConstructorParameters<typeof Error>): Result.Error<Error>;
+}
+
 export const Result = {
   Ok: <T>(data: T) => ({ status: 'success', data }) as Result.Ok<T>,
-  Error: <E extends object>(error: E) => ({ status: 'error', error }) as Result.Error<E>,
+  Error: ((error: object) => ({ status: 'error', error })) as CreateError,
 } as const;
 
 export default Result;
