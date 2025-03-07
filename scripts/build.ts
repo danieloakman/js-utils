@@ -45,6 +45,7 @@ export async function build(args: BuildArgs): Promise<Result<boolean>> {
       minify: true,
       root: './src',
       splitting: true,
+      external: ['dayjs', 'moderndash'],
       define: {
         'Bun.env.RUNTIME': `'${args.target}'`,
       },
@@ -92,7 +93,7 @@ export async function build(args: BuildArgs): Promise<Result<boolean>> {
       treeShaking: true,
       splitting: args.format === 'esm',
       bundle: true,
-      external: ['dayjs'],
+      external: ['dayjs', 'moderndash'],
       define: {
         'Bun.env.RUNTIME': `'${args.target}'`,
       },
