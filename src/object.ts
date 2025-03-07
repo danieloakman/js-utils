@@ -196,6 +196,7 @@ export function findItemsFrom<T extends object>(needles: Partial<T>[], haystack:
 export function omit<T extends object, K extends keyof T>(obj: T, keys: K[]): Omit<T, K>;
 export function omit<T extends object, K extends keyof T>(obj: T, ...keys: K[]): Omit<T, K>;
 export function omit<T extends object>(obj: T, keys: string[]): T; // Allow any key, but don't get type safety
+export function omit<T extends object>(obj: T, ...keys: string[]): T;
 export function omit<T extends object, K extends keyof T>(obj: T, ...keys: K[] | [K[]]): Omit<T, K> {
   const _keys = (Array.isArray(keys[0]) ? keys[0] : keys) as K[];
   const copy = { ...obj };
@@ -206,6 +207,7 @@ export function omit<T extends object, K extends keyof T>(obj: T, ...keys: K[] |
 export function pick<T extends object, K extends keyof T>(obj: T, keys: K[]): Pick<T, K>;
 export function pick<T extends object, K extends keyof T>(obj: T, ...keys: K[]): Pick<T, K>;
 export function pick<T extends object>(obj: T, keys: string[]): T; // Allow any key, but don't get type safety
+export function pick<T extends object>(obj: T, ...keys: string[]): T;
 export function pick<T extends object, K extends keyof T>(obj: T, ...keys: K[] | [K[]]): Pick<T, K> {
   const _keys = (Array.isArray(keys[0]) ? keys[0] : keys) as K[];
   const copy = {} as Pick<T, K>;
