@@ -21,7 +21,7 @@ export const Result = {
    */
   unwrap: <T>({ data, error }: Result<T>, defaultValue?: T) => {
     if (error) {
-      if (defaultValue) return defaultValue;
+      if (defaultValue !== undefined) return defaultValue;
       throw error;
     }
     return data;
