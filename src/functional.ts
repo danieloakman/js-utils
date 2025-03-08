@@ -230,6 +230,7 @@ export function isNullish(value: unknown): value is null | undefined {
 }
 
 /**
+ * @deprecated Use `Result.unwrap` instead.
  * @description Checks if `value` is not nullish or an error and returns it. This is analogous to the `unwrap` method in
  * Rust or any other Result implementation. Its use is for when you don't need or care to handle a non-ok value.
  * @throws {TypeError} Throws if `value` is an error or nullish.
