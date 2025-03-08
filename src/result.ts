@@ -26,6 +26,8 @@ export const Result = {
     }
     return data;
   },
+  isOk: <T>(result: Result<T>): result is Result.Ok<T> => result.status === 'success',
+  isError: <T>(result: Result<T>): result is Result.Error<T> => result.status === 'error',
 } as const;
 
 export default Result;
