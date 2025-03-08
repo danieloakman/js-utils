@@ -1,19 +1,19 @@
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export declare namespace Result {
   export type Ok<T = object> = { status: 'success'; data: T; error: undefined };
-  export type Error<E extends object = object> = { status: 'error'; error: E; data: undefined };
+  export type Err<E extends object = object> = { status: 'error'; error: E; data: undefined };
 }
 
-export type Result<T = object, E extends Error = Error> = Result.Ok<T> | Result.Error<E>;
+export type Result<T = object, E extends Error = Error> = Result.Ok<T> | Result.Err<E>;
 
-interface CreateError {
-  <E extends object>(error: E): Result.Error<E>;
-  (...args: ConstructorParameters<typeof Error>): Result.Error<Error>;
+interface CreateErr {
+  <E extends object>(error: E): Result.Err<E>;
+  (...args: ConstructorParameters<typeof Error>): Result.Err<Error>;
 }
 
 export const Result = {
   Ok: <T>(data: T) => ({ status: 'success', data }) as Result.Ok<T>,
-  Error: ((error: object) => ({ status: 'error', error })) as CreateError,
+  Err: ((error: object) => ({ status: 'error', error })) as CreateErr,
   /**
    * @description If the provided result is a success, return the data.
    * If a default value is provided and there's an error, return the default value.
@@ -27,7 +27,7 @@ export const Result = {
     return data;
   },
   isOk: <T>(result: Result<T>): result is Result.Ok<T> => result.status === 'success',
-  isError: <T>(result: Result<T>): result is Result.Error<T> => result.status === 'error',
+  isError: <T, E extends Error>(result: Result<T, E>): result is Result.Err<E> => result.status === 'error',
 } as const;
 
 export default Result;

@@ -150,7 +150,7 @@ export function isObjectLike(value: unknown): value is Record<PropertyKey, unkno
 export function attempt<T extends (...args: any[]) => never, E extends Error = Error>(
   fn: T,
   ...args: Parameters<T>
-): Result.Error<E>;
+): Result.Err<E>;
 export function attempt<T extends (...args: any[]) => Promise<unknown>, E extends Error = Error>(
   fn: T,
   ...args: Parameters<T>
@@ -161,21 +161,21 @@ export function attempt<T extends (...args: any[]) => unknown, E extends Error =
 ): Result<ReturnType<T>, E>;
 export function attempt<T, E extends Error = Error>(promise: Promise<T>): Promise<Result<T, E>>;
 export function attempt(arg: unknown, ...rest: unknown[]): unknown {
-  if (arg instanceof Promise) return arg.then(Result.Ok).catch(Result.Error);
+  if (arg instanceof Promise) return arg.then(Result.Ok).catch(Result.Err);
   if (typeof arg === 'function') {
     try {
       const result = arg.call(arg, ...rest);
-      if (result instanceof Promise) return result.then(Result.Ok).catch(Result.Error);
+      if (result instanceof Promise) return result.then(Result.Ok).catch(Result.Err);
       return Result.Ok(result);
     } catch (error) {
-      return Result.Error(error as object);
+      return Result.Err(error as object);
     }
   }
   throw new Error('Cannot convert arg to result');
 }
 
 /** Wraps `fn` with an attempt call. So the resulting wrapped function's return type is a `Result`. */
-export function tryResult<T extends (...args: any[]) => never>(fn: T): (...args: Parameters<T>) => Result.Error;
+export function tryResult<T extends (...args: any[]) => never>(fn: T): (...args: Parameters<T>) => Result.Err;
 export function tryResult<T extends (...args: any[]) => Promise<any>>(
   fn: T,
 ): (...args: Parameters<T>) => Promise<Result<Awaited<ReturnType<T>>>>;
@@ -241,7 +241,9 @@ export function ok<T>({ data, error }: Result<T>): NonNullable<T> {
   return data as NonNullable<T>;
 }
 
-/** Checks if `value` is nullish or an error, if it is then `defaultValue` is returned. Otherwise `value` is returned. */
+/**
+ * @deprecated Use `Result.unwrap` instead.
+ * @description Checks if `value` is nullish or an error, if it is then `defaultValue` is returned. Otherwise `value` is returned. */
 export const okOr = <T, U>({ status, data }: Result<T>, defaultValue: U): T | U => {
   return status === 'success' ? data : defaultValue;
 };
@@ -344,7 +346,7 @@ export function addTimeout<T extends Fn<any[], Promise<unknown>>>(
       }),
       fn(...args)
         .then(Result.Ok)
-        .catch(Result.Error)
+        .catch(Result.Err)
         .finally(() => clearTimeout(timeout)),
     ]);
   }) as any;

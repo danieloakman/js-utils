@@ -61,13 +61,13 @@ export const sh: (...commands: string[]) => Promise<Result<boolean>> =
               data: s,
               error,
             } = attempt(() => spawn(fullCommand, { shell: true, stdio: 'inherit', env: { ...process.env } }));
-            if (status === 'error') return resolve(Result.Error(error));
+            if (status === 'error') return resolve(Result.Err(error));
 
             s.on('close', code => {
-              if (code) resolve(Result.Error(new Error(`Command "${fullCommand}" exited with code ${code}`)));
+              if (code) resolve(Result.Err(new Error(`Command "${fullCommand}" exited with code ${code}`)));
               else resolve(Result.Ok(true));
             });
-            s.on('error', err => resolve(Result.Error(err)));
+            s.on('error', err => resolve(Result.Err(err)));
           });
         });
 
@@ -84,7 +84,7 @@ export const exec: (...commands: string[]) => Promise<Result<string>> =
 
           return new Promise(resolve => {
             const { data: s, error } = attempt(() => spawn(fullCommand, { shell: true, env: { ...process.env } }));
-            if (error) return resolve(Result.Error(error));
+            if (error) return resolve(Result.Err(error));
             let data = '';
             const handleData = (chunk: Buffer) => {
               const str = chunk.toString();
@@ -93,10 +93,10 @@ export const exec: (...commands: string[]) => Promise<Result<string>> =
             s.stdout?.on('data', handleData);
             s.stderr?.on('data', handleData);
             s.on('close', code => {
-              if (code) resolve(Result.Error(new Error(`Command "${fullCommand}" exited with code ${code}`)));
+              if (code) resolve(Result.Err(new Error(`Command "${fullCommand}" exited with code ${code}`)));
               else resolve(Result.Ok(data));
             });
-            s.on('error', err => resolve(Result.Error(err)));
+            s.on('error', err => resolve(Result.Err(err)));
           });
         });
 
