@@ -74,7 +74,7 @@ jobs:
       - name: Create Release Package
         run: |
           npm pack
-          mv js-utils-*.tgz package.tgz
+          mv danoaky-js-utils-*.tgz package.tgz
 
       - name: Release on Github 🚀
         uses: softprops/action-gh-release@v2
