@@ -45,14 +45,14 @@ export async function build(args: BuildArgs): Promise<Result<boolean>> {
       minify: true,
       root: './src',
       splitting: true,
-      external: ['dayjs', 'moderndash'],
+      external: ['dayjs', 'moderndash', 'iteragain'],
       define: {
         'Bun.env.RUNTIME': `'${args.target}'`,
       },
     });
     if (!buildResult.success) {
       console.error(buildResult.logs.map(v => v.message).join('\n'));
-      return Result.Error(new Error(`Build for ${args.outdir} failed.`));
+      return Result.Err(new Error(`Build for ${args.outdir} failed.`));
     }
     if (buildResult.logs.length) {
       let level: 'warn' | 'log' | 'error' | 'debug' = 'log';
@@ -103,7 +103,7 @@ export async function build(args: BuildArgs): Promise<Result<boolean>> {
 
     if (buildResult.errors.length) {
       console.error(buildResult.errors);
-      return Result.Error(new Error(`Build for ${args.outdir} failed.`));
+      return Result.Err(new Error(`Build for ${args.outdir} failed.`));
     }
     if (buildResult.warnings.length) console.warn(buildResult.warnings);
   }
