@@ -72,5 +72,6 @@
   "dependencies": {
     "dayjs": "^1.11.13",
     "moderndash": "^4.0.0"
-  }
+  },
+  "sideEffects": false
 }
