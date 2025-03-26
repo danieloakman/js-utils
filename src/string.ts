@@ -51,12 +51,11 @@ export function hashWithLength(input: string | number, length: number, seed = 0)
 /** Coerces any `input` into a string, then uses `fastHash` on it. */
 export function coerceHash(input: unknown, seed = 0): number {
   if (typeof input === 'string') return fastHash(input, seed);
-  if (typeof input === 'number') return fastHash(input.toString(), seed);
+  if (typeof input === 'number' || typeof input === 'bigint' || typeof input === 'symbol')
+    return fastHash(input.toString(), seed);
   if (Array.isArray(input)) return fastHash(input.map(v => coerceHash(v, seed)).join(''));
   if (isObjectLike(input)) return fastHash(JSON.stringify(sortByKeys(input)), seed);
-  if (typeof input === 'bigint') return fastHash(input.toString());
   if (typeof input === 'undefined') return fastHash('undefined', seed);
-  if (typeof input === 'symbol') return fastHash(input.toString(), seed);
   return fastHash(JSON.stringify(input), seed);
 }
 
