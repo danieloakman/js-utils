@@ -1,4 +1,14 @@
-import { assert, expectType, findItemsFrom, isPartiallyLike, pick, omit, propIs, sortByKeys } from '.';
+import {
+  assert,
+  expectType,
+  findItemsFrom,
+  isPartiallyLike,
+  pick,
+  omit,
+  propIs,
+  sortByKeys,
+  isObjectDeepEqual,
+} from '.';
 import { describe, expect, it } from 'bun:test';
 
 describe('object', () => {
@@ -97,6 +107,7 @@ describe('object', () => {
     // @ts-expect-error
     expect(omit({ a: 1, b: { c: 2 } }, 'c')).toStrictEqual({ a: 1, b: { c: 2 } });
   });
+
   it('pick', () => {
     expect(pick({ a: 1 }, 'a')).toStrictEqual({ a: 1 });
     expect(pick({ a: 1, b: 2 }, 'a')).toStrictEqual({ a: 1 });
@@ -104,5 +115,18 @@ describe('object', () => {
     expect(pick({ a: 1, b: 2 }, ['a'])).toStrictEqual({ a: 1 });
     // @ts-expect-error
     expect(pick({ a: 1, b: { c: 2 } }, 'c')).toStrictEqual({});
+  });
+
+  it('isObjectDeepEqual', () => {
+    expect(isObjectDeepEqual({ a: 1 }, { a: 1 })).toBeTrue();
+    expect(isObjectDeepEqual({ a: 1 }, { a: 2 })).toBeFalse();
+    expect(isObjectDeepEqual({ a: 1 }, { a: 1, b: 2 })).toBeFalse();
+    expect(isObjectDeepEqual({ a: 1, b: 2 }, { a: 1 })).toBeFalse();
+    expect(isObjectDeepEqual({ a: 1, b: 2 }, { a: 1, b: 2 })).toBeTrue();
+    expect(isObjectDeepEqual({ a: 1, b: 2 }, { a: 1, b: 3 })).toBeFalse();
+    expect(isObjectDeepEqual({ a: 1, b: 2 }, { a: 1, b: 2, c: 3 })).toBeFalse();
+    expect(isObjectDeepEqual({ a: 1, b: 2, c: 3 }, { a: 1, b: 2 })).toBeFalse();
+    expect(isObjectDeepEqual({ c: 3, b: 2, a: 1 }, { a: 1, b: 2, c: 3 })).toBeTrue();
+    expect(isObjectDeepEqual({ a: { b: 1, c: 2 } }, { a: { c: 2, b: 1 } })).toBeTrue();
   });
 });

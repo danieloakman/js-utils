@@ -217,3 +217,20 @@ export function pick<T extends object, K extends keyof T>(obj: T, ...keys: K[] |
   }
   return copy;
 }
+
+export function isObjectDeepEqual(a: object, b: object): boolean {
+  if (a === b) return true;
+  if (Array.isArray(a) && Array.isArray(b)) {
+    if (a.length !== b.length) return false;
+    return a.every((value, index) => isObjectDeepEqual(value, b[index]));
+  }
+  const aType = typeof a;
+  const bType = typeof b;
+  if (aType !== bType || aType !== 'object') return false;
+  if (Object.keys(a).length !== Object.keys(b).length) return false;
+  for (const [key, value] of Object.entries(a)) {
+    if (!Object.prototype.hasOwnProperty.call(b, key)) return false;
+    if (!isObjectDeepEqual(value, b[key as keyof typeof b])) return false;
+  }
+  return true;
+}
