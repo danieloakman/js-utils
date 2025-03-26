@@ -218,6 +218,7 @@ export function pick<T extends object, K extends keyof T>(obj: T, ...keys: K[] |
   return copy;
 }
 
+/** Returns true if `a` and `b` are deeply equal. Does not check for alphabetical order. */
 export function isObjectDeepEqual(a: object, b: object): boolean {
   if (a === b) return true;
   if (Array.isArray(a) && Array.isArray(b)) {
