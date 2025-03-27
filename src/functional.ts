@@ -129,6 +129,7 @@ export function flow(...funcs: MonoFn<unknown, unknown>[]): MonoFn<unknown, unkn
   return (value: unknown) => pipe(value, ...funcs);
 }
 
+// TODO: fix this, it doesn't work at all
 export function limitConcurrency<T extends (...args: any[]) => Promise<any>>(func: T, limit: number): T {
   const resolves: ((...any: any[]) => void)[] = [];
 

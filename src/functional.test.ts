@@ -17,6 +17,7 @@ import {
   toAsyncFn,
   tryResult,
   classToFn,
+  limitConcurrency,
 } from './functional';
 import Result from './result';
 
@@ -254,5 +255,15 @@ describe('functional', () => {
     const a = classToFn(A);
     expect(a(1)).toBeInstanceOf(A);
     expect(a(1).n).toBe(1);
+  });
+
+  it.todo('limitConcurrency', async () => {
+    const fn = limitConcurrency(sleep, 1);
+    const start = Date.now();
+    await Promise.all([fn(100), fn(100), fn(100)]);
+    expect(Date.now() - start).toBeGreaterThan(300);
+    // expect(await fn(1)).toStrictEqual(Result.Ok(1));
+    // expect(await fn(50)).toStrictEqual(Result.Ok(50));
+    // expect(await fn(200).then(e => e.error)).toBeInstanceOf(Error);
   });
 });
