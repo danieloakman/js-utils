@@ -2,7 +2,8 @@
   "name": "@danoaky/js-utils",
   "version": "0.28.1",
   "author": "Daniel Brown",
-  "main": "./dist/node-cjs/index.js",
+  "main": "./dist/browser/index.js",
+  "types": "./dist/browser/index.d.ts",
   "devDependencies": {
     "@babel/core": "^7.24.7",
     "@babel/plugin-transform-modules-commonjs": "^7.24.7",
@@ -66,7 +67,6 @@
     "postversion": "git push --follow-tags",
     "prepare": "husky"
   },
-  "types": "./dist/node-cjs/index.d.ts",
   "dependencies": {
     "dayjs": "^1.11.13",
     "iteragain": "^4.1.6",
