@@ -1,4 +1,4 @@
-import { raise } from './functional';
+import { alwaysRaise } from './functional';
 
 export function assert(value: unknown, message?: string | Error): asserts value {
   if (!value) {
@@ -7,12 +7,12 @@ export function assert(value: unknown, message?: string | Error): asserts value 
   }
 }
 
-export const throws: (block: () => unknown, message?: string | Error) => void =
-  Bun.env.RUNTIME === 'browser'
-    ? () => raise("Can' use `throws`, not implemented in browser.")
-    : (block, message) => {
-        return require('assert').throws(block, message);
-      };
+/**
+ * @deprecated Use `assert.throws` from node assert package instead or somewhere else.
+ */
+export const throws: (block: () => unknown, message?: string | Error) => void = alwaysRaise(
+  '`throws` is deprecated, use `assert.throws` from node assert package instead or somewhere else.',
+);
 
 /**
  * Expect value to be `T`, and return it to allow for piping/chaining.
@@ -20,10 +20,9 @@ export const throws: (block: () => unknown, message?: string | Error) => void =
  */
 export const expectType = <T>(value: T) => value;
 
-/** Wrapper for `deepStrictEqual` that asserts at the type level that `actual` and `expected` are the same type. */
-export const equal: <T>(actual: T, expected: T, message?: string | Error) => boolean =
-  Bun.env.RUNTIME === 'browser'
-    ? () => raise("Can't use `equal`, not implemented in browser.")
-    : (actual, expected, message) => {
-        return require('assert').deepStrictEqual(actual, expected, message);
-      };
+/**
+ * @deprecated Use `assert.deepStrictEqual` from node assert package instead or somewhere else.
+ * @description Wrapper for `deepStrictEqual` that asserts at the type level that `actual` and `expected` are the same type. */
+export const equal: <T>(actual: T, expected: T, message?: string | Error) => boolean = alwaysRaise(
+  '`equal` is deprecated, use `deepStrictEqual` from node assert package instead or somewhere else.',
+);
