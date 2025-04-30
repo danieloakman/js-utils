@@ -1,6 +1,6 @@
 {
   "name": "@danoaky/js-utils",
-  "version": "0.28.0",
+  "version": "0.28.1",
   "author": "Daniel Brown",
   "main": "./dist/node-cjs/index.js",
   "devDependencies": {
