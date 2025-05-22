@@ -129,18 +129,46 @@ export function flow(...funcs: MonoFn<unknown, unknown>[]): MonoFn<unknown, unkn
   return (value: unknown) => pipe(value, ...funcs);
 }
 
-// TODO: fix this, it doesn't work at all
 export function limitConcurrency<T extends (...args: any[]) => Promise<any>>(func: T, limit: number): T {
-  const resolves: ((...any: any[]) => void)[] = [];
+  let running = 0;
+  const queue: Array<() => void> = [];
 
   return (async (...args: Parameters<T>) => {
-    if (resolves.length >= limit) await new Promise(resolve => resolves.push(resolve));
+    if (running >= limit) {
+      await new Promise<void>(resolve => queue.push(resolve));
+    }
+    running++;
     try {
       return await func(...args);
     } finally {
-      resolves.shift()?.();
+      running--;
+      queue.shift()?.();
     }
   }) as T;
+}
+
+export async function callConcurrently<T extends (...args: any[]) => Promise<any>>(
+  funcs: Iterable<T>,
+  limit: number,
+): Promise<Awaited<ReturnType<T>>[]> {
+  const results: ReturnType<T>[] = [];
+  const executing = new Set<Promise<void>>();
+
+  for (const func of funcs) {
+    const promise = func();
+    results.push(promise as ReturnType<T>);
+
+    const executingPromise = promise.finally(() => {
+      executing.delete(executingPromise);
+    });
+    executing.add(executingPromise);
+
+    if (executing.size >= limit) {
+      await Promise.race(executing);
+    }
+  }
+
+  return Promise.all(results);
 }
 
 export function isObjectLike(value: unknown): value is Record<PropertyKey, unknown> {

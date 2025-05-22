@@ -18,6 +18,7 @@ import {
   tryResult,
   classToFn,
   limitConcurrency,
+  callConcurrently,
 } from './functional';
 import Result from './result';
 
@@ -257,13 +258,25 @@ describe('functional', () => {
     expect(a(1).n).toBe(1);
   });
 
-  it.todo('limitConcurrency', async () => {
+  it('limitConcurrency', async () => {
     const fn = limitConcurrency(sleep, 1);
     const start = Date.now();
     await Promise.all([fn(100), fn(100), fn(100)]);
     expect(Date.now() - start).toBeGreaterThan(300);
-    // expect(await fn(1)).toStrictEqual(Result.Ok(1));
-    // expect(await fn(50)).toStrictEqual(Result.Ok(50));
-    // expect(await fn(200).then(e => e.error)).toBeInstanceOf(Error);
+
+    // Test successful execution
+    expect(await fn(1)).toStrictEqual(1);
+    expect(await fn(50)).toStrictEqual(50);
+  });
+
+  it('callConcurrently', async () => {
+    const nums = function* (start: number, end: number) {
+      for (let i = start; i < end; i++) yield () => sleep(i);
+    };
+    const result = await callConcurrently(nums(0, 5), Infinity);
+    expect(result).toEqual([0, 1, 2, 3, 4]);
+    const start = Date.now();
+    await callConcurrently(nums(100, 105), 1);
+    expect(Date.now() - start).toBeGreaterThan(500);
   });
 });
