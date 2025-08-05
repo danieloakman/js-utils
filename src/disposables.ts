@@ -4,9 +4,11 @@ import type { Fn } from './types';
  * @description Creates a disposable object that you can add cleanup functions to. When the object falls out of
  * scope, all cleanup functions are called.
  * @example
- * // A block scope, or a function scope, or any other scope:
+ * // An async or sync block scope, or a function scope, or any other scope:
  * {
  *   await using defer = deferral();
+ *   // Can also do this, but the deferred functions won't be awaited on:
+ *   // using defer = deferral();
  *   defer(() => console.log('cleanup'));
  * } // Logs 'cleanup'
  */
@@ -27,6 +29,16 @@ export const deferral = (): AsyncDisposable & Disposable & ((...cleanupFns: Fn[]
   );
 };
 
+/**
+ * @description A object that can be used to defer and schedule cleanup functions when it falls out of scope.
+ * @example
+ * {
+ *   using defer = new Deferral();
+ *   // OR:
+ *   // await using defer = new Deferral();
+ *   defer.add(() => console.log('cleanup'));
+ * } // Logs 'cleanup'
+ */
 export class Deferral implements AsyncDisposable, Disposable {
   private cleanup: Fn[] = [];
 

@@ -50,4 +50,16 @@ describe('disposables', () => {
     }
     expect(logs).toStrictEqual([1, 2, 3]);
   });
+
+  it("sync deferral doesn't await", async () => {
+    const logs: number[] = [];
+    {
+      // Purposely not using the `await using` syntax:
+      using defer = deferral();
+      defer(() => sleep(20).then(() => logs.push(1)));
+    }
+    expect(logs.length).toBe(0); // Did not await the deferred function as it was not awaited on.
+    await sleep(30);
+    expect(logs).toStrictEqual([1]);
+  });
 });
