@@ -30,7 +30,7 @@ export const deferral = (): AsyncDisposable & Disposable & ((...cleanupFns: Fn[]
 };
 
 /**
- * @description A object that can be used to defer and schedule cleanup functions when it falls out of scope.
+ * @description An object that can be used to defer and schedule cleanup functions when it falls out of scope.
  * @example
  * {
  *   using defer = new Deferral();
