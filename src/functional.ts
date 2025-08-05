@@ -323,7 +323,7 @@ export const once = <T extends Fn>(fn: T): T => {
   return ((...args: any[]) => {
     if (called) return result;
     called = true;
-    return (result = fn(...args));
+    return (result = fn(...args) as ReturnType<T>);
   }) as T;
 };
 
@@ -342,7 +342,7 @@ export const memoize = <T extends Fn>(fn: T, options: MemoizeOptions<T> = {}): T
     if (cache.has(key)) return cache.get(key);
     const result = fn(...args);
     // if (result instanceof Promise) return result.then(effect(v => cache.set(key, v)));
-    cache.set(key, result);
+    cache.set(key, result as ReturnType<T>);
     return result;
   }) as T;
 };
@@ -354,8 +354,9 @@ export const memoize = <T extends Fn>(fn: T, options: MemoizeOptions<T> = {}): T
  */
 export function toAsyncFn<T extends Fn>(fn: T): (...args: Parameters<T>) => Promise<AwaitedOnce<ReturnType<T>>> {
   // Check if already an async function:
-  if (fn.constructor.name === 'AsyncFunction') return fn;
-  return async (...args: Parameters<T>) => await fn(...args);
+  if (fn.constructor.name === 'AsyncFunction')
+    return fn as (...args: Parameters<T>) => Promise<AwaitedOnce<ReturnType<T>>>;
+  return async (...args: Parameters<T>) => (await fn(...args)) as AwaitedOnce<ReturnType<T>>;
 }
 
 // TODO: may need to change `Fn` usage to just `(...args: any[]) => any`, as it get's confused with Fn and MonoFn.

@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-export interface Fn<Args extends any[] = any[], Return = any> {
+export interface Fn<Args extends any[] = any[], Return = unknown> {
   (...args: Args): Return;
 }
 
-export interface AsyncFn<Args extends any[] = any[], Return = any> {
+export interface AsyncFn<Args extends any[] = any[], Return = unknown> {
   (...args: Args): Promise<Return>;
 }
 
