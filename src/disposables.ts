@@ -10,7 +10,7 @@ import type { Fn } from './types';
  *   defer(() => console.log('cleanup'));
  * } // Logs 'cleanup'
  */
-export const deferral = (): AsyncDisposable & ((...cleanupFns: Fn[]) => void) => {
+export const deferral = (): AsyncDisposable & Disposable & ((...cleanupFns: Fn[]) => void) => {
   const cleanup: Fn[] = [];
   return Object.assign(
     (...cleanupFns: Fn[]) => {
@@ -20,6 +20,25 @@ export const deferral = (): AsyncDisposable & ((...cleanupFns: Fn[]) => void) =>
       [Symbol.asyncDispose]: async () => {
         await Promise.all(cleanup.map(fn => fn()));
       },
+      [Symbol.dispose]: () => {
+        cleanup.forEach(fn => fn());
+      },
     },
   );
 };
+
+export class Deferral implements AsyncDisposable, Disposable {
+  private cleanup: Fn[] = [];
+
+  public add(...fns: Fn[]) {
+    this.cleanup.push(...fns);
+  }
+
+  public async [Symbol.asyncDispose]() {
+    await Promise.all(this.cleanup.map(fn => fn()));
+  }
+
+  public [Symbol.dispose]() {
+    this.cleanup.forEach(fn => fn());
+  }
+}
