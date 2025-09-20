@@ -269,7 +269,7 @@ describe('functional', () => {
     const fn = limitConcurrency(sleep, 1);
     const start = Date.now();
     await Promise.all([fn(100), fn(100), fn(100)]);
-    expect(Date.now() - start).toBeGreaterThan(300);
+    expect(Date.now() - start).toBeGreaterThanOrEqual(300);
 
     // Test successful execution
     expect(await fn(1)).toStrictEqual(1);
