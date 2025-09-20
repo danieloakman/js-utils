@@ -21,6 +21,7 @@ import {
   callConcurrently,
 } from './functional';
 import Result from './result';
+import { stat } from 'fs/promises';
 
 describe('functional', () => {
   it('attempt', async () => {
@@ -71,6 +72,12 @@ describe('functional', () => {
     {
       // @ts-expect-error Cannot pass an error to `attempt`
       expect(() => attempt(new Error('error'))).toThrow();
+    }
+    {
+      const { data: stats, error } = await attempt(stat(import.meta.dirname));
+      expect(error).toBeUndefined();
+      expect(stats?.isDirectory()).toBe(true);
+      expect(stats?.isFile()).toBe(false);
     }
   });
 

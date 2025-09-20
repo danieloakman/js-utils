@@ -175,6 +175,10 @@ export function isObjectLike(value: unknown): value is Record<PropertyKey, unkno
   return typeof value === 'object' && value !== null;
 }
 
+export function isPromiseLike<T = unknown>(value: unknown): value is Promise<T> {
+  return isObjectLike(value) && typeof value['then'] === 'function' && typeof value['catch'] === 'function';
+}
+
 /** Calls `fn` and returns its result as is, or if it throws an error it will return it as a value. */
 export function attempt<T extends (...args: any[]) => never, E extends Error = Error>(
   fn: T,
@@ -190,7 +194,7 @@ export function attempt<T extends (...args: any[]) => unknown, E extends Error =
 ): Result<ReturnType<T>, E>;
 export function attempt<T, E extends Error = Error>(promise: Promise<T>): Promise<Result<T, E>>;
 export function attempt(arg: unknown, ...rest: unknown[]): unknown {
-  if (arg instanceof Promise) return arg.then(Result.Ok).catch(Result.Err);
+  if (isPromiseLike(arg)) return arg.then(Result.Ok).catch(Result.Err);
   if (typeof arg === 'function') {
     try {
       const result = arg.call(arg, ...rest);
