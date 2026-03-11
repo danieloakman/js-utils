@@ -66,10 +66,12 @@ jobs:
       #   run: |
       #     bun install
 
-      - name: Publish to npm
-        run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # Can't be stuffed creating a new npm token every 90 days just to have this.
+      # Versions are released sporadically, so npm login + npm publish in local is fine.
+      # - name: Publish to npm
+      #   run: npm publish --access public
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Create Release Package
         run: |
