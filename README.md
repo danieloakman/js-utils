@@ -15,7 +15,14 @@ The build process bundles some dependencies in with the built javascript. This a
 ## Release
 
 `bun v:patch` or `bun v:minor` or `bun v:major`
-This will bump the package version, create a git tag, and run the release Github workflow.
+This will bump the package version, create a git tag, and run the release workflow, creating a Github Release.
+
+After thatn, to publish to npm:
+
+```sh
+npm login
+npm publish
+```
 
 ## Install
 
@@ -24,3 +31,9 @@ This will bump the package version, create a git tag, and run the release Github
 `pnpm add https://github.com/danieloakman/js-utils/releases/download/vx.x.x/package.tgz`
 
 `pnpm add https://github.com/danieloakman/js-utils/releases/latest/download/package.tgz`
+
+### From npm
+
+```sh
+pnpm add @danoaky/js-utils
+```
