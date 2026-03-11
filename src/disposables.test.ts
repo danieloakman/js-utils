@@ -30,7 +30,7 @@ describe('disposables', () => {
   it('sync deferral', async () => {
     const logs: number[] = [];
     {
-      using defer = deferral();
+      using defer = deferral({ order: 'fifo' });
       defer(() => logs.push(1));
       defer(() => logs.push(2));
       defer(() => logs.push(3));
@@ -42,7 +42,7 @@ describe('disposables', () => {
   it('sync Deferral class', async () => {
     const logs: number[] = [];
     {
-      using defer = new Deferral();
+      using defer = new Deferral({ order: 'fifo' });
       defer.add(() => logs.push(1));
       defer.add(() => logs.push(2));
       defer.add(() => logs.push(3));
@@ -61,5 +61,17 @@ describe('disposables', () => {
     expect(logs.length).toBe(0); // Did not await the deferred function as it was not awaited on.
     await sleep(30);
     expect(logs).toStrictEqual([1]);
+  });
+
+  it('calls cleanup functions in fifo order by default', async () => {
+    // const chars = Math.random().toString(36).substring(2, 15);
+    const chars = 'abc';
+    const logs: string[] = [];
+    {
+      using defer = deferral();
+      for (const char of chars) defer(() => logs.push(char));
+    }
+    // expect(logs).toStrictEqual(chars.split('').reverse());
+    expect(logs.join('')).toStrictEqual('cba');
   });
 });
