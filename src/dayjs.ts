@@ -11,6 +11,8 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/plugin/relativeTime';
 import minMax from 'dayjs/plugin/minMax';
 import 'dayjs/plugin/minMax';
+import timezone from 'dayjs/plugin/timezone';
+import 'dayjs/plugin/timezone';
 
 // Apply plugins:
 dayjs.extend(utc);
@@ -18,6 +20,7 @@ dayjs.extend(duration);
 dayjs.extend(isBetween);
 dayjs.extend(relativeTime);
 dayjs.extend(minMax);
+dayjs.extend(timezone);
 
 type ExtendedDayjs = ReturnType<typeof dayjs>;
 
