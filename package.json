@@ -1,6 +1,6 @@
 {
   "name": "@danoaky/js-utils",
-  "version": "0.31.0",
+  "version": "0.31.1",
   "author": "Daniel Brown",
   "main": "./dist/browser/index.js",
   "types": "./dist/browser/index.d.ts",
